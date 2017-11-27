@@ -1,0 +1,311 @@
+body {
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+$bg_primary: #FEF5EF;
+$bg_secondary: #584B53;
+
+$btn_primary: #E4BB97;
+$border: #D6E3F8;
+$border_hover: #9D5C63;
+
+$font_color_primary: #212121;
+$font_color_secondary: #fff;
+
+@mixin transition($property, $duration) {
+    -webkit-transition: $property $duration;
+    -moz-transition: $property $duration;
+    -ms-transition: $property $duration;
+    -o-transition: $property $duration;
+    transition: $property $duration;
+}
+
+.sc {
+    &_tg_btn {
+        position: fixed;
+        bottom: 4rem;
+        right: 4rem;
+        width: 64px;
+        height: 64px;
+        opacity: 1;
+        z-index: 10000;
+
+        -webkit-animation-duration: 2s;
+        -moz-animation-duration: 2s;
+        -o-animation-duration: 2s;
+        animation-duration: 2s;
+
+        @include transition(ease-in-out, 0.3s);
+
+        &.hide {
+            bottom: -4rem;
+            opacity: 0;
+        }
+    }
+    &_round_container {
+        width: 100%;
+        height: 100%;
+
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+
+        background: $bg_primary;
+
+        .sc_icon {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent url(https://png.icons8.com/?id=533&size=280);
+            background-repeat: no-repeat;
+            background-size: 65% 65%;
+            background-position: center center;
+            
+            a {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    /* ----------- */
+
+    &_overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background: rgba(0,0,0,0.5);
+        z-index: 9999;
+    }
+
+    &_popup {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        width: 400px;
+        max-width: 100%;
+
+        background: $bg_primary;
+
+        font-family: 'Oswald', sans-serif;
+        color: $font_color_primary;
+        line-height: 1.5;
+
+        p {
+            margin: 0;
+        }
+
+        .sc_btn_close {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            right: -12px;
+            top: -12px;
+
+            background: #fff;
+            background: transparent url(http://svgur.com/i/1U6.svg);
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+
+            cursor: pointer;
+        }
+
+        .sc_title_section, .sc_body_section {
+            padding: 2rem;
+        }
+
+        .sc_title_section {
+            background: $bg_secondary;
+
+            color: $font_color_secondary;
+            font-size: 1.5em;
+            font-weight: 500;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .sc_division {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        form {
+            label {
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+
+            input[type="text"], input[type="tel"], textarea {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+
+                padding-bottom: 0.5rem;
+
+                background: transparent;
+                border: none;
+                border-bottom: solid 2px $border;
+
+                outline: none;
+
+                @include transition(ease-in-out, 0.3s);
+
+                &:hover, &:active, &:focus {
+                    border-color: $border-hover;
+                }
+
+                &::-webkit-input-placeholder {
+                    color: lighten($font_color_primary, 50%);
+                }
+                &:-moz-placeholder {
+                    /* FF 4-18 */
+                    color: lighten($font_color_primary, 50%);
+                }
+                &::-moz-placeholder {
+                    /* FF 19+ */
+                    color: lighten($font_color_primary, 50%);
+                }
+                &:-ms-input-placeholder {
+                    /* IE 10+ */
+                    color: lighten($font_color_primary, 50%);
+                }
+            }
+
+            input[type="submit"], input[type="button"], button, .btn {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+
+                padding: 0.5em 1em;
+
+                border: none;
+                background: $btn_primary;
+                color: $font_color_secondary;
+                font-size: 1.5rem;
+                font-weight: 500;
+                font-family: inherit;
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-transform: uppercase;
+                cursor: pointer;
+
+                @include transition(ease-in-out, 0.3s);
+
+                &:hover {
+                    background: lighten($btn_primary, 10%);
+                    color: $font_color_primary;
+                }
+            }
+
+            .sc_agreements {
+                .sc_checkbox_container {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 2rem;
+                    margin: 0;
+
+                    input {
+                        margin: 0;
+
+                        &:checked ~ .checkmark {
+                            background-color: $btn_primary;
+
+                            &:after {
+                                display: block;
+                            }
+                        }
+                    }
+
+                    /* Create a custom checkbox */
+                    .checkmark {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        background-color: #eee;
+                        cursor: pointer;
+
+                        /* Create the checkmark/indicator (hidden when not checked) */
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            display: none;
+
+                            left: 8px;
+                            top: 4px;
+                            width: 5px;
+                            height: 10px;
+                            border: solid white;
+                            border-width: 0 3px 3px 0;
+                            -webkit-transform: rotate(45deg);
+                            -ms-transform: rotate(45deg);
+                            transform: rotate(45deg);
+                        }
+                    }
+                }
+
+                .sc_division:hover {
+                    input ~ .checkmark {
+                        background-color: #ccc;
+                    }
+                }
+
+                label {
+                    margin-bottom: 0;
+                    padding-left: 2rem;
+
+                    font-weight: 300;
+                    font-size: 0.8em;
+                    color: lighten($font_color_primary, 50%);
+
+                    cursor: pointer;
+                }
+
+                .sc_readmore {
+                    color: $border_hover;
+
+                    &:hover, &:active, &:focus {
+                        color: lighten($border_hover, 15%);
+                    }
+
+                    a {
+                        color: inherit;
+                        text-decoration: none;
+                    }
+                }
+                .sc_readmore_body {
+                    display: block;
+                    margin-top: 0.5rem;
+                    font-size: 0.8em;
+                    font-weight: 300;
+
+                    a {
+                        color: $border_hover;
+                        text-decoration: none;
+
+                        &:hover, &:active, &:focus {
+                            color: lighten($border_hover, 15%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

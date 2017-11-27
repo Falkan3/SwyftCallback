@@ -1,0 +1,74 @@
+<div class="sc_overlay">
+    <div class="sc_popup">
+        <div class="sc_btn_close"></div>
+
+        <div class="sc_title_section">
+            <p>Title</p>
+        </div>
+
+        <div class="sc_body_section">
+            <form action="" method="">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="sc_division">
+                                <label for="sc_fld_telephone">Phone number</label>
+                                <input id="sc_fld_" type="tel" placeholder="000-000-000" value="" maxlength="11" />
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="sc_division">
+                                <button type="submit" class="sc_btn_submit"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row sc_agreements">
+                        <div class="col-xs-12">
+                            <div class="sc_division">
+                                <div class="sc_checkbox_container">
+                                    <input id="sc_fld_agreement_1" type="checkbox" checked="checked" />
+                                    <span class="checkmark"></span>
+                                </div>
+
+                                <label for="sc_fld_agreement_1">Agreement 1 body <span class="sc_readmore">More</span></label>
+                                <span class="sc_readmore_body" style="display: none;">
+                                    Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor
+                                </span>
+                            </div>
+
+                            <div class="sc_division">
+                                <div class="sc_checkbox_container">
+                                    <input id="sc_fld_agreement_2" type="checkbox" checked="checked" />
+                                    <span class="checkmark"></span>
+                                </div>
+
+                                <label for="sc_fld_agreement_2">Agreement 2 body <span class="sc_readmore">More</span></label>
+                                <span class="sc_readmore_body" style="display: none;">
+                                    Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor
+                                </span>
+                            </div>
+
+                            <div class="sc_division">
+                                <div class="sc_checkbox_container">
+                                    <input id="sc_fld_agreement_3" type="checkbox" checked="checked" />
+                                    <span class="checkmark"></span>
+                                </div>
+
+                                <label for="sc_fld_agreement_3">Agreement 3 body <span class="sc_readmore">More</span></label>
+                                <span class="sc_readmore_body" style="display: none;">
+                                    Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="sc_footer_section">
+
+        </div>
+    </div>
+</div>
