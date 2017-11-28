@@ -1,16 +1,15 @@
 /*
- *  jquery-boilerplate - v4.0.0
- *  A jump-start for jQuery plugins development.
- *  http://jqueryboilerplate.com
+ *  Swyft Callback - v0.0.1
+ *  A dynamic callback contact form
  *
- *  Made by Zeno Rocha
+ *  Made by Adam Kocić (Falkan3)
  *  Under MIT License
  */
 // the semi-colon before function invocation is a safety net against concatenated
 // scripts and/or other plugins which may not be closed properly.
 ;(function ($, window, document, undefined) {
 
-    //"use strict";
+    "use strict";
 
     // undefined is used here as the undefined global variable in ECMAScript 3 is
     // mutable (ie. it can be changed by someone else). undefined isn't really being
@@ -58,6 +57,12 @@
         this.settings = $.extend({}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
+
+        //dynamic vars
+        this.popup = {
+            obj: null, form: null
+        };
+
         this.init();
     }
 
@@ -76,7 +81,7 @@
             this.initPopup();
             this.initButton();
         },
-        formatClasses(input) {
+        formatClasses: function(input) {
             var _input = input;
             var input_length = _input.length;
             var output = '';
@@ -88,7 +93,7 @@
                     for (var i = 0; i < input_length; i++) {
                         output += _input[i] + ' ';
                     }
-                    if(output[output.length-1] == ' ') {
+                    if (output[output.length - 1] == ' ') {
                         output = output.slice(0, -1);
                     }
                 } else {
@@ -98,7 +103,7 @@
 
             return output;
         },
-        formatData(input) {
+        formatData: function(input) {
             var _input = input;
             var input_length = _input.length;
             var output = '';
@@ -110,7 +115,7 @@
                     for (var i = 0; i < input_length; i++) {
                         output += 'data-' + _input[i][0] + '=' + _input[i][1] + ' ';
                     }
-                    if(output[output.length-1] == ' ') {
+                    if (output[output.length - 1] == ' ') {
                         output = output.slice(0, -1);
                     }
                 } else {
@@ -174,8 +179,10 @@
                 '                    <div class="row">\n' +
                 '                        <div class="col-xs-12">\n' +
                 '                            <div class="sc_division">\n' +
-                '                                <label for="sc_fld_telephone">' + this.settings.text_vars.input_phone_number_text + '</label>\n' +
-                '                                <input id="sc_fld_" type="tel" placeholder="000-000-000" value="" maxlength="11" />\n' +
+                '                               <div class="input">\n' +
+                        '                           <label for="sc_fld_telephone">' + this.settings.text_vars.input_phone_number_text + '</label>\n' +
+                        '                           <input id="sc_fld_telephone" type="tel" placeholder="000-000-000" value="" maxlength="11" />\n' +
+                '                               </div>\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
                 '\n' +
@@ -200,38 +207,75 @@
                 '        </div>\n' +
                 '    </div>\n' +
                 '</div>');
-            this.popup = $popupBody.appendTo($(this.element));
+            this.popup.obj = $popupBody.appendTo($(this.element));
+            this.popup.form = this.popup.obj.find('form');
+
+            this.popupAppendEventListeners();
+            this.popupApplyMisc();
+        },
+        popupAppendEventListeners: function() {
+            var objThis = this;
 
             //checkbox click
-            this.popup.find('.checkmark').on('click', function (e) {
+            this.popup.form.find('.checkmark').on('click', function (e) {
                 e.preventDefault();
                 var input = $(this).siblings('input');
                 input.prop('checked', !input.prop('checked'));
             });
 
             //readmore click
-            this.popup.find('.sc_readmore').on('click', function (e) {
+            this.popup.form.find('.sc_readmore').on('click', function (e) {
                 e.preventDefault();
                 objThis.showReadmore(this);
             });
 
             //close click
-            this.popup.find('.sc_btn_close').on('click', function (e) {
+            this.popup.form.find('.sc_btn_close').on('click', function (e) {
                 e.preventDefault();
                 objThis.ClosePopup();
             });
         },
+        showReadmore: function (obj) {
+            var $this = $(obj);
+            $this.closest('.sc_division').find('.sc_readmore_body').slideToggle();
+        },
+        hideReadmore_all: function() {
+            this.popup.form.find('agreements input[type="checkbox"]').prop('checked', false);
+        },
+        popupApplyMisc: function() {
+            /* --- js input mask --- */
+            var inputs = $('input');
+
+            //check if exists
+            console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
+            if(typeof $.fn.inputmask !== 'undefined') {
+                var input_masked_items = inputs.filter('input[type="tel"], .jsm_phone');
+                var phones_mask = ["###-###-###", "## ###-##-##"];
+
+                console.log('js input mask || masked items: ');
+                console.log(input_masked_items);
+
+                input_masked_items.inputmask({
+                    mask: phones_mask,
+                    greedy: false,
+                    definitions: {'#': {validator: "[0-9]", cardinality: 1}}
+                });
+            }
+        },
+
+        /* -------------------- PUBLIC METHODS -------------------- */
+
         TogglePopup: function (options) {
             if (this.settings.button_disabled) {
                 return;
             }
 
-            var objThis = this;
+            //var objThis = this;
 
             if (this.settings.popup_hidden) {
-                this.ShowPopup();
+                this.ShowPopup(options);
             } else {
-                this.ClosePopup();
+                this.ClosePopup(options);
             }
         },
         ShowPopup: function (options) {
@@ -239,48 +283,70 @@
                 return;
             }
 
+            //set settings
             var objThis = this;
             var defaults = {
                 fade_duration: 300,
             };
             var settings = $.extend({}, defaults, options);
 
-            this.popup.fadeIn(settings.fade_duration);
+            //fade in the popup window
+            this.popup.obj.fadeIn(settings.fade_duration);
+
+            //focus first input in popup form
+            this.popup.form.find('input, select').first().focus();
 
             //hide button
             this.button.addClass('hide');
         },
+        //todo: fix closing popup
         ClosePopup: function (options) {
             if (this.settings.button_disabled) {
                 return;
             }
 
+            //set settings
             var objThis = this;
             var defaults = {
                 fade_duration: 300,
             };
             var settings = $.extend({}, defaults, options);
 
-            this.popup.fadeOut(settings.fade_duration, function () {
-                objThis.ResetInput()
+            //fade out the popup window and reset the input
+            this.popup.obj.fadeOut(settings.fade_duration, function () {
+                objThis.ResetInput();
             });
 
             //hide button
             this.button.removeClass('hide');
         },
-        ResetInput: function () {
-            var form = this.popup.find('form');
-            var input = form.find('input');
-            input.filter('[type="text"], [type="tel"], textarea').val('');
-            input.filter('[type="checkbox"]').prop('checked', true);
-        },
-        showReadmore: function (obj) {
-            var $this = $(obj);
-            $this.closest('.sc_division').find('.sc_readmore_body').slideToggle();
-        },
         DisableButton: function (input) {
             this.settings.button_disabled = !!input;
-        }
+        },
+
+        /* Input */
+
+        ValidateInput: function () {
+            var form = this.popup.form;//this.popup.obj.find('form');
+            var input = form.find('input, select');
+
+            //group by type
+            var i_text = input.filter('[type="text"], [type="tel"], textarea');
+            var i_checkbox = input.filter('[type="checkbox"]');
+        },
+        ResetInput: function () {
+            var form = this.popup.form;//this.popup.obj.find('form');
+            form[0].reset();
+
+            /*
+            var input = form.find('input, select');
+            input.filter('[type="text"], [type="tel"], textarea').val('');
+            input.filter('[type="checkbox"]').prop('checked', true);
+            input.filter('select').prop('selectedIndex',0);
+            */
+
+            this.hideReadmore_all();
+        },
     });
 
     // A really lightweight plugin wrapper around the constructor,
@@ -297,7 +363,7 @@
             }
         });
 
-        if(instances.length == 1) {
+        if (instances.length === 1) {
             return instances[0];
         }
 

@@ -12,8 +12,10 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="sc_division">
-                                <label for="sc_fld_telephone">Phone number</label>
-                                <input id="sc_fld_" type="tel" placeholder="000-000-000" value="" maxlength="11" />
+                                <div class="input">
+                                    <label for="sc_fld_telephone">Phone number</label>
+                                    <input id="sc_fld_" type="tel" placeholder="000-000-000" value="" maxlength="11" />
+                                </div>
                             </div>
                         </div>
 

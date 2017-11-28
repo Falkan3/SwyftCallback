@@ -2,6 +2,7 @@ body {
     position: relative;
     min-height: 100vh;
     margin: 0;
+    background: #ddd;
     overflow-x: hidden;
 }
 
@@ -148,6 +149,28 @@ $font_color_secondary: #fff;
                 margin-bottom: 0.5rem;
             }
 
+            .input {
+                .wrong-input {
+                    display: none;
+                    position: absolute;
+                    width: 16px;
+                    height: 16px;
+                    right: 12px;
+                    top: 50%;
+                    -webkit-transform: translateY(-50%);
+                    -moz-transform: translateY(-50%);
+                    -ms-transform: translateY(-50%);
+                    -o-transform: translateY(-50%);
+                    transform: translateY(-50%);
+                }
+
+                &.wrong-input {
+                    .wrong-input {
+                        display: block;
+                    }
+                }
+            }
+
             input[type="text"], input[type="tel"], textarea {
                 display: block;
                 width: 100%;
@@ -182,6 +205,9 @@ $font_color_secondary: #fff;
                     /* IE 10+ */
                     color: lighten($font_color_primary, 50%);
                 }
+            }
+            input[type="tel"], input.jsm_phone {
+                letter-spacing: 1px;
             }
 
             input[type="submit"], input[type="button"], button, .btn {
