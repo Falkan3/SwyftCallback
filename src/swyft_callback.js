@@ -23,6 +23,8 @@
     // Create the defaults once
     var pluginName = "swyftCallback",
         form_fields_prefix = 'sc_fld_',
+        input_all_mask = 'input, select, textarea',
+
         defaults = {
             api_url: "test",
             form_method: "post",
@@ -253,7 +255,7 @@
 
                 var output = '<div class="sc_division">\n' +
                     '               <div class="input">\n' +
-                    '                   <label for="sc_fld_telephone">' + field.label + '</label>\n' +
+                    '                   <label for="' + form_fields_prefix + 'telephone">' + field.label + '</label>\n' +
                     '                   <input ' + dynamic_attributes[0].formatted + '/>\n' +
                     '               </div>\n' +
                     '             </div>\n';
@@ -268,11 +270,11 @@
                 var agreement = this.settings.agreements[i];
                 var output = '<div class="sc_division">\n' +
                     '                   <div class="sc_checkbox_container">\n' +
-                    '                       <input id="sc_fld_agreement_' + i + '" type="checkbox" checked="checked" />\n' +
+                    '                       <input id="' + form_fields_prefix + 'agreement_' + i + '" type="checkbox" checked="checked" />\n' +
                     '                       <span class="checkmark"></span>\n' +
                     '                   </div>\n' +
                     '\n' +
-                    '                   <label for="sc_fld_agreement_' + i + '">' + agreement.short + ' <span class="sc_readmore">' + agreement.readmore + ' </span></label>\n' +
+                    '                   <label for="' + form_fields_prefix + 'agreement_' + i + '">' + agreement.short + ' <span class="sc_readmore">' + agreement.readmore + ' </span></label>\n' +
                     '                   <span class="sc_readmore_body" style="display: none;">\n' +
                     '                       ' + agreement.long +
                     '                   </span>\n' +
@@ -388,10 +390,22 @@
                 objThis.ClosePopup();
             });
 
+            //form input blur
+            this.popup.form.find(input_all_mask).on('blur', function (e) {
+                //validate input
+                var validated = objThis.ValidateInput($(this));
+                //send form if validated
+                if(validated) {
+                    console.log('validation successful');
+                }
+
+                return false;
+            });
+
             //form submit
             this.popup.obj.on('submit', function (e) {
                 //find all input in form
-                var input = objThis.popup.form.find('input, textarea, select');
+                var input = objThis.popup.form.find(input_all_mask);
 
                 //validate input
                 var validated = objThis.ValidateInput(input);
@@ -476,7 +490,7 @@
             this.popup.obj.fadeIn(settings.fade_duration);
 
             //focus first input in popup form
-            this.popup.form.find('input, select').first().focus();
+            this.popup.form.find(input_all_mask).first().focus();
 
             //hide button
             this.button.obj.addClass('hide');
@@ -513,34 +527,59 @@
 
         /* ------ Input ------ */
 
+        /**
+         * @return {boolean}
+         */
         //todo: validate input
         ValidateInput: function (input) {
             //var form = this.popup.form;//this.popup.obj.find('form');
             //todo: cache input objects
-            //var _input = form.find('input, textarea, select');
+            //var _input = form.find(input_all_mask);
             var _input = input;
+
+            //return value. If all inputs are correctly validated, the value will remain true. If one fails, it switches to false
+            var is_valid = true;
 
             //group by type
             var i_text = _input.filter('[type="text"], [type="tel"], textarea');
             var i_checkbox = _input.filter('[type="checkbox"]');
 
-            //define regex for field types
-            var regex_phone = '(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)';
-
             /* --- Validation --- */
 
+            //define regex for field types
+            var regex;
 
+            //phones
+            //define regex for field types
+            regex = /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/;
+
+            i_text.each(function() {
+                var $this = $(this);
+                var $this_val = $this.val();
+                var valid = regex.test($this_val); //match()
+                if(valid) {
+                    $this.removeClass('wrong-input');
+                    $this.addClass('correct-input');
+                } else {
+                    $this.removeClass('correct-input');
+                    $this.addClass('wrong-input');
+                    is_valid = false;
+                    //return false; //break the each loop or continue (true) checking other inputs to apply wrong input class
+                }
+            });
+
+            //xxx
 
             /* --- /Validation --- */
 
-            return false;
+            return is_valid;
         },
         ResetInput: function () {
             var form = this.popup.form;//this.popup.obj.find('form');
             form[0].reset();
 
             /*
-            var input = form.find('input, select');
+            var input = form.find(input_all_mask);
             input.filter('[type="text"], [type="tel"], textarea').val('');
             input.filter('[type="checkbox"]').prop('checked', true);
             input.filter('select').prop('selectedIndex',0);

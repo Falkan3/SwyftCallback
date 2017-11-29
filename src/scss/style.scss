@@ -12,6 +12,8 @@ $bg_secondary: #584B53;
 $btn_primary: #E4BB97;
 $border: #D6E3F8;
 $border_hover: #9D5C63;
+$border_correct: #73dd43;
+$border_wrong: #dd1531;
 
 $font_color_primary: #212121;
 $font_color_secondary: #fff;
@@ -156,23 +158,27 @@ $font_color_secondary: #fff;
             }
 
             .input {
-                .wrong-input {
-                    display: none;
-                    position: absolute;
-                    width: 16px;
-                    height: 16px;
-                    right: 12px;
-                    top: 50%;
-                    -webkit-transform: translateY(-50%);
-                    -moz-transform: translateY(-50%);
-                    -ms-transform: translateY(-50%);
-                    -o-transform: translateY(-50%);
-                    transform: translateY(-50%);
+                .icon {
+                    &.wrong-input {
+                        display: none;
+                        position: absolute;
+                        width: 16px;
+                        height: 16px;
+                        right: 12px;
+                        top: 50%;
+                        -webkit-transform: translateY(-50%);
+                        -moz-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                        -o-transform: translateY(-50%);
+                        transform: translateY(-50%);
+                    }
                 }
 
                 &.wrong-input {
-                    .wrong-input {
-                        display: block;
+                    .icon {
+                        &.wrong-input {
+                            display: block;
+                        }
                     }
                 }
             }
@@ -210,6 +216,13 @@ $font_color_secondary: #fff;
                 &:-ms-input-placeholder {
                     /* IE 10+ */
                     color: lighten($font_color_primary, 50%);
+                }
+
+                &.correct-input {
+                    border-color: $border_correct;
+                }
+                &.wrong-input {
+                    border-color: $border_wrong;
                 }
             }
             input[type="tel"], input.jsm_phone {

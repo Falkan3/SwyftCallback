@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10fc1a21-5cde-439f-b811-9191e2e35e63" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/css/style.css" afterPath="$PROJECT_DIR$/src/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/css/style.map" afterPath="$PROJECT_DIR$/src/css/style.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scss/style.scss" afterPath="$PROJECT_DIR$/src/scss/style.scss" />
@@ -29,8 +30,8 @@
       <file leaf-file-name="style.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="237" column="30" lean-forward="false" selection-start-line="237" selection-start-column="30" selection-end-line="237" selection-end-column="30" />
+            <state relative-caret-position="221">
+              <caret line="223" column="31" lean-forward="true" selection-start-line="223" selection-start-column="31" selection-end-line="223" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -39,15 +40,15 @@
       <file leaf-file-name="swyft_callback.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-193">
-              <caret line="341" column="10" lean-forward="true" selection-start-line="341" selection-start-column="10" selection-end-line="341" selection-end-column="10" />
+            <state relative-caret-position="188">
+              <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#7835#9455#0" expanded="false" />
-                <element signature="e#9513#10640#0" expanded="false" />
-                <element signature="e#10710#13408#0" expanded="false" />
-                <marker date="1511961152273" expanded="true" signature="10364:10378" ph="..." />
-                <marker date="1511961152273" expanded="true" signature="11485:11499" ph="..." />
+                <element signature="e#7888#9527#0" expanded="false" />
+                <element signature="e#9585#10750#0" expanded="false" />
+                <element signature="e#10820#13518#0" expanded="false" />
+                <marker date="1511963799981" expanded="true" signature="10474:10488" ph="..." />
+                <marker date="1511963799981" expanded="true" signature="11595:11609" ph="..." />
               </folding>
             </state>
           </provider>
@@ -76,7 +77,14 @@
       <find>validateInpuit</find>
       <find>close</find>
       <find>ValidateInput</find>
+      <find>wrong-input</find>
+      <find>input, select, textarea</find>
+      <find>input,</find>
+      <find>sc_fld_</find>
     </findStrings>
+    <replaceStrings>
+      <replace>' + form_fields_prefix + '</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -195,12 +203,12 @@
       <option name="presentableId" value="Default" />
       <updated>1511883325599</updated>
       <workItem from="1511883327205" duration="3888000" />
-      <workItem from="1511947621350" duration="8473000" />
+      <workItem from="1511947621350" duration="11096000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12361000" />
+    <option name="totallyTimeSpent" value="14984000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-132" width="1936" height="1056" extended-state="6" />
@@ -266,11 +274,11 @@
           <caret line="301" column="33" lean-forward="false" selection-start-line="301" selection-start-column="33" selection-end-line="301" selection-end-column="33" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#7835#9455#0" expanded="false" />
-            <element signature="e#9513#10640#0" expanded="false" />
-            <element signature="e#10710#13408#0" expanded="false" />
-            <marker date="1511961152273" expanded="true" signature="10364:10378" ph="..." />
-            <marker date="1511961152273" expanded="true" signature="11485:11499" ph="..." />
+            <element signature="e#7888#9527#0" expanded="false" />
+            <element signature="e#9585#10750#0" expanded="false" />
+            <element signature="e#10820#13518#0" expanded="false" />
+            <marker date="1511963799981" expanded="true" signature="10474:10488" ph="..." />
+            <marker date="1511963799981" expanded="true" signature="11595:11609" ph="..." />
           </folding>
         </state>
       </provider>
@@ -300,23 +308,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="237" column="30" lean-forward="false" selection-start-line="237" selection-start-column="30" selection-end-line="237" selection-end-column="30" />
+        <state relative-caret-position="221">
+          <caret line="223" column="31" lean-forward="true" selection-start-line="223" selection-start-column="31" selection-end-line="223" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-193">
-          <caret line="341" column="10" lean-forward="true" selection-start-line="341" selection-start-column="10" selection-end-line="341" selection-end-column="10" />
+        <state relative-caret-position="188">
+          <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#7835#9455#0" expanded="false" />
-            <element signature="e#9513#10640#0" expanded="false" />
-            <element signature="e#10710#13408#0" expanded="false" />
-            <marker date="1511961152273" expanded="true" signature="10364:10378" ph="..." />
-            <marker date="1511961152273" expanded="true" signature="11485:11499" ph="..." />
+            <element signature="e#7888#9527#0" expanded="false" />
+            <element signature="e#9585#10750#0" expanded="false" />
+            <element signature="e#10820#13518#0" expanded="false" />
+            <marker date="1511963799981" expanded="true" signature="10474:10488" ph="..." />
+            <marker date="1511963799981" expanded="true" signature="11595:11609" ph="..." />
           </folding>
         </state>
       </provider>
