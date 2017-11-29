@@ -348,17 +348,20 @@
 
             //form submit
             this.popup.obj.on('submit', function (e) {
-                //find all input in form
-                var input = objThis.popup.form.find(input_all_mask);
+                var status = objThis.SendData();
 
-                //validate input
-                var validated = objThis.ValidateInput(input);
-                //send form if validated
-                if(validated) {
-                    console.log('validation successful');
+                //success
+                console.log(status);
+                if(status == 'success') {
+
                 } else {
-                    return false;
+                    //error
+                    if(status == 'error') {
+
+                    }
                 }
+
+                return false;
             });
         },
 
@@ -403,6 +406,28 @@
 
         /* -------------------- PUBLIC METHODS -------------------- */
 
+        /* ------ Form data ------ */
+
+        /**
+         * @return {boolean}
+         */
+        SendData: function() {
+            //find all input in form
+            var input = this.popup.form.find(input_all_mask);
+
+            //validate input
+            var validated = this.ValidateInput(input);
+            //send form if validated
+            if(validated) {
+                console.log('validation successful');
+
+                //todo: send AJAX call
+                return 'success'
+            } else {
+                return 'error';
+            }
+        },
+
         /* ------ Popup ------ */
 
         TogglePopup: function (options) {
@@ -418,6 +443,7 @@
                 this.ClosePopup(options);
             }
         },
+
         ShowPopup: function (options) {
             if (this.settings.button_disabled) {
                 return;
@@ -442,6 +468,7 @@
             //change hidden variable to false
             this.settings.popup_hidden = false;
         },
+
         ClosePopup: function (options) {
             if (this.settings.button_disabled) {
                 return;
@@ -465,6 +492,7 @@
             //change hidden variable to true
             this.settings.popup_hidden = true;
         },
+
         DisableButton: function (input) {
             this.settings.button_disabled = !!input;
         },
@@ -514,7 +542,9 @@
 
                 //remove old status
                 var old_obj = $this.siblings('.' + form_obj_prefix + 'status');
-                old_obj.remove();
+                old_obj.fadeOut(settings.fade_duration, function() {
+                    old_obj.remove();
+                });
 
                 if(valid) {
                     $this.removeClass('wrong-input'); $this_parent.removeClass('wrong-input');
