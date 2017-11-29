@@ -122,6 +122,12 @@ $font_color_secondary: #fff;
             border-radius: 50%;
 
             cursor: pointer;
+
+            @include transition(ease-out transform, 0.3s);
+
+            &:hover, &:focus, &:active {
+                transform: scale(1.1);
+            }
         }
 
         .sc_title_section, .sc_body_section {

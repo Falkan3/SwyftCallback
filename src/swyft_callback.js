@@ -22,20 +22,37 @@
 
     // Create the defaults once
     var pluginName = "swyftCallback",
+        form_fields_prefix = 'sc_fld_',
         defaults = {
             api_url: "test",
             form_method: "post",
+            //data
             custom_button_class: "",
             custom_button_data: "",
             custom_popup_class: "",
             custom_popup_data: "",
+            //status
             popup_hidden: true,
             button_disabled: false, //disable show/close functionality
+            //content - text
             text_vars: {
                 popup_title: "Contact form",
                 popup_body: "Leave us your phone number. We'll call you back.",
                 send_button_text: "Send",
-                input_phone_number_text: "Phone number"
+            },
+            //form info
+            input: {
+                prefix: form_fields_prefix,
+                fields: [
+                    {
+                        name: 'phone',
+                        field_name: form_fields_prefix + 'telephone',
+                        label: 'Phone number',
+                        type: 'tel',
+                        placeholder: '000-000-000',
+                        max_length: 20
+                    },
+                ],
             },
             agreements: [
                 {
@@ -58,7 +75,15 @@
         this._defaults = defaults;
         this._name = pluginName;
 
+        //set default vars
+        this.setDefaultVars();
+
         //dynamic vars
+        //button used to bring up popup window
+        this.button = {
+            obj: null
+        };
+        //popup window
         this.popup = {
             obj: null, form: null
         };
@@ -80,6 +105,13 @@
             // call them like the example bellow
             this.initPopup();
             this.initButton();
+        },
+        setDefaultVars: function() {
+            //set default vars for form fields
+            var template = defaults.input.fields[0];
+            for(var i = 0; i< this.settings.input.fields.length; i++) {
+                this.settings.input.fields[i] = $.extend({}, template, this.settings.input.fields[i]);
+            }
         },
         formatClasses: function(input) {
             var _input = input;
@@ -137,9 +169,9 @@
                 '        </div>\n' +
                 '    </div>\n' +
                 '</div>');
-            this.button = $buttonBody.appendTo($(this.element));
+            this.button.obj = $buttonBody.appendTo($(this.element));
 
-            $buttonBody.find('a').on('click', function (e) {
+            this.button.obj.find('a').on('click', function (e) {
                 e.preventDefault();
 
                 objThis.TogglePopup();
@@ -149,6 +181,20 @@
             var objThis = this;
             var classes = this.formatClasses(this.settings.custom_popup_class);
 
+            //form fields
+            var fields = '';
+            for (var i = 0; i < this.settings.input.fields.length; i++) {
+                var field = this.settings.input.fields[i];
+                var output = '<div class="sc_division">\n' +
+                '               <div class="input">\n' +
+                '                   <label for="sc_fld_telephone">' + field.label + '</label>\n' +
+                '                   <input id="sc_fld_telephone" type="' + field.type + '" placeholder="' + field.placeholder + '" value="" maxlength="' + field.max_length + '" />\n' +
+                '               </div>\n' +
+                '             </div>\n';
+                fields += output;
+            }
+
+            //agreements
             var agreements = '';
             for (var i = 0; i < this.settings.agreements.length; i++) {
                 var agreement = this.settings.agreements[i];
@@ -178,12 +224,7 @@
                 '                <div class="container-fluid">\n' +
                 '                    <div class="row">\n' +
                 '                        <div class="col-xs-12">\n' +
-                '                            <div class="sc_division">\n' +
-                '                               <div class="input">\n' +
-                        '                           <label for="sc_fld_telephone">' + this.settings.text_vars.input_phone_number_text + '</label>\n' +
-                        '                           <input id="sc_fld_telephone" type="tel" placeholder="000-000-000" value="" maxlength="11" />\n' +
-                '                               </div>\n' +
-                '                            </div>\n' +
+                fields +
                 '                        </div>\n' +
                 '\n' +
                 '                        <div class="col-xs-12">\n' +
@@ -230,7 +271,7 @@
             });
 
             //close click
-            this.popup.form.find('.sc_btn_close').on('click', function (e) {
+            this.popup.obj.find('.sc_btn_close').on('click', function (e) {
                 e.preventDefault();
                 objThis.ClosePopup();
             });
@@ -297,9 +338,11 @@
             this.popup.form.find('input, select').first().focus();
 
             //hide button
-            this.button.addClass('hide');
+            this.button.obj.addClass('hide');
+
+            //change hidden variable to false
+            this.settings.popup_hidden = false;
         },
-        //todo: fix closing popup
         ClosePopup: function (options) {
             if (this.settings.button_disabled) {
                 return;
@@ -318,7 +361,10 @@
             });
 
             //hide button
-            this.button.removeClass('hide');
+            this.button.obj.removeClass('hide');
+
+            //change hidden variable to true
+            this.settings.popup_hidden = true;
         },
         DisableButton: function (input) {
             this.settings.button_disabled = !!input;
