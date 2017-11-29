@@ -22,6 +22,7 @@
 
     // Create the defaults once
     var pluginName = "swyftCallback",
+        form_obj_prefix = 'sc_',
         form_fields_prefix = 'sc_fld_',
         input_all_mask = 'input, select, textarea',
 
@@ -141,75 +142,14 @@
             return output;
         },
 
-        /*
-         * Input: Array[]
-         * Output: String
-         * Function that formats data attributes into a string
-         */
-        formatData: function(input) {
-            var _input = input;
-            var input_length = _input.length;
-            var output = '';
-            if (_input) {
-                output += ' ';
-
-                //is array
-                if (input.constructor === Array) {
-                    for (var i = 0; i < input_length; i++) {
-                        output += 'data-' + _input[i][0] + '=' + _input[i][1] + ' ';
-                    }
-                    if (output[output.length - 1] == ' ') {
-                        output = output.slice(0, -1);
-                    }
-                } else {
-                    output += 'data-' + _input;
-                }
-            }
-
-            return output;
-        },
-
-        /*
-         * Input: Object
-         * Output: Object
-         * Function that formats attribute keys and their values into a string, which is to be inserted into the proper html tag
-         * To retrieve the string, use the genearated key obj[x].formatted
-         */
-        formatDynamicAttributes: function(collection) {
-            var _collection = collection;
-            for(var i = 0; i < _collection.length; i++) {
-                var attributes = _collection[i].attributes;
-                var formatted = '';
-
-                //format attributes into a string
-                for(var x = 0; x < attributes.length; x++) {
-                    //open attr
-                    formatted += attributes[x].key + '="';
-                    //insert attr value
-                    formatted += attributes[x].value;
-                    //close attr
-                    formatted += '" ';
-                }
-
-                //remove last space
-                if(formatted.length > 0 && formatted[formatted.length-1] == ' ') {
-                    formatted = formatted.slice(0, -1);
-                }
-
-                _collection[i].formatted = formatted;
-            }
-
-            return _collection;
-        },
-
         initButton: function () {
             var objThis = this;
             var classes = this.formatClasses(this.settings.custom_button_class);
             var data = this.formatData(this.settings.custom_button_data);
             var $buttonBody = $(
-                '<div class="sc_tg_btn' + classes + '" ' + data + '>\n' +
-                '    <div class="sc_round_container">\n' +
-                '        <div class="sc_icon">' +
+                '<div class="' + form_obj_prefix + 'tg_btn' + classes + '" ' + data + '>\n' +
+                '    <div class="' + form_obj_prefix + 'round_container">\n' +
+                '        <div class="' + form_obj_prefix + 'icon">' +
                 '           <a href="#"></a>\n' +
                 '        </div>\n' +
                 '    </div>\n' +
@@ -253,7 +193,7 @@
                 ];
                 dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
 
-                var output = '<div class="sc_division">\n' +
+                var output = '<div class="' + form_obj_prefix + 'division">\n' +
                     '               <div class="input">\n' +
                     '                   <label for="' + form_fields_prefix + 'telephone">' + field.label + '</label>\n' +
                     '                   <input ' + dynamic_attributes[0].formatted + '/>\n' +
@@ -268,14 +208,14 @@
             var agreements = '';
             for (var i = 0; i < this.settings.agreements.length; i++) {
                 var agreement = this.settings.agreements[i];
-                var output = '<div class="sc_division">\n' +
-                    '                   <div class="sc_checkbox_container">\n' +
+                var output = '<div class="' + form_obj_prefix + 'division">\n' +
+                    '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
                     '                       <input id="' + form_fields_prefix + 'agreement_' + i + '" type="checkbox" checked="checked" />\n' +
                     '                       <span class="checkmark"></span>\n' +
                     '                   </div>\n' +
                     '\n' +
-                    '                   <label for="' + form_fields_prefix + 'agreement_' + i + '">' + agreement.short + ' <span class="sc_readmore">' + agreement.readmore + ' </span></label>\n' +
-                    '                   <span class="sc_readmore_body" style="display: none;">\n' +
+                    '                   <label for="' + form_fields_prefix + 'agreement_' + i + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
+                    '                   <span class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
                     '                       ' + agreement.long +
                     '                   </span>\n' +
                     '             </div>';
@@ -303,14 +243,14 @@
             ];
             dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
 
-            var $popupBody = '<div class="sc_overlay" style="display: none;">\n' +
-                '    <div class="sc_popup' + classes + '">\n' +
-                '        <div class="sc_btn_close"></div>\n' +
-                '        <div class="sc_title_section">\n' +
+            var $popupBody = '<div class="' + form_obj_prefix + 'overlay" style="display: none;">\n' +
+                '    <div class="' + form_obj_prefix + 'popup' + classes + '">\n' +
+                '        <div class="' + form_obj_prefix + 'btn_close"></div>\n' +
+                '        <div class="' + form_obj_prefix + 'title_section">\n' +
                 '            <p>' + this.settings.text_vars.popup_title + '</p>\n' +
                 '        </div>\n' +
                 '\n' +
-                '        <div class="sc_body_section">\n' +
+                '        <div class="' + form_obj_prefix + 'body_section">\n' +
                 '            <form ' + dynamic_attributes[0].formatted + '>\n' +
                 '                <div class="container-fluid">\n' +
                 '                    <div class="row">\n' +
@@ -319,13 +259,13 @@
                 '                        </div>\n' +
                 '\n' +
                 '                        <div class="col-xs-12">\n' +
-                '                            <div class="sc_division">\n' +
-                '                                <button type="submit" class="sc_btn_submit">' + this.settings.text_vars.send_button_text + '</button>\n' +
+                '                            <div class="' + form_obj_prefix + 'division">\n' +
+                '                                <button type="submit" class="' + form_obj_prefix + 'btn_submit">' + this.settings.text_vars.send_button_text + '</button>\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
                 '                    </div>\n' +
                 '\n' +
-                '                    <div class="row sc_agreements">\n' +
+                '                    <div class="row ' + form_obj_prefix + 'agreements">\n' +
                 '                        <div class="col-xs-12">\n' +
                 agreements +
                 '                        </div>\n' +
@@ -334,7 +274,7 @@
                 '            </form>\n' +
                 '        </div>\n' +
                 '\n' +
-                '        <div class="sc_footer_section">\n' +
+                '        <div class="' + form_obj_prefix + 'footer_section">\n' +
                 '\n' +
                 '        </div>\n' +
                 '    </div>\n' +
@@ -358,10 +298,14 @@
             //body
             var $popupBody = $(this.initPopup_generate_popup_body(fields, agreements));
 
+            //append the object to DOM
             this.popup.obj = $popupBody.appendTo($(this.element));
             this.popup.form = this.popup.obj.find('form');
 
+            //apply event listeners to elements contained in popup
             this.popupAppendEventListeners();
+
+            //apply miscellaneous plugins
             this.popupApplyMisc();
         },
 
@@ -379,21 +323,21 @@
             });
 
             //readmore click
-            this.popup.form.find('.sc_readmore').on('click', function (e) {
+            this.popup.form.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
                 e.preventDefault();
                 objThis.showReadmore(this);
             });
 
             //close click
-            this.popup.obj.find('.sc_btn_close').on('click', function (e) {
+            this.popup.obj.find('.' + form_obj_prefix + 'btn_close').on('click', function (e) {
                 e.preventDefault();
                 objThis.ClosePopup();
             });
 
-            //form input blur
-            this.popup.form.find(input_all_mask).on('blur', function (e) {
+            //form input blur / input
+            this.popup.form.find(input_all_mask).on('input', function (e) {
                 //validate input
-                var validated = objThis.ValidateInput($(this));
+                var validated = objThis.ValidateInput($(this), {append_status: false});
                 //send form if validated
                 if(validated) {
                     console.log('validation successful');
@@ -412,9 +356,9 @@
                 //send form if validated
                 if(validated) {
                     console.log('validation successful');
+                } else {
+                    return false;
                 }
-
-                return false;
             });
         },
 
@@ -423,7 +367,7 @@
          */
         showReadmore: function (obj) {
             var $this = $(obj);
-            $this.closest('.sc_division').find('.sc_readmore_body').slideToggle();
+            $this.closest('.' + form_obj_prefix + 'division').find('.' + form_obj_prefix + 'readmore_body').slideToggle();
         },
         /*
          * Readmore hide all readmore sections
@@ -531,7 +475,13 @@
          * @return {boolean}
          */
         //todo: validate input
-        ValidateInput: function (input) {
+        ValidateInput: function (input, options) {
+            var defaults = {
+                append_status: true,
+                fade_duration: 300,
+            };
+            var settings = $.extend({}, defaults, options);
+
             //var form = this.popup.form;//this.popup.obj.find('form');
             //todo: cache input objects
             //var _input = form.find(input_all_mask);
@@ -553,20 +503,50 @@
             //define regex for field types
             regex = /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/;
 
+            //wrong inputs collection
+            var wrong_inputs = []; // {obj: null, message: null}
             i_text.each(function() {
                 var $this = $(this);
                 var $this_val = $this.val();
+                var $this_parent = $this.closest('.input');
+
                 var valid = regex.test($this_val); //match()
+
+                //remove old status
+                var old_obj = $this.siblings('.' + form_obj_prefix + 'status');
+                old_obj.remove();
+
                 if(valid) {
-                    $this.removeClass('wrong-input');
-                    $this.addClass('correct-input');
+                    $this.removeClass('wrong-input'); $this_parent.removeClass('wrong-input');
+                    $this.addClass('correct-input'); $this_parent.addClass('correct-input');
                 } else {
-                    $this.removeClass('correct-input');
-                    $this.addClass('wrong-input');
+                    $this.removeClass('correct-input'); $this_parent.removeClass('correct-input');
+                    $this.addClass('wrong-input'); $this_parent.addClass('wrong-input');
+
+                    wrong_inputs.push({obj: $this, message: ''});
+
+                    //add element signifying wrong input
+                    if(settings.append_status) {
+                        var $wrong_input_obj = $('<span class="' + form_obj_prefix +'status"></span>');
+                        $wrong_input_obj.text('Wrong input');
+                        $wrong_input_obj.hide();
+
+                        $wrong_input_obj.insertAfter($this);
+
+                        $wrong_input_obj.fadeIn(settings.fade_duration);
+                    }
+
                     is_valid = false;
                     //return false; //break the each loop or continue (true) checking other inputs to apply wrong input class
                 }
             });
+
+            if(wrong_inputs.length > 0) {
+                //sort by position in DOM
+                wrong_inputs = this.objSortByPositionInDOM(wrong_inputs, 'obj');
+
+                wrong_inputs[0].obj.focus();
+            }
 
             //xxx
 
@@ -586,6 +566,107 @@
             */
 
             this.hideReadmore_all();
+        },
+
+        /* ------------------------------ HELPERS ------------------------------- */
+
+        /*
+         * Input: Array[]
+         * Output: String
+         * Function that formats data attributes into a string
+         */
+        formatData: function(input) {
+            var _input = input;
+            var input_length = _input.length;
+            var output = '';
+            if (_input) {
+                output += ' ';
+
+                //is array
+                if (input.constructor === Array) {
+                    for (var i = 0; i < input_length; i++) {
+                        output += 'data-' + _input[i][0] + '=' + _input[i][1] + ' ';
+                    }
+                    if (output[output.length - 1] == ' ') {
+                        output = output.slice(0, -1);
+                    }
+                } else {
+                    output += 'data-' + _input;
+                }
+            }
+
+            return output;
+        },
+
+        /*
+         * Input: Object
+         * Output: Object
+         * Function that formats attribute keys and their values into a string, which is to be inserted into the proper html tag
+         * To retrieve the string, use the genearated key obj[x].formatted
+         */
+        formatDynamicAttributes: function(collection) {
+            var _collection = collection;
+            for(var i = 0; i < _collection.length; i++) {
+                var attributes = _collection[i].attributes;
+                var formatted = '';
+
+                //format attributes into a string
+                for(var x = 0; x < attributes.length; x++) {
+                    //open attr
+                    formatted += attributes[x].key + '="';
+                    //insert attr value
+                    formatted += attributes[x].value;
+                    //close attr
+                    formatted += '" ';
+                }
+
+                //remove last space
+                if(formatted.length > 0 && formatted[formatted.length-1] == ' ') {
+                    formatted = formatted.slice(0, -1);
+                }
+
+                _collection[i].formatted = formatted;
+            }
+
+            return _collection;
+        },
+
+        /*
+         * Sort an array containing DOM elements by their position in the document (top to bottom)
+         */
+        objSortByPositionInDOM: function(input, attr) {
+            //sort by position in DOM
+            var _input = input;
+            var output;
+            if(attr) {
+                output = _input.sort(function(a,b) {
+                    if( a[attr][0] === b[attr][0]) return 0;
+                    if( !a[0].compareDocumentPosition) {
+                        // support for IE8 and below
+                        return a[attr][0].sourceIndex - b[attr].sourceIndex;
+                    }
+                    if( a[attr][0].compareDocumentPosition(b[attr][0]) & 2) {
+                        // b comes before a
+                        return 1;
+                    }
+                    return -1;
+                });
+            } else {
+                output = _input.sort(function(a,b) {
+                    if( a[0] === b[0]) return 0;
+                    if( !a[0].compareDocumentPosition) {
+                        // support for IE8 and below
+                        return a[0].sourceIndex - b.sourceIndex;
+                    }
+                    if( a[0].compareDocumentPosition(b[0]) & 2) {
+                        // b comes before a
+                        return 1;
+                    }
+                    return -1;
+                });
+            }
+
+            return output;
         },
     });
 

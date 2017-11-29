@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10fc1a21-5cde-439f-b811-9191e2e35e63" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/php_templates/wrong_input_block.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/css/style.css" afterPath="$PROJECT_DIR$/src/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/css/style.map" afterPath="$PROJECT_DIR$/src/css/style.map" />
@@ -30,8 +31,8 @@
       <file leaf-file-name="style.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="223" column="31" lean-forward="true" selection-start-line="223" selection-start-column="31" selection-end-line="223" selection-end-column="31" />
+            <state relative-caret-position="1038">
+              <caret line="220" column="21" lean-forward="true" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -40,26 +41,16 @@
       <file leaf-file-name="swyft_callback.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+            <state relative-caret-position="443">
+              <caret line="167" column="11" lean-forward="true" selection-start-line="167" selection-start-column="11" selection-end-line="167" selection-end-column="11" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#7888#9527#0" expanded="false" />
-                <element signature="e#9585#10750#0" expanded="false" />
-                <element signature="e#10820#13518#0" expanded="false" />
-                <marker date="1511963799981" expanded="true" signature="10474:10488" ph="..." />
-                <marker date="1511963799981" expanded="true" signature="11595:11609" ph="..." />
+                <element signature="e#5888#7547#0" expanded="false" />
+                <element signature="e#7605#8850#0" expanded="false" />
+                <element signature="e#8920#11798#0" expanded="false" />
+                <marker date="1511971300361" expanded="true" signature="8574:8588" ph="..." />
+                <marker date="1511971300361" expanded="true" signature="9715:9729" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="popup.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/php_templates/popup.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="25" column="30" lean-forward="false" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -76,14 +67,24 @@
       <find>this.button</find>
       <find>validateInpuit</find>
       <find>close</find>
-      <find>ValidateInput</find>
       <find>wrong-input</find>
       <find>input, select, textarea</find>
       <find>input,</find>
       <find>sc_fld_</find>
+      <find>transition(</find>
+      <find>validate</find>
+      <find>transform(</find>
+      <find>ValidateInput</find>
+      <find>sc_</find>
+      <find>@mixin</find>
+      <find>validateinput</find>
+      <find>include transform</find>
+      <find>objSortByPositionInDOM</find>
+      <find>formatDynamicA</find>
     </findStrings>
     <replaceStrings>
       <replace>' + form_fields_prefix + '</replace>
+      <replace>' + form_obj_prefix + '</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -95,6 +96,7 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/php_templates/popup.php" />
         <option value="$PROJECT_DIR$/test/index.html" />
+        <option value="$PROJECT_DIR$/src/php_templates/wrong_input_block.php" />
         <option value="$PROJECT_DIR$/src/scss/style.scss" />
         <option value="$PROJECT_DIR$/src/swyft_callback.js" />
       </list>
@@ -174,8 +176,13 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../LP_automatkredytowy" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../LaravelTemplate" />
     <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Adam\Documents\Repos\Plugins\Swyft_Callback\src\php_templates" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -203,12 +210,12 @@
       <option name="presentableId" value="Default" />
       <updated>1511883325599</updated>
       <workItem from="1511883327205" duration="3888000" />
-      <workItem from="1511947621350" duration="11096000" />
+      <workItem from="1511947621350" duration="15361000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14984000" />
+    <option name="totallyTimeSpent" value="19249000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-132" width="1936" height="1056" extended-state="6" />
@@ -274,11 +281,11 @@
           <caret line="301" column="33" lean-forward="false" selection-start-line="301" selection-start-column="33" selection-end-line="301" selection-end-column="33" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#7888#9527#0" expanded="false" />
-            <element signature="e#9585#10750#0" expanded="false" />
-            <element signature="e#10820#13518#0" expanded="false" />
-            <marker date="1511963799981" expanded="true" signature="10474:10488" ph="..." />
-            <marker date="1511963799981" expanded="true" signature="11595:11609" ph="..." />
+            <element signature="e#5888#7547#0" expanded="false" />
+            <element signature="e#7605#8850#0" expanded="false" />
+            <element signature="e#8920#11798#0" expanded="false" />
+            <marker date="1511971300361" expanded="true" signature="8574:8588" ph="..." />
+            <marker date="1511971300361" expanded="true" signature="9715:9729" ph="..." />
           </folding>
         </state>
       </provider>
@@ -306,25 +313,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/php_templates/wrong_input_block.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="31" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="223" column="31" lean-forward="true" selection-start-line="223" selection-start-column="31" selection-end-line="223" selection-end-column="31" />
+        <state relative-caret-position="1038">
+          <caret line="220" column="21" lean-forward="true" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+        <state relative-caret-position="443">
+          <caret line="167" column="11" lean-forward="true" selection-start-line="167" selection-start-column="11" selection-end-line="167" selection-end-column="11" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#7888#9527#0" expanded="false" />
-            <element signature="e#9585#10750#0" expanded="false" />
-            <element signature="e#10820#13518#0" expanded="false" />
-            <marker date="1511963799981" expanded="true" signature="10474:10488" ph="..." />
-            <marker date="1511963799981" expanded="true" signature="11595:11609" ph="..." />
+            <element signature="e#5888#7547#0" expanded="false" />
+            <element signature="e#7605#8850#0" expanded="false" />
+            <element signature="e#8920#11798#0" expanded="false" />
+            <marker date="1511971300361" expanded="true" signature="8574:8588" ph="..." />
+            <marker date="1511971300361" expanded="true" signature="9715:9729" ph="..." />
           </folding>
         </state>
       </provider>

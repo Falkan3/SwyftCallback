@@ -6,6 +6,12 @@ body {
     overflow-x: hidden;
 }
 
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 $bg_primary: #FEF5EF;
 $bg_secondary: #584B53;
 
@@ -24,6 +30,14 @@ $font_color_secondary: #fff;
     -ms-transition: $property $duration;
     -o-transition: $property $duration;
     transition: $property $duration;
+}
+
+@mixin transform($transforms) {
+    -webkit-transform: $transforms;
+    -moz-transform: $transforms;
+    -ms-transform: $transforms;
+    -o-transform: $transforms;
+    transform: $transforms;
 }
 
 .sc {
@@ -158,6 +172,7 @@ $font_color_secondary: #fff;
             }
 
             .input {
+                //icon on the right side of the input
                 .icon {
                     &.wrong-input {
                         display: none;
@@ -174,10 +189,43 @@ $font_color_secondary: #fff;
                     }
                 }
 
+                //status underneath input
+                .sc_status {
+                    display: block;
+                    position: relative;
+                    width: 100%;
+
+                    padding: 0.5rem;
+                    background: transparent;
+
+                    text-align: center;
+                    color: inherit;
+
+                    &::before {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        left: 50%;
+                        top: 0;
+                        border: solid 0.5rem transparent;
+
+                        @include transform(translateX(-50%));
+                    }
+                }
+
                 &.wrong-input {
                     .icon {
                         &.wrong-input {
                             display: block;
+                        }
+                    }
+
+                    .sc_status {
+                        background: #ffb9c3;
+                        color: $border_wrong;
+
+                        &::before {
+                            border-top-color: $border_wrong;
                         }
                     }
                 }
