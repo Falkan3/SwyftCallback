@@ -240,6 +240,7 @@ body {
   text-overflow: ellipsis;
   text-transform: uppercase;
   cursor: pointer;
+  outline: none;
   -webkit-transition: ease-in-out 0.3s;
   -moz-transition: ease-in-out 0.3s;
   -ms-transition: ease-in-out 0.3s;
@@ -247,13 +248,13 @@ body {
   transition: ease-in-out 0.3s;
 }
 
-/* line 241, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 242, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form input[type="submit"]:hover, .sc_popup form input[type="button"]:hover, .sc_popup form button:hover, .sc_popup form .btn:hover {
   background: #efd5bf;
   color: #212121;
 }
 
-/* line 248, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 249, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_checkbox_container {
   position: absolute;
   left: 0;
@@ -263,22 +264,22 @@ body {
   /* Create a custom checkbox */
 }
 
-/* line 255, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 256, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_checkbox_container input {
   margin: 0;
 }
 
-/* line 258, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 259, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_checkbox_container input:checked ~ .checkmark {
   background-color: #E4BB97;
 }
 
-/* line 261, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 262, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_checkbox_container input:checked ~ .checkmark:after {
   display: block;
 }
 
-/* line 268, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 269, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_checkbox_container .checkmark {
   position: absolute;
   top: 0;
@@ -290,7 +291,7 @@ body {
   /* Create the checkmark/indicator (hidden when not checked) */
 }
 
-/* line 278, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 279, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_checkbox_container .checkmark:after {
   content: "";
   position: absolute;
@@ -306,12 +307,12 @@ body {
   transform: rotate(45deg);
 }
 
-/* line 297, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 298, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_division:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
-/* line 302, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 303, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements label {
   margin-bottom: 0;
   padding-left: 2rem;
@@ -321,23 +322,23 @@ body {
   cursor: pointer;
 }
 
-/* line 313, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 314, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore {
   color: #9D5C63;
 }
 
-/* line 316, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 317, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore:hover, .sc_popup form .sc_agreements .sc_readmore:active, .sc_popup form .sc_agreements .sc_readmore:focus {
   color: #bb8b90;
 }
 
-/* line 320, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 321, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore a {
   color: inherit;
   text-decoration: none;
 }
 
-/* line 325, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 326, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore_body {
   display: block;
   margin-top: 0.5rem;
@@ -345,13 +346,13 @@ body {
   font-weight: 300;
 }
 
-/* line 331, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 332, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore_body a {
   color: #9D5C63;
   text-decoration: none;
 }
 
-/* line 335, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 336, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore_body a:hover, .sc_popup form .sc_agreements .sc_readmore_body a:active, .sc_popup form .sc_agreements .sc_readmore_body a:focus {
   color: #bb8b90;
 }

@@ -41,16 +41,19 @@
                 send_button_text: "Send",
             },
             //form info
+            novalidate: true,
             input: {
                 prefix: form_fields_prefix,
                 fields: [
                     {
+                        obj: null,
                         name: 'phone',
                         field_name: form_fields_prefix + 'telephone',
                         label: 'Phone number',
                         type: 'tel',
                         placeholder: '000-000-000',
-                        max_length: 20
+                        max_length: 20,
+                        required: true
                     },
                 ],
             },
@@ -135,6 +138,12 @@
 
             return output;
         },
+
+        /*
+         * Input: Array[]
+         * Output: String
+         * Function that formats data attributes into a string
+         */
         formatData: function(input) {
             var _input = input;
             var input_length = _input.length;
@@ -157,6 +166,40 @@
 
             return output;
         },
+
+        /*
+         * Input: Object
+         * Output: Object
+         * Function that formats attribute keys and their values into a string, which is to be inserted into the proper html tag
+         * To retrieve the string, use the genearated key obj[x].formatted
+         */
+        formatDynamicAttributes: function(collection) {
+            var _collection = collection;
+            for(var i = 0; i < _collection.length; i++) {
+                var attributes = _collection[i].attributes;
+                var formatted = '';
+
+                //format attributes into a string
+                for(var x = 0; x < attributes.length; x++) {
+                    //open attr
+                    formatted += attributes[x].key + '="';
+                    //insert attr value
+                    formatted += attributes[x].value;
+                    //close attr
+                    formatted += '" ';
+                }
+
+                //remove last space
+                if(formatted.length > 0 && formatted[formatted.length-1] == ' ') {
+                    formatted = formatted.slice(0, -1);
+                }
+
+                _collection[i].formatted = formatted;
+            }
+
+            return _collection;
+        },
+
         initButton: function () {
             var objThis = this;
             var classes = this.formatClasses(this.settings.custom_button_class);
@@ -177,24 +220,49 @@
                 objThis.TogglePopup();
             });
         },
-        initPopup: function () {
-            var objThis = this;
-            var classes = this.formatClasses(this.settings.custom_popup_class);
 
+        /*
+         * Builders for popup body
+         */
+        initPopup_generate_fields: function() {
             //form fields
             var fields = '';
+            var dynamic_attributes = [];
+
             for (var i = 0; i < this.settings.input.fields.length; i++) {
                 var field = this.settings.input.fields[i];
+
+                // generate attributes for popup body
+                dynamic_attributes = [
+                    //0
+                    {
+                        name: 'input',
+                        attributes: [
+                            {key: 'id', value: field.field_name},
+                            {key: 'name', value: field.field_name},
+                            {key: 'type', value: field.type},
+                            {key: 'placeholder', value: field.placeholder},
+                            {key: 'value', value: field.value},
+                            {key: 'maxlength', value: field.max_length},
+                            {key: 'required', value: field.required},
+                        ],
+                        formatted: ''
+                    },
+                ];
+                dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
+
                 var output = '<div class="sc_division">\n' +
-                '               <div class="input">\n' +
-                '                   <label for="sc_fld_telephone">' + field.label + '</label>\n' +
-                '                   <input id="sc_fld_telephone" type="' + field.type + '" placeholder="' + field.placeholder + '" value="" maxlength="' + field.max_length + '" />\n' +
-                '               </div>\n' +
-                '             </div>\n';
+                    '               <div class="input">\n' +
+                    '                   <label for="sc_fld_telephone">' + field.label + '</label>\n' +
+                    '                   <input ' + dynamic_attributes[0].formatted + '/>\n' +
+                    '               </div>\n' +
+                    '             </div>\n';
                 fields += output;
             }
 
-            //agreements
+            return fields;
+        },
+        initPopup_generate_popup_agreements: function() {
             var agreements = '';
             for (var i = 0; i < this.settings.agreements.length; i++) {
                 var agreement = this.settings.agreements[i];
@@ -212,7 +280,28 @@
                 agreements += output;
             }
 
-            var $popupBody = $('<div class="sc_overlay" style="display: none;">\n' +
+            return agreements;
+        },
+        initPopup_generate_popup_body: function(fields, agreements) {
+            var dynamic_attributes = [];
+
+            // generate attributes for popup body
+            var classes = this.formatClasses(this.settings.custom_popup_class);
+            dynamic_attributes = [
+                //0
+                {
+                    name: 'form',
+                    attributes: [
+                        {key: 'action', value: this.settings.api_url},
+                        {key: 'method', value: this.settings.form_method},
+                        {key: 'novalidate', value: this.settings.novalidate},
+                    ],
+                    formatted: ''
+                },
+            ];
+            dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
+
+            var $popupBody = '<div class="sc_overlay" style="display: none;">\n' +
                 '    <div class="sc_popup' + classes + '">\n' +
                 '        <div class="sc_btn_close"></div>\n' +
                 '        <div class="sc_title_section">\n' +
@@ -220,7 +309,7 @@
                 '        </div>\n' +
                 '\n' +
                 '        <div class="sc_body_section">\n' +
-                '            <form action="' + this.settings.api_url + '" method="' + this.settings.text_vars.form_method + '">\n' +
+                '            <form ' + dynamic_attributes[0].formatted + '>\n' +
                 '                <div class="container-fluid">\n' +
                 '                    <div class="row">\n' +
                 '                        <div class="col-xs-12">\n' +
@@ -247,13 +336,36 @@
                 '\n' +
                 '        </div>\n' +
                 '    </div>\n' +
-                '</div>');
+                '</div>';
+
+            return $popupBody;
+        },
+
+        /*
+         * Main function for initializing popup body
+         */
+        initPopup: function () {
+            var objThis = this;
+
+            //form fields
+            var fields = this.initPopup_generate_fields();
+
+            //agreements
+            var agreements = this.initPopup_generate_popup_agreements();
+
+            //body
+            var $popupBody = $(this.initPopup_generate_popup_body(fields, agreements));
+
             this.popup.obj = $popupBody.appendTo($(this.element));
             this.popup.form = this.popup.obj.find('form');
 
             this.popupAppendEventListeners();
             this.popupApplyMisc();
         },
+
+        /*
+         * Append event listeners for clickable elements in popup window
+         */
         popupAppendEventListeners: function() {
             var objThis = this;
 
@@ -275,14 +387,40 @@
                 e.preventDefault();
                 objThis.ClosePopup();
             });
+
+            //form submit
+            this.popup.obj.on('submit', function (e) {
+                //find all input in form
+                var input = objThis.popup.form.find('input, textarea, select');
+
+                //validate input
+                var validated = objThis.ValidateInput(input);
+                //send form if validated
+                if(validated) {
+                    console.log('validation successful');
+                }
+
+                return false;
+            });
         },
+
+        /*
+         * Readmore click event
+         */
         showReadmore: function (obj) {
             var $this = $(obj);
             $this.closest('.sc_division').find('.sc_readmore_body').slideToggle();
         },
+        /*
+         * Readmore hide all readmore sections
+         */
         hideReadmore_all: function() {
             this.popup.form.find('agreements input[type="checkbox"]').prop('checked', false);
         },
+
+        /*
+         * Apply miscellaneous plugins (ie. input mask)
+         */
         popupApplyMisc: function() {
             /* --- js input mask --- */
             var inputs = $('input');
@@ -302,9 +440,12 @@
                     definitions: {'#': {validator: "[0-9]", cardinality: 1}}
                 });
             }
+            /* --- /js input mask --- */
         },
 
         /* -------------------- PUBLIC METHODS -------------------- */
+
+        /* ------ Popup ------ */
 
         TogglePopup: function (options) {
             if (this.settings.button_disabled) {
@@ -370,15 +511,29 @@
             this.settings.button_disabled = !!input;
         },
 
-        /* Input */
+        /* ------ Input ------ */
 
-        ValidateInput: function () {
-            var form = this.popup.form;//this.popup.obj.find('form');
-            var input = form.find('input, select');
+        //todo: validate input
+        ValidateInput: function (input) {
+            //var form = this.popup.form;//this.popup.obj.find('form');
+            //todo: cache input objects
+            //var _input = form.find('input, textarea, select');
+            var _input = input;
 
             //group by type
-            var i_text = input.filter('[type="text"], [type="tel"], textarea');
-            var i_checkbox = input.filter('[type="checkbox"]');
+            var i_text = _input.filter('[type="text"], [type="tel"], textarea');
+            var i_checkbox = _input.filter('[type="checkbox"]');
+
+            //define regex for field types
+            var regex_phone = '(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)';
+
+            /* --- Validation --- */
+
+
+
+            /* --- /Validation --- */
+
+            return false;
         },
         ResetInput: function () {
             var form = this.popup.form;//this.popup.obj.find('form');

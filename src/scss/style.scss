@@ -235,6 +235,7 @@ $font_color_secondary: #fff;
                 text-overflow: ellipsis;
                 text-transform: uppercase;
                 cursor: pointer;
+                outline: none;
 
                 @include transition(ease-in-out, 0.3s);
 
