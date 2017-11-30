@@ -354,10 +354,10 @@
                 var status = objThis.SendData();
 
                 //success
-                console.log('Submit form status: ' + status);
+                console.log('Submit form status: ' + status.success + ', ' + status.message);
 
                 //todo: unify showing status after sending data
-                if(status === 'success') {
+                if(status.success) {
                     //todo: show success in the popup window
                 } else {
                     //error
@@ -417,7 +417,7 @@
          * @return {boolean}
          */
         SendData: function() {
-            var status = 'SendData: Error (Default)';
+            var status = {success: false, message: 'SendData: Error (Default)'};
 
             //find all input in form
             var input = this.popup.form.find(input_all_mask);
@@ -434,15 +434,16 @@
                     url: this.settings.api_url,
                     api_key: this.settings.api_key,
                     data: this.popup.form.serialize(),
-                })[0];
+                });
             } else {
-                status = 'Error (Validation)';
+                status = {success: false, message: 'SendData: Error (Validation)'};
             }
 
             return status;
         },
         SendDataAjax: function(options) {
-            var status = ['0', 'SendDataAjax: Error (Default)'];
+            //[0: succes, 1: message]
+            var status = {success: false, message: 'SendDataAjax: Error (Default)'};
 
             //set settings
             var objThis = this;
@@ -502,7 +503,8 @@
                             console.log(data[settings.return_param]);
                         }
 
-                        status = ['200', 'Success (API x:200)'];
+                        status = {success: true, message: 'Success (API x:200)'};
+
                         objThis.settings.status.ajax_processing = false;
                     },
                     error: function (data) {
@@ -511,7 +513,8 @@
                         console.log('API message: ');
                         console.log(data[settings.return_param]);
 
-                        status = ['500', 'Error (API x:0)'];
+                        status = {success: false, message: 'Error (API x:0)'};
+
                         objThis.settings.status.ajax_processing = false;
                     }
                 });

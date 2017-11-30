@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10fc1a21-5cde-439f-b811-9191e2e35e63" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/css/style.css" afterPath="$PROJECT_DIR$/src/css/style.css" />
-      <change beforePath="$PROJECT_DIR$/src/css/style.map" afterPath="$PROJECT_DIR$/src/css/style.map" />
-      <change beforePath="$PROJECT_DIR$/src/scss/style.scss" afterPath="$PROJECT_DIR$/src/scss/style.scss" />
       <change beforePath="$PROJECT_DIR$/src/swyft_callback.js" afterPath="$PROJECT_DIR$/src/swyft_callback.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,14 +36,14 @@
       <file leaf-file-name="swyft_callback.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="358" column="63" lean-forward="false" selection-start-line="358" selection-start-column="63" selection-end-line="358" selection-end-column="63" />
+            <state relative-caret-position="570">
+              <caret line="441" column="26" lean-forward="true" selection-start-line="441" selection-start-column="26" selection-end-line="441" selection-end-column="26" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#6024#7683#0" expanded="false" />
                 <element signature="e#9068#11946#0" expanded="false" />
-                <marker date="1512054011234" expanded="true" signature="8722:8736" ph="..." />
-                <marker date="1512054011234" expanded="true" signature="9863:9877" ph="..." />
+                <marker date="1512058465413" expanded="true" signature="8722:8736" ph="..." />
+                <marker date="1512058465413" expanded="true" signature="9863:9877" ph="..." />
               </folding>
             </state>
           </provider>
@@ -57,7 +53,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fld_</find>
       <find>inpu</find>
       <find>checked</find>
       <find>this.popup</find>
@@ -86,6 +81,7 @@
       <find>popup_hidden</find>
       <find>SendData()</find>
       <find>SendDataAjax</find>
+      <find>status</find>
       <find>SendData</find>
     </findStrings>
     <replaceStrings>
@@ -224,12 +220,12 @@
       <workItem from="1511883327205" duration="3888000" />
       <workItem from="1511947621350" duration="18835000" />
       <workItem from="1512040136271" duration="1799000" />
-      <workItem from="1512049000770" duration="3526000" />
+      <workItem from="1512049000770" duration="4681000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28048000" />
+    <option name="totallyTimeSpent" value="29203000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-132" width="1936" height="1056" extended-state="6" />
@@ -290,8 +286,8 @@
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#6024#7683#0" expanded="false" />
             <element signature="e#9068#11946#0" expanded="false" />
-            <marker date="1512054011234" expanded="true" signature="8722:8736" ph="..." />
-            <marker date="1512054011234" expanded="true" signature="9863:9877" ph="..." />
+            <marker date="1512058465413" expanded="true" signature="8722:8736" ph="..." />
+            <marker date="1512058465413" expanded="true" signature="9863:9877" ph="..." />
           </folding>
         </state>
       </provider>
@@ -320,8 +316,8 @@
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#6024#7683#0" expanded="false" />
             <element signature="e#9068#11946#0" expanded="false" />
-            <marker date="1512054011234" expanded="true" signature="8722:8736" ph="..." />
-            <marker date="1512054011234" expanded="true" signature="9863:9877" ph="..." />
+            <marker date="1512058465413" expanded="true" signature="8722:8736" ph="..." />
+            <marker date="1512058465413" expanded="true" signature="9863:9877" ph="..." />
           </folding>
         </state>
       </provider>
@@ -358,8 +354,8 @@
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#6024#7683#0" expanded="false" />
             <element signature="e#9068#11946#0" expanded="false" />
-            <marker date="1512054011234" expanded="true" signature="8722:8736" ph="..." />
-            <marker date="1512054011234" expanded="true" signature="9863:9877" ph="..." />
+            <marker date="1512058465413" expanded="true" signature="8722:8736" ph="..." />
+            <marker date="1512058465413" expanded="true" signature="9863:9877" ph="..." />
           </folding>
         </state>
       </provider>
@@ -405,14 +401,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="358" column="63" lean-forward="false" selection-start-line="358" selection-start-column="63" selection-end-line="358" selection-end-column="63" />
+        <state relative-caret-position="570">
+          <caret line="441" column="26" lean-forward="true" selection-start-line="441" selection-start-column="26" selection-end-line="441" selection-end-column="26" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#6024#7683#0" expanded="false" />
             <element signature="e#9068#11946#0" expanded="false" />
-            <marker date="1512054011234" expanded="true" signature="8722:8736" ph="..." />
-            <marker date="1512054011234" expanded="true" signature="9863:9877" ph="..." />
+            <marker date="1512058465413" expanded="true" signature="8722:8736" ph="..." />
+            <marker date="1512058465413" expanded="true" signature="9863:9877" ph="..." />
           </folding>
         </state>
       </provider>
