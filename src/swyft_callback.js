@@ -35,8 +35,11 @@
             custom_popup_class: "",
             custom_popup_data: "",
             //status
-            popup_hidden: true,
-            button_disabled: false, //disable show/close functionality
+            status: {
+                popup_hidden: true,
+                button_disabled: false, //disable show/close functionality
+                ajax_processing: false,
+            },
             //content - text
             text_vars: {
                 popup_title: "Contact form",
@@ -59,14 +62,14 @@
                         required: true
                     },
                 ],
+                agreements: [
+                    {
+                        short: 'Lorem',
+                        long: 'Ipsum',
+                        readmore: 'More'
+                    }
+                ]
             },
-            agreements: [
-                {
-                    short: 'Lorem',
-                    long: 'Ipsum',
-                    readmore: 'More'
-                }
-            ]
         };
 
     // The actual plugin constructor
@@ -81,7 +84,7 @@
         this._defaults = defaults;
         this._name = pluginName;
 
-        //set default vars
+        //set default vars for the fields in form
         this.setDefaultVars();
 
         //dynamic vars
@@ -206,8 +209,8 @@
         },
         initPopup_generate_popup_agreements: function() {
             var agreements = '';
-            for (var i = 0; i < this.settings.agreements.length; i++) {
-                var agreement = this.settings.agreements[i];
+            for (var i = 0; i < this.settings.input.agreements.length; i++) {
+                var agreement = this.settings.input.agreements[i];
                 var output = '<div class="' + form_obj_prefix + 'division">\n' +
                     '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
                     '                       <input id="' + form_fields_prefix + 'agreement_' + i + '" type="checkbox" checked="checked" />\n' +
@@ -351,13 +354,15 @@
                 var status = objThis.SendData();
 
                 //success
-                console.log(status);
-                if(status == 'success') {
+                console.log('Submit form status: ' + status);
 
+                //todo: unify showing status after sending data
+                if(status === 'success') {
+                    //todo: show success in the popup window
                 } else {
                     //error
-                    if(status == 'error') {
-
+                    if(status === 'error') {
+                        //todo: show error in the popup window
                     }
                 }
 
@@ -412,6 +417,8 @@
          * @return {boolean}
          */
         SendData: function() {
+            var status = 'SendData: Error (Default)';
+
             //find all input in form
             var input = this.popup.form.find(input_all_mask);
 
@@ -419,25 +426,118 @@
             var validated = this.ValidateInput(input);
             //send form if validated
             if(validated) {
-                console.log('validation successful');
+                console.log('Validation successful');
+                console.log('Attempting to send data...');
 
                 //todo: send AJAX call
-                return 'success'
+                status = this.SendDataAjax({
+                    url: this.settings.api_url,
+                    api_key: this.settings.api_key,
+                    data: this.popup.form.serialize(),
+                })[0];
             } else {
-                return 'error';
+                status = 'Error (Validation)';
             }
+
+            return status;
+        },
+        SendDataAjax: function(options) {
+            var status = ['0', 'SendDataAjax: Error (Default)'];
+
+            //set settings
+            var objThis = this;
+            var defaults = {
+                url: '/',
+                type: 'POST',
+                api_key: null,
+                data: null,
+                success_param: 'success', //bool - true for success, false for failure
+                return_param: 'message', //the key of returned data (preferably an array) from the API which contains the response
+                callback: {
+                    function: null,
+                    parameters: null,
+                }
+            };
+            var settings = $.extend({}, defaults, options);
+
+            //AJAX CALL
+
+            //if no ajax call is currently processing
+            if(!this.settings.status.ajax_processing) {
+                this.settings.status.ajax_processing = true;
+
+                //Configure
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                $.ajax({
+                    url: settings.url,
+                    type: settings.type,
+                    data: settings.data,
+                    enctype: 'multipart/form-data',
+                    dataType: 'json',
+                    processData: false,
+                    success: function (data) {
+                        if(data[settings.return_param].length > 0) {
+                            if (data[settings.success_param]) {
+                                for (var index in data[settings.return_param]) {
+
+                                }
+
+                                objThis.ResetInput();
+                            }
+                            else {
+                                for (var index in data[settings.return_param]) {
+
+                                }
+                            }
+                            //Show message from API
+                            console.log('API status: ' + data.status);
+                            console.log('API message: ');
+                            console.log(data[settings.return_param]);
+                        }
+
+                        status = ['200', 'Success (API x:200)'];
+                        objThis.settings.status.ajax_processing = false;
+                    },
+                    error: function (data) {
+                        // Error...
+                        console.log('API status: ' + data.status);
+                        console.log('API message: ');
+                        console.log(data[settings.return_param]);
+
+                        status = ['500', 'Error (API x:0)'];
+                        objThis.settings.status.ajax_processing = false;
+                    }
+                });
+            }
+
+            //CALLBACK
+
+            //check if callback is set and is a function
+            if(settings.callback.function && $.isFunction(settings.callback.function)) {
+                //call the callback function after the function is done
+                settings.callback.function.call(this, settings.callback.parameters);
+            }
+
+            return status;
         },
 
         /* ------ Popup ------ */
 
         TogglePopup: function (options) {
-            if (this.settings.button_disabled) {
+            if (this.settings.status.button_disabled) {
                 return;
             }
 
             //var objThis = this;
 
-            if (this.settings.popup_hidden) {
+            if (this.settings.status.popup_hidden) {
                 this.ShowPopup(options);
             } else {
                 this.ClosePopup(options);
@@ -445,7 +545,7 @@
         },
 
         ShowPopup: function (options) {
-            if (this.settings.button_disabled) {
+            if (this.settings.status.button_disabled) {
                 return;
             }
 
@@ -466,11 +566,11 @@
             this.button.obj.addClass('hide');
 
             //change hidden variable to false
-            this.settings.popup_hidden = false;
+            this.settings.status.popup_hidden = false;
         },
 
         ClosePopup: function (options) {
-            if (this.settings.button_disabled) {
+            if (this.settings.status.button_disabled) {
                 return;
             }
 
@@ -490,11 +590,11 @@
             this.button.obj.removeClass('hide');
 
             //change hidden variable to true
-            this.settings.popup_hidden = true;
+            this.settings.status.popup_hidden = true;
         },
 
         DisableButton: function (input) {
-            this.settings.button_disabled = !!input;
+            this.settings.status.button_disabled = !!input;
         },
 
         /* ------ Input ------ */
@@ -536,7 +636,7 @@
             i_text.each(function() {
                 var $this = $(this);
                 var $this_val = $this.val();
-                var $this_parent = $this.closest('.input');
+                var $this_container = $this.closest('.input');
 
                 var valid = regex.test($this_val); //match()
 
@@ -546,12 +646,13 @@
                     old_obj.remove();
                 });
 
+                //apply / remove classes from inputs / input containers
                 if(valid) {
-                    $this.removeClass('wrong-input'); $this_parent.removeClass('wrong-input');
-                    $this.addClass('correct-input'); $this_parent.addClass('correct-input');
+                    $this.removeClass('wrong-input'); $this_container.removeClass('wrong-input');
+                    $this.addClass('correct-input'); $this_container.addClass('correct-input');
                 } else {
-                    $this.removeClass('correct-input'); $this_parent.removeClass('correct-input');
-                    $this.addClass('wrong-input'); $this_parent.addClass('wrong-input');
+                    $this.removeClass('correct-input'); $this_container.removeClass('correct-input');
+                    $this.addClass('wrong-input'); $this_container.addClass('wrong-input');
 
                     wrong_inputs.push({obj: $this, message: ''});
 
