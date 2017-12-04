@@ -28,6 +28,9 @@
 
         defaults = {
             api_url: "test",
+            api_custom: [
+                {name: 'api_key', value: ''}
+            ],
             form_method: "post",
             //data
             custom_button_class: "",
@@ -65,6 +68,7 @@
                 ],
                 agreements: [
                     {
+                        field_name: form_fields_prefix + 'agreement',
                         short: 'Lorem',
                         long: 'Ipsum',
                         readmore: 'More',
@@ -122,16 +126,16 @@
             this.initPopup();
             this.initButton();
         },
-        setDefaultVars: function() {
+        setDefaultVars: function () {
             //set default vars for form fields
-            if(this.settings.input.fields) {
+            if (this.settings.input.fields) {
                 var template = defaults.input.fields[0];
-                for(var i = 0; i< this.settings.input.fields.length; i++) {
+                for (var i = 0; i < this.settings.input.fields.length; i++) {
                     this.settings.input.fields[i] = $.extend({}, template, this.settings.input.fields[i]);
                 }
             }
         },
-        formatClasses: function(input) {
+        formatClasses: function (input) {
             var _input = input;
             var input_length = _input.length;
             var output = '';
@@ -178,12 +182,12 @@
         /*
          * Builders for popup body
          */
-        initPopup_generate_fields: function() {
+        initPopup_generate_fields: function () {
             //form fields
             var fields = '';
             var dynamic_attributes = [];
 
-            if(this.settings.input.fields) {
+            if (this.settings.input.fields) {
                 for (var i = 0; i < this.settings.input.fields.length; i++) {
                     var field = this.settings.input.fields[i];
 
@@ -219,14 +223,14 @@
 
             return fields;
         },
-        initPopup_generate_popup_agreements: function() {
+        initPopup_generate_popup_agreements: function () {
             var agreements = '';
-            if(this.settings.input.agreements) {
+            if (this.settings.input.agreements) {
                 for (var i = 0; i < this.settings.input.agreements.length; i++) {
                     var agreement = this.settings.input.agreements[i];
                     var output = '<div class="' + form_obj_prefix + 'division">\n' +
                         '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
-                        '                       <input id="' + form_fields_prefix + 'agreement_' + i + '" type="checkbox" checked="checked" />\n' +
+                        '                       <input id="' + agreement.field_name + '" name = "' + agreement.field_name + '" type="checkbox" checked="checked" />\n' +
                         '                       <span class="checkmark"></span>\n' +
                         '                   </div>\n' +
                         '\n' +
@@ -241,7 +245,7 @@
 
             return agreements;
         },
-        initPopup_generate_popup_body: function(fields, agreements) {
+        initPopup_generate_popup_body: function (fields, agreements) {
             var dynamic_attributes = [];
 
             // generate attributes for popup body
@@ -270,7 +274,7 @@
                 '        <div class="' + form_obj_prefix + 'body_section">\n' +
                 '            <p>' + this.settings.text_vars.popup_body + '</p>\n' +
                 '            <form ' + dynamic_attributes[0].formatted + '>\n' +
-                '                <div class="container-fluid">\n' +
+                '                <div class="container-fluid no-padding">\n' +
                 '                    <div class="row">\n' +
                 '                        <div class="col-xs-12">\n' +
                 fields +
@@ -330,7 +334,7 @@
         /*
          * Append event listeners for clickable elements in popup window
          */
-        popupAppendEventListeners: function() {
+        popupAppendEventListeners: function () {
             var objThis = this;
 
             //checkbox click
@@ -357,7 +361,7 @@
                 //validate input
                 var validated = objThis.ValidateInput($(this), {append_status: false});
                 //send form if validated
-                if(validated) {
+                if (validated) {
                     console.log('validation successful');
                 }
 
@@ -366,21 +370,18 @@
 
             //form submit
             this.popup.obj.on('submit', function (e) {
-                var status = objThis.SendData();
-
-                //success
-                console.log('Submit form status: ' + status.success + ', ' + status.message);
-
-                //todo: unify showing status after sending data
-                if(status.success) {
-                    this.ResetInput();
-                    //todo: show success in the popup window
-                } else {
-                    //error
-                    if(status === 'error') {
-                        //todo: show error in the popup window
+                var status = objThis.SendData({
+                    callback: {
+                        success: {
+                            function: objThis.ResetInput,
+                            this: objThis,
+                            parameters: []
+                        }
                     }
-                }
+                });
+
+                //status
+                console.log('Submit form status: ' + status.success + ', ' + status.message);
 
                 return false;
             });
@@ -396,20 +397,20 @@
         /*
          * Readmore hide all readmore sections
          */
-        hideReadmore_all: function() {
+        hideReadmore_all: function () {
             this.popup.form.find('agreements input[type="checkbox"]').prop('checked', false);
         },
 
         /*
          * Apply miscellaneous plugins (ie. input mask)
          */
-        popupApplyMisc: function() {
+        popupApplyMisc: function () {
             /* --- js input mask --- */
             var inputs = $('input');
 
             //check if exists
             console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
-            if(typeof $.fn.inputmask !== 'undefined') {
+            if (typeof $.fn.inputmask !== 'undefined') {
                 var input_masked_items = inputs.filter('input[type="tel"], .jsm_phone');
                 var phones_mask = ["###-###-###", "## ###-##-##"];
 
@@ -432,8 +433,17 @@
         /**
          * @return {boolean}
          */
-        SendData: function() {
+        SendData: function (options) {
             var status = {success: false, message: 'SendData: Error (Default)'};
+
+            var defaults = {
+                url: this.settings.api_url,
+                api_custom: this.settings.api_custom,
+                data: this.popup.form.serialize(),
+                data_dictionary: this.settings.input.data_dictionary,
+                type: this.settings.form_method
+            };
+            var settings = $.extend(true, {}, defaults, options);
 
             //find all input in form
             var input = this.popup.form.find(input_all_mask);
@@ -441,24 +451,19 @@
             //validate input
             var validated = this.ValidateInput(input);
             //send form if validated
-            if(validated) {
+            if (validated) {
                 console.log('Validation successful');
                 console.log('Attempting to send data...');
 
                 //todo: send AJAX call
-                status = this.SendDataAjax({
-                    url: this.settings.api_url,
-                    api_key: this.settings.api_key,
-                    data: this.popup.form.serialize(),
-                    data_dictionary: this.settings.input.data_dictionary
-                });
+                status = this.SendDataAjax(settings);
             } else {
                 status = {success: false, message: 'SendData: Error (Validation)'};
             }
 
             return status;
         },
-        SendDataAjax: function(options) {
+        SendDataAjax: function (options) {
             //[0: succes, 1: message]
             var status = {success: false, message: 'SendDataAjax: Error (Default)'};
 
@@ -467,21 +472,49 @@
             var defaults = {
                 url: '/',
                 type: 'POST',
-                api_key: null,
-                data: null,
+                api_custom: [],
+                data: '',
                 data_dictionary: {},
                 success_param: 'success', //bool - true for success, false for failure
                 return_param: 'message', //the key of returned data (preferably an array) from the API which contains the response
                 callback: {
-                    function: null,
-                    parameters: null,
+                    success: {
+                        function: alert,
+                        this: undefined,
+                        parameters: ['api success'],
+                    },
+                    error: {
+                        function: alert,
+                        this: undefined,
+                        parameters: ['api error'],
+                    }
                 }
             };
             var settings = $.extend(true, {}, defaults, options);
 
+            //extend data from form with custom data
+            if (settings.api_custom) {
+                var api_custom_length = settings.api_custom.length;
+                var custom_data_string = '';
+
+                if (settings.data.length > 0) {
+                    custom_data_string += '&';
+                }
+
+                for (var i = 0; i < api_custom_length; i++) {
+                    custom_data_string += settings.api_custom[i].name + '=' + settings.api_custom[i].value;
+
+                    if (i < api_custom_length - 1) {
+                        custom_data_string += '&';
+                    }
+                }
+
+                settings.data += encodeURI(custom_data_string);
+            }
+
             //use a custom dictionary specific to API to convert key names to the valid values
             var data_dictionary_keys = Object.keys(settings.data_dictionary);
-            for(var i = 0; i < data_dictionary_keys.length; i++) {
+            for (var i = 0; i < data_dictionary_keys.length; i++) {
                 var regex = settings.data_dictionary[data_dictionary_keys[i]];
                 console.log(data_dictionary_keys[i] + ' > ' + regex);
                 //use regex to replace form field names into those specified in the dictionary
@@ -493,13 +526,16 @@
             //AJAX CALL
 
             //if no ajax call is currently processing
-            if(!this.settings.status.ajax_processing) {
+            if (this.settings.status.ajax_processing) {
+                status = {success: false, message: 'SendDataAjax: Error (Processing...)'};
+            } else {
                 this.settings.status.ajax_processing = true;
+                status = {success: true, message: 'SendDataAjax: Success (Got into ajax)'};
 
                 //Configure
                 $.ajaxSetup({
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        //'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                         'X-Requested-With': 'XMLHttpRequest'
                     }
@@ -513,28 +549,33 @@
                     dataType: 'json',
                     processData: false,
                     success: function (data) {
-                        if(data[settings.return_param].length > 0) {
-                            if (data[settings.success_param]) {
-                                for (var index in data[settings.return_param]) {
-
-                                }
-
-                                objThis.ResetInput();
+                        console.log(data);
+                        if (data[settings.return_param]) {
+                            for (var index in data[settings.return_param]) {
+                                console.log(data[settings.return_param][index]);
                             }
-                            else {
-                                for (var index in data[settings.return_param]) {
 
-                                }
-                            }
                             //Show message from API
                             console.log('API status: ' + data.status);
                             console.log('API message: ');
                             console.log(data[settings.return_param]);
                         }
 
+                        if (data[settings.success_param]) {
+
+                        }
+
                         status = {success: true, message: 'Success (API x:200)'};
 
                         objThis.settings.status.ajax_processing = false;
+
+                        //CALLBACK
+
+                        //check if callback is set and is a function
+                        if (settings.callback.success.function && $.isFunction(settings.callback.success.function)) {
+                            //call the callback function after the function is done
+                            settings.callback.success.function.apply(settings.callback.success.this, settings.callback.success.parameters);
+                        }
                     },
                     error: function (data) {
                         // Error...
@@ -545,16 +586,16 @@
                         status = {success: false, message: 'Error (API x:0)'};
 
                         objThis.settings.status.ajax_processing = false;
+
+                        //CALLBACK
+
+                        //check if callback is set and is a function
+                        if (settings.callback.error.function && $.isFunction(settings.callback.error.function)) {
+                            //call the callback function after the function is done
+                            settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
+                        }
                     }
                 });
-            }
-
-            //CALLBACK
-
-            //check if callback is set and is a function
-            if(settings.callback.function && $.isFunction(settings.callback.function)) {
-                //call the callback function after the function is done
-                settings.callback.function.call(this, settings.callback.parameters);
             }
 
             return status;
@@ -661,40 +702,44 @@
 
             //wrong inputs collection
             var wrong_inputs = []; // {obj: null, message: null}
-            i_text.each(function() {
+            i_text.each(function () {
                 var $this = $(this);
                 var $this_val = $this.val();
                 var $this_container = $this.closest('.input');
 
                 var data_type = $this.data('field-type');
-                if(data_type && data_type in regex_table) {
+                if (data_type && data_type in regex_table) {
                     var regex = regex_table[data_type];
                     var valid = regex.test($this_val); //match()
 
                     //remove old status
                     var old_obj = $this.siblings('.' + form_obj_prefix + 'status');
                     //if appending new status, delete the old status immediately. Otherwise, fade it out slowly
-                    if(settings.append_status) {
+                    if (settings.append_status) {
                         old_obj.remove();
                     } else {
-                        old_obj.fadeOut(settings.fade_duration, function() {
+                        old_obj.fadeOut(settings.fade_duration, function () {
                             old_obj.remove();
                         });
                     }
 
                     //apply / remove classes from inputs / input containers
-                    if(valid) {
-                        $this.removeClass('wrong-input'); $this_container.removeClass('wrong-input');
-                        $this.addClass('correct-input'); $this_container.addClass('correct-input');
+                    if (valid) {
+                        $this.removeClass('wrong-input');
+                        $this_container.removeClass('wrong-input');
+                        $this.addClass('correct-input');
+                        $this_container.addClass('correct-input');
                     } else {
-                        $this.removeClass('correct-input'); $this_container.removeClass('correct-input');
-                        $this.addClass('wrong-input'); $this_container.addClass('wrong-input');
+                        $this.removeClass('correct-input');
+                        $this_container.removeClass('correct-input');
+                        $this.addClass('wrong-input');
+                        $this_container.addClass('wrong-input');
 
                         wrong_inputs.push({obj: $this, message: ''});
 
                         //add element signifying wrong input
-                        if(settings.append_status) {
-                            var $wrong_input_obj = $('<span class="' + form_obj_prefix +'status"></span>');
+                        if (settings.append_status) {
+                            var $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
                             $wrong_input_obj.text('Wrong input');
                             $wrong_input_obj.hide();
 
@@ -709,7 +754,7 @@
                 }
             });
 
-            if(wrong_inputs.length > 0) {
+            if (wrong_inputs.length > 0) {
                 //sort by position in DOM
                 wrong_inputs = this.objSortByPositionInDOM(wrong_inputs, 'obj');
 
@@ -743,7 +788,7 @@
          * Output: String
          * Function that formats data attributes into a string
          */
-        formatData: function(input) {
+        formatData: function (input) {
             var _input = input;
             var input_length = _input.length;
             var output = '';
@@ -772,14 +817,14 @@
          * Function that formats attribute keys and their values into a string, which is to be inserted into the proper html tag
          * To retrieve the string, use the genearated key obj[x].formatted
          */
-        formatDynamicAttributes: function(collection) {
+        formatDynamicAttributes: function (collection) {
             var _collection = collection;
-            for(var i = 0; i < _collection.length; i++) {
+            for (var i = 0; i < _collection.length; i++) {
                 var attributes = _collection[i].attributes;
                 var formatted = '';
 
                 //format attributes into a string
-                for(var x = 0; x < attributes.length; x++) {
+                for (var x = 0; x < attributes.length; x++) {
                     //open attr
                     formatted += attributes[x].key + '="';
                     //insert attr value
@@ -789,7 +834,7 @@
                 }
 
                 //remove last space
-                if(formatted.length > 0 && formatted[formatted.length-1] == ' ') {
+                if (formatted.length > 0 && formatted[formatted.length - 1] == ' ') {
                     formatted = formatted.slice(0, -1);
                 }
 
@@ -802,31 +847,31 @@
         /*
          * Sort an array containing DOM elements by their position in the document (top to bottom)
          */
-        objSortByPositionInDOM: function(input, attr) {
+        objSortByPositionInDOM: function (input, attr) {
             //sort by position in DOM
             var _input = input;
             var output;
-            if(attr) {
-                output = _input.sort(function(a,b) {
-                    if( a[attr][0] === b[attr][0]) return 0;
-                    if( !a[0].compareDocumentPosition) {
+            if (attr) {
+                output = _input.sort(function (a, b) {
+                    if (a[attr][0] === b[attr][0]) return 0;
+                    if (!a[0].compareDocumentPosition) {
                         // support for IE8 and below
                         return a[attr][0].sourceIndex - b[attr].sourceIndex;
                     }
-                    if( a[attr][0].compareDocumentPosition(b[attr][0]) & 2) {
+                    if (a[attr][0].compareDocumentPosition(b[attr][0]) & 2) {
                         // b comes before a
                         return 1;
                     }
                     return -1;
                 });
             } else {
-                output = _input.sort(function(a,b) {
-                    if( a[0] === b[0]) return 0;
-                    if( !a[0].compareDocumentPosition) {
+                output = _input.sort(function (a, b) {
+                    if (a[0] === b[0]) return 0;
+                    if (!a[0].compareDocumentPosition) {
                         // support for IE8 and below
                         return a[0].sourceIndex - b.sourceIndex;
                     }
-                    if( a[0].compareDocumentPosition(b[0]) & 2) {
+                    if (a[0].compareDocumentPosition(b[0]) & 2) {
                         // b comes before a
                         return 1;
                     }

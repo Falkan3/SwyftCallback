@@ -8,7 +8,7 @@
 
         <div class="sc_body_section">
             <form action="" method="">
-                <div class="container-fluid">
+                <div class="container-fluid no-padding">
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="sc_division">

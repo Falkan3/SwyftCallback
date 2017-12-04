@@ -37,7 +37,10 @@
     $( function() {
         x = $( "body" ).swyftCallback( {
             api_url: 'https://op.automatkredytowy.pl/api/leadApi/lead',
-            api_key: 'fN9vaME75zXqQTaf',
+            api_custom: [
+                {name: 'api_key', value: 'fN9vaME75zXqQTaf'},
+            ],
+            form_method: 'get',
             custom_button_class: ['wow', 'animated', 'tada', 'infinite'],
             //custom_button_data: [['wow-duration', '4s']],
             input: {
@@ -51,7 +54,7 @@
                         readmore: 'More'
                     }
                 ],
-                data_dictionary: {'sc_fld_telephone': 'phone'}
+                data_dictionary: {'api_key': 'key', 'sc_fld_telephone': 'phone'}
             }
         } );
     } );

@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10fc1a21-5cde-439f-b811-9191e2e35e63" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/scss/_bootstrap_overwrite.scss" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/css/style.css" afterPath="$PROJECT_DIR$/src/css/style.css" />
       <change beforePath="$PROJECT_DIR$/src/css/style.map" afterPath="$PROJECT_DIR$/src/css/style.map" />
+      <change beforePath="$PROJECT_DIR$/src/php_templates/popup.php" afterPath="$PROJECT_DIR$/src/php_templates/popup.php" />
       <change beforePath="$PROJECT_DIR$/src/scss/style.scss" afterPath="$PROJECT_DIR$/src/scss/style.scss" />
       <change beforePath="$PROJECT_DIR$/src/swyft_callback.js" afterPath="$PROJECT_DIR$/src/swyft_callback.js" />
       <change beforePath="$PROJECT_DIR$/test/index.html" afterPath="$PROJECT_DIR$/test/index.html" />
@@ -21,8 +23,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="550">
-              <caret line="46" column="29" lean-forward="true" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+            <state relative-caret-position="482">
+              <caret line="42" column="29" lean-forward="false" selection-start-line="42" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -31,8 +33,18 @@
       <file leaf-file-name="style.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="168" column="9" lean-forward="true" selection-start-line="168" selection-start-column="9" selection-end-line="168" selection-end-column="9" />
+            <state relative-caret-position="177">
+              <caret line="386" column="30" lean-forward="true" selection-start-line="386" selection-start-column="30" selection-end-line="386" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_bootstrap_overwrite.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/scss/_bootstrap_overwrite.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="22" lean-forward="false" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -41,13 +53,13 @@
       <file leaf-file-name="swyft_callback.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="76" column="107" lean-forward="false" selection-start-line="76" selection-start-column="107" selection-end-line="76" selection-end-column="107" />
+            <state relative-caret-position="434">
+              <caret line="488" column="50" lean-forward="true" selection-start-line="488" selection-start-column="50" selection-end-line="488" selection-end-column="50" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#10013#12975#0" expanded="false" />
-                <marker date="1512392289487" expanded="true" signature="9633:9647" ph="..." />
-                <marker date="1512392289487" expanded="true" signature="10808:10822" ph="..." />
+                <element signature="e#10200#13173#0" expanded="false" />
+                <marker date="1512404657308" expanded="true" signature="9819:9833" ph="..." />
+                <marker date="1512404657308" expanded="true" signature="10995:11009" ph="..." />
               </folding>
             </state>
           </provider>
@@ -57,36 +69,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>objSortByPositionInDOM</find>
-      <find>formatDynamicA</find>
-      <find>setDefaultVars</find>
-      <find>settings.agreements</find>
-      <find>button_disabled</find>
-      <find>popup_hidden</find>
-      <find>SendData()</find>
-      <find>SendDataAjax</find>
-      <find>status</find>
-      <find>input</find>
       <find>data_dictionary</find>
-      <find>SendData</find>
       <find>data_dic</find>
       <find>setDe</find>
       <find>generate_popup</find>
       <find>fields</find>
-      <find>agreements</find>
-      <find>api_key</find>
       <find>api_url</find>
       <find>action</find>
       <find>.length</find>
       <find>fld_</find>
       <find>validate</find>
-      <find>type</find>
       <find>dynamic_attributes</find>
       <find>regex_table</find>
       <find>$.extend</find>
       <find>popup_title</find>
-      <find>ValidateInput</find>
       <find>body_section</find>
+      <find>ValidateInput</find>
+      <find>csrf</find>
+      <find>container-fluid</find>
+      <find>diction</find>
+      <find>agreements</find>
+      <find>api_key</find>
+      <find>popup</find>
+      <find>api_custom</find>
+      <find>form_method</find>
+      <find>type</find>
+      <find>return_param</find>
+      <find>resetinpu</find>
+      <find>SendData</find>
+      <find>ResetInput</find>
+      <find>callback</find>
     </findStrings>
     <replaceStrings>
       <replace>' + form_fields_prefix + '</replace>
@@ -106,10 +118,11 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/php_templates/popup.php" />
         <option value="$PROJECT_DIR$/src/php_templates/wrong_input_block.php" />
-        <option value="$PROJECT_DIR$/test/index.html" />
         <option value="$PROJECT_DIR$/src/scss/style.scss" />
+        <option value="$PROJECT_DIR$/src/scss/_bootstrap_overwrite.scss" />
+        <option value="$PROJECT_DIR$/src/php_templates/popup.php" />
+        <option value="$PROJECT_DIR$/test/index.html" />
         <option value="$PROJECT_DIR$/src/swyft_callback.js" />
       </list>
     </option>
@@ -167,6 +180,12 @@
               <item name="Swyft_Callback" type="b2602c69:ProjectViewProjectNode" />
               <item name="Swyft_Callback" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="css" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="Swyft_Callback" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Swyft_Callback" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="php_templates" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
             <path>
@@ -188,11 +207,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../LaravelTemplate" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../LandingPages/LP_laravel_controller" />
     <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Adam\Documents\Repos\Plugins\Swyft_Callback\src\scss" />
       <recent name="C:\Users\Adam\Documents\Repos\Plugins\Swyft_Callback\src\php_templates" />
     </key>
   </component>
@@ -225,12 +245,12 @@
       <workItem from="1511947621350" duration="18835000" />
       <workItem from="1512040136271" duration="1799000" />
       <workItem from="1512049000770" duration="4681000" />
-      <workItem from="1512379233393" duration="5750000" />
+      <workItem from="1512379233393" duration="14255000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34953000" />
+    <option name="totallyTimeSpent" value="43458000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-132" width="1936" height="1056" extended-state="7" />
@@ -289,9 +309,9 @@
           <caret line="441" column="26" lean-forward="true" selection-start-line="441" selection-start-column="26" selection-end-line="441" selection-end-column="26" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#10013#12975#0" expanded="false" />
-            <marker date="1512392289487" expanded="true" signature="9633:9647" ph="..." />
-            <marker date="1512392289487" expanded="true" signature="10808:10822" ph="..." />
+            <element signature="e#10200#13173#0" expanded="false" />
+            <marker date="1512404657308" expanded="true" signature="9819:9833" ph="..." />
+            <marker date="1512404657308" expanded="true" signature="10995:11009" ph="..." />
           </folding>
         </state>
       </provider>
@@ -318,9 +338,9 @@
           <caret line="451" column="26" lean-forward="false" selection-start-line="451" selection-start-column="26" selection-end-line="451" selection-end-column="26" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#10013#12975#0" expanded="false" />
-            <marker date="1512392289487" expanded="true" signature="9633:9647" ph="..." />
-            <marker date="1512392289487" expanded="true" signature="10808:10822" ph="..." />
+            <element signature="e#10200#13173#0" expanded="false" />
+            <marker date="1512404657308" expanded="true" signature="9819:9833" ph="..." />
+            <marker date="1512404657308" expanded="true" signature="10995:11009" ph="..." />
           </folding>
         </state>
       </provider>
@@ -347,9 +367,9 @@
           <caret line="426" column="31" lean-forward="false" selection-start-line="426" selection-start-column="31" selection-end-line="426" selection-end-column="31" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#10013#12975#0" expanded="false" />
-            <marker date="1512392289487" expanded="true" signature="9633:9647" ph="..." />
-            <marker date="1512392289487" expanded="true" signature="10808:10822" ph="..." />
+            <element signature="e#10200#13173#0" expanded="false" />
+            <marker date="1512404657308" expanded="true" signature="9819:9833" ph="..." />
+            <marker date="1512404657308" expanded="true" signature="10995:11009" ph="..." />
           </folding>
         </state>
       </provider>
@@ -384,9 +404,9 @@
           <caret line="301" column="33" lean-forward="false" selection-start-line="301" selection-start-column="33" selection-end-line="301" selection-end-column="33" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#10013#12975#0" expanded="false" />
-            <marker date="1512392289487" expanded="true" signature="9633:9647" ph="..." />
-            <marker date="1512392289487" expanded="true" signature="10808:10822" ph="..." />
+            <element signature="e#10200#13173#0" expanded="false" />
+            <marker date="1512404657308" expanded="true" signature="9819:9833" ph="..." />
+            <marker date="1512404657308" expanded="true" signature="10995:11009" ph="..." />
           </folding>
         </state>
       </provider>
@@ -398,14 +418,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/php_templates/popup.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="30" lean-forward="false" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/php_templates/wrong_input_block.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -414,31 +426,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6597">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/php_templates/popup.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="10" column="54" lean-forward="false" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/_bootstrap_overwrite.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="22" lean-forward="false" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="168" column="9" lean-forward="true" selection-start-line="168" selection-start-column="9" selection-end-line="168" selection-end-column="9" />
+        <state relative-caret-position="177">
+          <caret line="386" column="30" lean-forward="true" selection-start-line="386" selection-start-column="30" selection-end-line="386" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="46" column="29" lean-forward="true" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+        <state relative-caret-position="482">
+          <caret line="42" column="29" lean-forward="false" selection-start-line="42" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="76" column="107" lean-forward="false" selection-start-line="76" selection-start-column="107" selection-end-line="76" selection-end-column="107" />
+        <state relative-caret-position="434">
+          <caret line="488" column="50" lean-forward="true" selection-start-line="488" selection-start-column="50" selection-end-line="488" selection-end-column="50" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#10013#12975#0" expanded="false" />
-            <marker date="1512392289487" expanded="true" signature="9633:9647" ph="..." />
-            <marker date="1512392289487" expanded="true" signature="10808:10822" ph="..." />
+            <element signature="e#10200#13173#0" expanded="false" />
+            <marker date="1512404657308" expanded="true" signature="9819:9833" ph="..." />
+            <marker date="1512404657308" expanded="true" signature="10995:11009" ph="..." />
           </folding>
         </state>
       </provider>
