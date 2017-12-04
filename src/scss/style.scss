@@ -160,6 +160,14 @@ $font_color_secondary: #fff;
             text-align: center;
         }
 
+		.sc_body_section {
+			p {
+				margin: 0 0 1rem 0;
+				font-weight: 300;
+				font-size: 1rem;
+			}
+		}
+
         .sc_division {
             position: relative;
             margin-bottom: 1rem;

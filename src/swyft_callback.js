@@ -57,6 +57,7 @@
                         field_name: form_fields_prefix + 'telephone',
                         label: 'Phone number',
                         type: 'tel',
+                        data_field_type: 'phone', //possible types: phone, name, email
                         placeholder: '000-000-000',
                         max_length: 20,
                         required: true
@@ -66,9 +67,15 @@
                     {
                         short: 'Lorem',
                         long: 'Ipsum',
-                        readmore: 'More'
+                        readmore: 'More',
+                        required: true
                     }
-                ]
+                ],
+                regex_table: {
+                    'phone': /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/
+                },
+                //dictionary is used to exchange input names into values from the dictionary on API request
+                data_dictionary: {} //'sc_fld_telephone': 'phone'
             },
         };
 
@@ -80,7 +87,7 @@
         // more objects, storing the result in the first object. The first object
         // is generally empty as we don't want to alter the default options for
         // future instances of the plugin
-        this.settings = $.extend({}, defaults, options);
+        this.settings = $.extend(true, {}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
 
@@ -117,9 +124,11 @@
         },
         setDefaultVars: function() {
             //set default vars for form fields
-            var template = defaults.input.fields[0];
-            for(var i = 0; i< this.settings.input.fields.length; i++) {
-                this.settings.input.fields[i] = $.extend({}, template, this.settings.input.fields[i]);
+            if(this.settings.input.fields) {
+                var template = defaults.input.fields[0];
+                for(var i = 0; i< this.settings.input.fields.length; i++) {
+                    this.settings.input.fields[i] = $.extend({}, template, this.settings.input.fields[i]);
+                }
             }
         },
         formatClasses: function(input) {
@@ -174,55 +183,60 @@
             var fields = '';
             var dynamic_attributes = [];
 
-            for (var i = 0; i < this.settings.input.fields.length; i++) {
-                var field = this.settings.input.fields[i];
+            if(this.settings.input.fields) {
+                for (var i = 0; i < this.settings.input.fields.length; i++) {
+                    var field = this.settings.input.fields[i];
 
-                // generate attributes for popup body
-                dynamic_attributes = [
-                    //0
-                    {
-                        name: 'input',
-                        attributes: [
-                            {key: 'id', value: field.field_name},
-                            {key: 'name', value: field.field_name},
-                            {key: 'type', value: field.type},
-                            {key: 'placeholder', value: field.placeholder},
-                            {key: 'value', value: field.value},
-                            {key: 'maxlength', value: field.max_length},
-                            {key: 'required', value: field.required},
-                        ],
-                        formatted: ''
-                    },
-                ];
-                dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
+                    // generate attributes for popup body
+                    dynamic_attributes = [
+                        //0 - form input
+                        {
+                            name: 'input',
+                            attributes: [
+                                {key: 'id', value: field.field_name},
+                                {key: 'name', value: field.field_name},
+                                {key: 'type', value: field.type},
+                                {key: 'data-field-type', value: field.data_field_type},
+                                {key: 'placeholder', value: field.placeholder},
+                                {key: 'value', value: field.value},
+                                {key: 'maxlength', value: field.max_length},
+                                {key: 'required', value: field.required},
+                            ],
+                            formatted: ''
+                        },
+                    ];
+                    dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
 
-                var output = '<div class="' + form_obj_prefix + 'division">\n' +
-                    '               <div class="input">\n' +
-                    '                   <label for="' + form_fields_prefix + 'telephone">' + field.label + '</label>\n' +
-                    '                   <input ' + dynamic_attributes[0].formatted + '/>\n' +
-                    '               </div>\n' +
-                    '             </div>\n';
-                fields += output;
+                    var output = '<div class="' + form_obj_prefix + 'division">\n' +
+                        '               <div class="input">\n' +
+                        '                   <label for="' + field.field_name + '">' + field.label + '</label>\n' +
+                        '                   <input ' + dynamic_attributes[0].formatted + '/>\n' +
+                        '               </div>\n' +
+                        '             </div>\n';
+                    fields += output;
+                }
             }
 
             return fields;
         },
         initPopup_generate_popup_agreements: function() {
             var agreements = '';
-            for (var i = 0; i < this.settings.input.agreements.length; i++) {
-                var agreement = this.settings.input.agreements[i];
-                var output = '<div class="' + form_obj_prefix + 'division">\n' +
-                    '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
-                    '                       <input id="' + form_fields_prefix + 'agreement_' + i + '" type="checkbox" checked="checked" />\n' +
-                    '                       <span class="checkmark"></span>\n' +
-                    '                   </div>\n' +
-                    '\n' +
-                    '                   <label for="' + form_fields_prefix + 'agreement_' + i + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
-                    '                   <span class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
-                    '                       ' + agreement.long +
-                    '                   </span>\n' +
-                    '             </div>';
-                agreements += output;
+            if(this.settings.input.agreements) {
+                for (var i = 0; i < this.settings.input.agreements.length; i++) {
+                    var agreement = this.settings.input.agreements[i];
+                    var output = '<div class="' + form_obj_prefix + 'division">\n' +
+                        '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
+                        '                       <input id="' + form_fields_prefix + 'agreement_' + i + '" type="checkbox" checked="checked" />\n' +
+                        '                       <span class="checkmark"></span>\n' +
+                        '                   </div>\n' +
+                        '\n' +
+                        '                   <label for="' + form_fields_prefix + 'agreement_' + i + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
+                        '                   <span class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
+                        '                       ' + agreement.long +
+                        '                   </span>\n' +
+                        '             </div>';
+                    agreements += output;
+                }
             }
 
             return agreements;
@@ -254,6 +268,7 @@
                 '        </div>\n' +
                 '\n' +
                 '        <div class="' + form_obj_prefix + 'body_section">\n' +
+                '            <p>' + this.settings.text_vars.popup_body + '</p>\n' +
                 '            <form ' + dynamic_attributes[0].formatted + '>\n' +
                 '                <div class="container-fluid">\n' +
                 '                    <div class="row">\n' +
@@ -358,6 +373,7 @@
 
                 //todo: unify showing status after sending data
                 if(status.success) {
+                    this.ResetInput();
                     //todo: show success in the popup window
                 } else {
                     //error
@@ -434,6 +450,7 @@
                     url: this.settings.api_url,
                     api_key: this.settings.api_key,
                     data: this.popup.form.serialize(),
+                    data_dictionary: this.settings.input.data_dictionary
                 });
             } else {
                 status = {success: false, message: 'SendData: Error (Validation)'};
@@ -452,6 +469,7 @@
                 type: 'POST',
                 api_key: null,
                 data: null,
+                data_dictionary: {},
                 success_param: 'success', //bool - true for success, false for failure
                 return_param: 'message', //the key of returned data (preferably an array) from the API which contains the response
                 callback: {
@@ -459,7 +477,18 @@
                     parameters: null,
                 }
             };
-            var settings = $.extend({}, defaults, options);
+            var settings = $.extend(true, {}, defaults, options);
+
+            //use a custom dictionary specific to API to convert key names to the valid values
+            var data_dictionary_keys = Object.keys(settings.data_dictionary);
+            for(var i = 0; i < data_dictionary_keys.length; i++) {
+                var regex = settings.data_dictionary[data_dictionary_keys[i]];
+                console.log(data_dictionary_keys[i] + ' > ' + regex);
+                //use regex to replace form field names into those specified in the dictionary
+                settings.data = settings.data.replace(data_dictionary_keys[i], regex);
+            }
+
+            console.log(settings);
 
             //AJAX CALL
 
@@ -628,11 +657,7 @@
             /* --- Validation --- */
 
             //define regex for field types
-            var regex;
-
-            //phones
-            //define regex for field types
-            regex = /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/;
+            var regex_table = this.settings.input.regex_table;
 
             //wrong inputs collection
             var wrong_inputs = []; // {obj: null, message: null}
@@ -641,37 +666,46 @@
                 var $this_val = $this.val();
                 var $this_container = $this.closest('.input');
 
-                var valid = regex.test($this_val); //match()
+                var data_type = $this.data('field-type');
+                if(data_type && data_type in regex_table) {
+                    var regex = regex_table[data_type];
+                    var valid = regex.test($this_val); //match()
 
-                //remove old status
-                var old_obj = $this.siblings('.' + form_obj_prefix + 'status');
-                old_obj.fadeOut(settings.fade_duration, function() {
-                    old_obj.remove();
-                });
-
-                //apply / remove classes from inputs / input containers
-                if(valid) {
-                    $this.removeClass('wrong-input'); $this_container.removeClass('wrong-input');
-                    $this.addClass('correct-input'); $this_container.addClass('correct-input');
-                } else {
-                    $this.removeClass('correct-input'); $this_container.removeClass('correct-input');
-                    $this.addClass('wrong-input'); $this_container.addClass('wrong-input');
-
-                    wrong_inputs.push({obj: $this, message: ''});
-
-                    //add element signifying wrong input
+                    //remove old status
+                    var old_obj = $this.siblings('.' + form_obj_prefix + 'status');
+                    //if appending new status, delete the old status immediately. Otherwise, fade it out slowly
                     if(settings.append_status) {
-                        var $wrong_input_obj = $('<span class="' + form_obj_prefix +'status"></span>');
-                        $wrong_input_obj.text('Wrong input');
-                        $wrong_input_obj.hide();
-
-                        $wrong_input_obj.insertAfter($this);
-
-                        $wrong_input_obj.fadeIn(settings.fade_duration);
+                        old_obj.remove();
+                    } else {
+                        old_obj.fadeOut(settings.fade_duration, function() {
+                            old_obj.remove();
+                        });
                     }
 
-                    is_valid = false;
-                    //return false; //break the each loop or continue (true) checking other inputs to apply wrong input class
+                    //apply / remove classes from inputs / input containers
+                    if(valid) {
+                        $this.removeClass('wrong-input'); $this_container.removeClass('wrong-input');
+                        $this.addClass('correct-input'); $this_container.addClass('correct-input');
+                    } else {
+                        $this.removeClass('correct-input'); $this_container.removeClass('correct-input');
+                        $this.addClass('wrong-input'); $this_container.addClass('wrong-input');
+
+                        wrong_inputs.push({obj: $this, message: ''});
+
+                        //add element signifying wrong input
+                        if(settings.append_status) {
+                            var $wrong_input_obj = $('<span class="' + form_obj_prefix +'status"></span>');
+                            $wrong_input_obj.text('Wrong input');
+                            $wrong_input_obj.hide();
+
+                            $wrong_input_obj.insertAfter($this);
+
+                            $wrong_input_obj.fadeIn(settings.fade_duration);
+                        }
+
+                        is_valid = false;
+                        //return false; //break the each loop or continue (true) checking other inputs to apply wrong input class
+                    }
                 }
             });
 
