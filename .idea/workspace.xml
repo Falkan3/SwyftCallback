@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10fc1a21-5cde-439f-b811-9191e2e35e63" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/css/style.css" afterPath="$PROJECT_DIR$/src/css/style.css" />
-      <change beforePath="$PROJECT_DIR$/src/css/style.map" afterPath="$PROJECT_DIR$/src/css/style.map" />
-      <change beforePath="$PROJECT_DIR$/src/php_templates/popup.php" afterPath="$PROJECT_DIR$/src/php_templates/popup.php" />
       <change beforePath="$PROJECT_DIR$/src/scss/style.scss" afterPath="$PROJECT_DIR$/src/scss/style.scss" />
       <change beforePath="$PROJECT_DIR$/src/swyft_callback.js" afterPath="$PROJECT_DIR$/src/swyft_callback.js" />
     </list>
@@ -27,11 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.scss" pinned="false" current-in-tab="false">
+      <file leaf-file-name="style.scss" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="329" column="43" lean-forward="false" selection-start-line="329" selection-start-column="43" selection-end-line="329" selection-end-column="43" />
+            <state relative-caret-position="586">
+              <caret line="176" column="41" lean-forward="false" selection-start-line="176" selection-start-column="41" selection-end-line="176" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -47,18 +44,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="swyft_callback.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="swyft_callback.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="502">
-              <caret line="536" column="18" lean-forward="false" selection-start-line="536" selection-start-column="18" selection-end-line="536" selection-end-column="18" />
+            <state relative-caret-position="536">
+              <caret line="326" column="0" lean-forward="true" selection-start-line="326" selection-start-column="0" selection-end-line="326" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#6879#9036#0" expanded="false" />
                 <element signature="e#9104#10844#0" expanded="false" />
                 <element signature="e#10897#13954#0" expanded="false" />
-                <marker date="1512472940254" expanded="true" signature="10256:10270" ph="..." />
-                <marker date="1512472940254" expanded="true" signature="11692:11706" ph="..." />
+                <marker date="1512475610213" expanded="true" signature="10256:10270" ph="..." />
+                <marker date="1512475610213" expanded="true" signature="11692:11706" ph="..." />
               </folding>
             </state>
           </provider>
@@ -81,7 +78,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fld_</find>
       <find>validate</find>
       <find>dynamic_attributes</find>
       <find>$.extend</find>
@@ -108,9 +104,10 @@
       <find>first()</find>
       <find>initPopup_generate_popup_body</find>
       <find>checkbox_co</find>
-      <find>ValidateInput</find>
       <find>field_valid</find>
       <find>callback</find>
+      <find>ValidateInput</find>
+      <find>this.element</find>
     </findStrings>
     <replaceStrings>
       <replace>' + form_fields_prefix + '</replace>
@@ -118,6 +115,7 @@
       <replace>settings.input.agreements</replace>
       <replace>status.popup_hidden</replace>
       <replace>status.button_disabled</replace>
+      <replace>ValidateForm</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\Adam\Documents\Repos\Plugins\Swyft_Callback</dir>
@@ -134,8 +132,8 @@
         <option value="$PROJECT_DIR$/src/scss/_bootstrap_overwrite.scss" />
         <option value="$PROJECT_DIR$/test/index.html" />
         <option value="$PROJECT_DIR$/src/php_templates/popup.php" />
-        <option value="$PROJECT_DIR$/src/scss/style.scss" />
         <option value="$PROJECT_DIR$/src/swyft_callback.js" />
+        <option value="$PROJECT_DIR$/src/scss/style.scss" />
       </list>
     </option>
   </component>
@@ -153,7 +151,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-1928" />
     <option name="y" value="-132" />
     <option name="width" value="1936" />
@@ -257,15 +255,15 @@
       <workItem from="1511947621350" duration="18835000" />
       <workItem from="1512040136271" duration="1799000" />
       <workItem from="1512049000770" duration="4681000" />
-      <workItem from="1512379233393" duration="25188000" />
+      <workItem from="1512379233393" duration="26585000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54391000" />
+    <option name="totallyTimeSpent" value="55788000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="-132" width="1936" height="1056" extended-state="7" />
+    <frame x="-1928" y="-132" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26066098" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -324,8 +322,8 @@
             <element signature="e#6879#9036#0" expanded="false" />
             <element signature="e#9104#10844#0" expanded="false" />
             <element signature="e#10897#13954#0" expanded="false" />
-            <marker date="1512472940254" expanded="true" signature="10256:10270" ph="..." />
-            <marker date="1512472940254" expanded="true" signature="11692:11706" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="10256:10270" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="11692:11706" ph="..." />
           </folding>
         </state>
       </provider>
@@ -355,8 +353,8 @@
             <element signature="e#6879#9036#0" expanded="false" />
             <element signature="e#9104#10844#0" expanded="false" />
             <element signature="e#10897#13954#0" expanded="false" />
-            <marker date="1512472940254" expanded="true" signature="10256:10270" ph="..." />
-            <marker date="1512472940254" expanded="true" signature="11692:11706" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="10256:10270" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="11692:11706" ph="..." />
           </folding>
         </state>
       </provider>
@@ -386,8 +384,8 @@
             <element signature="e#6879#9036#0" expanded="false" />
             <element signature="e#9104#10844#0" expanded="false" />
             <element signature="e#10897#13954#0" expanded="false" />
-            <marker date="1512472940254" expanded="true" signature="10256:10270" ph="..." />
-            <marker date="1512472940254" expanded="true" signature="11692:11706" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="10256:10270" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="11692:11706" ph="..." />
           </folding>
         </state>
       </provider>
@@ -425,8 +423,8 @@
             <element signature="e#6879#9036#0" expanded="false" />
             <element signature="e#9104#10844#0" expanded="false" />
             <element signature="e#10897#13954#0" expanded="false" />
-            <marker date="1512472940254" expanded="true" signature="10256:10270" ph="..." />
-            <marker date="1512472940254" expanded="true" signature="11692:11706" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="10256:10270" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="11692:11706" ph="..." />
           </folding>
         </state>
       </provider>
@@ -481,26 +479,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="329" column="43" lean-forward="false" selection-start-line="329" selection-start-column="43" selection-end-line="329" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="536" column="18" lean-forward="false" selection-start-line="536" selection-start-column="18" selection-end-line="536" selection-end-column="18" />
+        <state relative-caret-position="536">
+          <caret line="326" column="0" lean-forward="true" selection-start-line="326" selection-start-column="0" selection-end-line="326" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#6879#9036#0" expanded="false" />
             <element signature="e#9104#10844#0" expanded="false" />
             <element signature="e#10897#13954#0" expanded="false" />
-            <marker date="1512472940254" expanded="true" signature="10256:10270" ph="..." />
-            <marker date="1512472940254" expanded="true" signature="11692:11706" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="10256:10270" ph="..." />
+            <marker date="1512475610213" expanded="true" signature="11692:11706" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="586">
+          <caret line="176" column="41" lean-forward="false" selection-start-line="176" selection-start-column="41" selection-end-line="176" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>

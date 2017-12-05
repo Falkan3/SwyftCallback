@@ -149,7 +149,7 @@ $font_color_secondary: #fff;
             }
         }
 
-        .sc_title_section, .sc_body_section {
+        .sc_title_section {
             padding: 2rem;
         }
 
@@ -164,12 +164,18 @@ $font_color_secondary: #fff;
         }
 
 		.sc_body_section {
+            padding: 2rem 2rem 1rem 2rem;
+
 			p {
 				margin: 0 0 1rem 0;
 				font-weight: 300;
 				font-size: 1rem;
 			}
 		}
+
+        .sc_footer_section {
+            padding: 1rem 2rem 2rem 2rem;
+        }
 
         .sc_division {
             position: relative;

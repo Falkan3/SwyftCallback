@@ -330,10 +330,12 @@
             this.popup.form = this.popup.obj.find('form');
 
             //form fields
-            var fields = this.initPopup_generate_fields($popupBody);
+            //var fields =
+            this.initPopup_generate_fields($popupBody);
 
             //agreements
-            var agreements = this.initPopup_generate_popup_agreements($popupBody);
+            //var agreements =
+            this.initPopup_generate_popup_agreements($popupBody);
 
             //apply event listeners to elements contained in popup
             this.popupAppendEventListeners();
@@ -372,7 +374,7 @@
                 var field = objThis.settings.input.fields[i];
                 field.obj.on('input', function (e) {
                     //validate input
-                    var validated = objThis.ValidateInput([field], {append_status: false});
+                    var validated = objThis.ValidateForm([field], {append_status: false});
                     //send form if validated
                     if (validated) {
                         console.log('validation successful');
@@ -387,7 +389,7 @@
                 var agreement = objThis.settings.input.agreements[i];
                 agreement.obj.on('change', function (e) {
                     //validate input
-                    var validated = objThis.ValidateInput([agreement], {append_status: false});
+                    var validated = objThis.ValidateForm([agreement], {append_status: false});
                     //send form if validated
                     if (validated) {
                         console.log('validation successful');
@@ -400,7 +402,7 @@
             /*
             this.popup.form.find(input_all_mask).on('input', function (e) {
                 //validate input
-                var validated = objThis.ValidateInput($(this), {append_status: false});
+                var validated = objThis.ValidateForm($(this), {append_status: false});
                 //send form if validated
                 if (validated) {
                     console.log('validation successful');
@@ -491,8 +493,8 @@
             //var input = this.popup.form.find(input_all_mask);
 
             //validate input
-            var validated_fields = this.ValidateInput(this.settings.input.fields);
-            var validated_agreements = this.ValidateInput(this.settings.input.agreements);
+            var validated_fields = this.ValidateForm(this.settings.input.fields);
+            var validated_agreements = this.ValidateForm(this.settings.input.agreements);
             var validated = validated_fields && validated_agreements;
 
             //send form if validated
@@ -773,7 +775,7 @@
          * @return {boolean}
          */
         //todo: validate input
-        ValidateInput: function (_fields, options) {
+        ValidateForm: function (_fields, options) {
             var defaults = {
                 append_status: true,
                 fade_duration: 300,
