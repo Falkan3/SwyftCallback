@@ -68,7 +68,9 @@
                 ],
                 agreements: [
                     {
+                        obj: null,
                         field_name: form_fields_prefix + 'agreement',
+                        type: 'checkbox',
                         short: 'Lorem',
                         long: 'Ipsum',
                         readmore: 'More',
@@ -76,6 +78,7 @@
                     }
                 ],
                 regex_table: {
+                    'checkbox': /true|false/,
                     'phone': /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/
                 },
                 //dictionary is used to exchange input names into values from the dictionary on API request
@@ -182,7 +185,7 @@
         /*
          * Builders for popup body
          */
-        initPopup_generate_fields: function () {
+        initPopup_generate_fields: function (popupBody) {
             //form fields
             var fields = '';
             var dynamic_attributes = [];
@@ -218,34 +221,42 @@
                         '               </div>\n' +
                         '             </div>\n';
                     fields += output;
+
+                    //save created DOM object in settings field reference
+                    this.settings.input.fields[i].obj = popupBody.find('.' + form_obj_prefix + 'fields_section').append($(output)).find(input_all_mask).first();
                 }
             }
 
             return fields;
         },
-        initPopup_generate_popup_agreements: function () {
+        initPopup_generate_popup_agreements: function (popupBody) {
             var agreements = '';
             if (this.settings.input.agreements) {
                 for (var i = 0; i < this.settings.input.agreements.length; i++) {
                     var agreement = this.settings.input.agreements[i];
-                    var output = '<div class="' + form_obj_prefix + 'division">\n' +
-                        '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
-                        '                       <input id="' + agreement.field_name + '" name = "' + agreement.field_name + '" type="checkbox" checked="checked" />\n' +
-                        '                       <span class="checkmark"></span>\n' +
-                        '                   </div>\n' +
+                    var output = '<div class="' + form_obj_prefix + 'division">' +
+                        '           <div class="input">' +
+                        '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
+                        '                   <input id="' + agreement.field_name + '" name = "' + agreement.field_name + '" type="checkbox" checked="checked" data-field-type="checkbox" />\n' +
+                        '                   <span class="checkmark"></span>\n' +
+                        '               </div>\n' +
                         '\n' +
-                        '                   <label for="' + form_fields_prefix + 'agreement_' + i + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
-                        '                   <span class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
-                        '                       ' + agreement.long +
-                        '                   </span>\n' +
-                        '             </div>';
+                        '               <label for="' + form_fields_prefix + 'agreement_' + i + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
+                        '               <span class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
+                        '                   ' + agreement.long +
+                        '               </span>\n' +
+                        '           </div>' +
+                        '         </div>';
                     agreements += output;
+
+                    //save created DOM object in settings field reference
+                    this.settings.input.agreements[i].obj = popupBody.find('.' + form_obj_prefix + 'agreements_section').append($(output)).find(input_all_mask).first();
                 }
             }
 
             return agreements;
         },
-        initPopup_generate_popup_body: function (fields, agreements) {
+        initPopup_generate_popup_body: function () {
             var dynamic_attributes = [];
 
             // generate attributes for popup body
@@ -276,8 +287,8 @@
                 '            <form ' + dynamic_attributes[0].formatted + '>\n' +
                 '                <div class="container-fluid no-padding">\n' +
                 '                    <div class="row">\n' +
-                '                        <div class="col-xs-12">\n' +
-                fields +
+                '                        <div class="col-xs-12 ' + form_obj_prefix + 'fields_section">\n' +
+                //fields +
                 '                        </div>\n' +
                 '\n' +
                 '                        <div class="col-xs-12">\n' +
@@ -288,8 +299,8 @@
                 '                    </div>\n' +
                 '\n' +
                 '                    <div class="row ' + form_obj_prefix + 'agreements">\n' +
-                '                        <div class="col-xs-12">\n' +
-                agreements +
+                '                        <div class="col-xs-12 ' + form_obj_prefix + 'agreements_section">\n' +
+                //agreements +
                 '                        </div>\n' +
                 '                    </div>\n' +
                 '                </div>\n' +
@@ -311,18 +322,18 @@
         initPopup: function () {
             var objThis = this;
 
-            //form fields
-            var fields = this.initPopup_generate_fields();
-
-            //agreements
-            var agreements = this.initPopup_generate_popup_agreements();
-
             //body
-            var $popupBody = $(this.initPopup_generate_popup_body(fields, agreements));
+            var $popupBody = $(this.initPopup_generate_popup_body());
 
             //append the object to DOM
             this.popup.obj = $popupBody.appendTo($(this.element));
             this.popup.form = this.popup.obj.find('form');
+
+            //form fields
+            var fields = this.initPopup_generate_fields($popupBody);
+
+            //agreements
+            var agreements = this.initPopup_generate_popup_agreements($popupBody);
 
             //apply event listeners to elements contained in popup
             this.popupAppendEventListeners();
@@ -341,7 +352,7 @@
             this.popup.form.find('.checkmark').on('click', function (e) {
                 e.preventDefault();
                 var input = $(this).siblings('input');
-                input.prop('checked', !input.prop('checked'));
+                input.prop('checked', !input.prop('checked')).change();
             });
 
             //readmore click
@@ -357,6 +368,36 @@
             });
 
             //form input blur / input
+            for(var i = 0; i < objThis.settings.input.fields.length; i++) {
+                var field = objThis.settings.input.fields[i];
+                field.obj.on('input', function (e) {
+                    //validate input
+                    var validated = objThis.ValidateInput([field], {append_status: false});
+                    //send form if validated
+                    if (validated) {
+                        console.log('validation successful');
+                    }
+
+                    return false;
+                });
+            }
+
+            //form agreement blur / input
+            for(var i = 0; i < objThis.settings.input.agreements.length; i++) {
+                var agreement = objThis.settings.input.agreements[i];
+                agreement.obj.on('change', function (e) {
+                    //validate input
+                    var validated = objThis.ValidateInput([agreement], {append_status: false});
+                    //send form if validated
+                    if (validated) {
+                        console.log('validation successful');
+                    }
+
+                    return false;
+                });
+            }
+
+            /*
             this.popup.form.find(input_all_mask).on('input', function (e) {
                 //validate input
                 var validated = objThis.ValidateInput($(this), {append_status: false});
@@ -367,6 +408,7 @@
 
                 return false;
             });
+            */
 
             //form submit
             this.popup.obj.on('submit', function (e) {
@@ -446,10 +488,13 @@
             var settings = $.extend(true, {}, defaults, options);
 
             //find all input in form
-            var input = this.popup.form.find(input_all_mask);
+            //var input = this.popup.form.find(input_all_mask);
 
             //validate input
-            var validated = this.ValidateInput(input);
+            var validated_fields = this.ValidateInput(this.settings.input.fields);
+            var validated_agreements = this.ValidateInput(this.settings.input.agreements);
+            var validated = validated_fields && validated_agreements;
+
             //send form if validated
             if (validated) {
                 console.log('Validation successful');
@@ -464,7 +509,6 @@
             return status;
         },
         SendDataAjax: function (options) {
-            //[0: succes, 1: message]
             var status = {success: false, message: 'SendDataAjax: Error (Default)'};
 
             //set settings
@@ -477,6 +521,7 @@
                 data_dictionary: {},
                 success_param: 'success', //bool - true for success, false for failure
                 return_param: 'message', //the key of returned data (preferably an array) from the API which contains the response
+                /*
                 callback: {
                     success: {
                         function: alert,
@@ -489,6 +534,7 @@
                         parameters: ['api error'],
                     }
                 }
+                */
             };
             var settings = $.extend(true, {}, defaults, options);
 
@@ -673,92 +719,130 @@
         /* ------ Input ------ */
 
         /**
+         * @return {{is_valid: boolean, field: *}}
+         */
+        ValidateField: function (_field, options) {
+            var defaults = {
+
+            };
+            var settings = $.extend({}, defaults, options);
+
+            var field = _field;
+            var $this = field.obj;
+
+            //return value. If all inputs are correctly validated, the value will remain true. If one fails, it switches to false
+            var is_valid = true;
+
+            /* --- Validation --- */
+
+            //special validation for select and checbkox
+            //checkbox
+            if(field.type === 'checkbox') {
+                if(field.required === true) {
+                    if (!$this.prop('checked')) {
+                        is_valid = false;
+                    }
+                }
+            }
+            //select
+            //todo: select validate field
+            else if(field.type === 'select') {
+
+            }
+            //rest (textfields)
+            else {
+                if(field.required === true || $this.val() !== '') {
+                    //define regex for field types
+                    var regex_table = this.settings.input.regex_table;
+
+                    if (field.data_field_type && field.data_field_type in regex_table) {
+                        var regex = regex_table[field.data_field_type];
+                        if (!regex.test($this.val())) {
+                            is_valid = false;
+                        }
+                    } else {
+                        is_valid = false;
+                    }
+                }
+            }
+
+            return {is_valid: is_valid, field: field};
+        },
+
+        /**
          * @return {boolean}
          */
         //todo: validate input
-        ValidateInput: function (input, options) {
+        ValidateInput: function (_fields, options) {
             var defaults = {
                 append_status: true,
                 fade_duration: 300,
             };
             var settings = $.extend({}, defaults, options);
 
-            //var form = this.popup.form;//this.popup.obj.find('form');
-            //todo: cache input objects
-            //var _input = form.find(input_all_mask);
-            var _input = input;
+            var fields = _fields;
 
             //return value. If all inputs are correctly validated, the value will remain true. If one fails, it switches to false
             var is_valid = true;
 
-            //group by type
-            var i_text = _input.filter('[type="text"], [type="tel"], textarea');
-            var i_checkbox = _input.filter('[type="checkbox"]');
-
             /* --- Validation --- */
-
-            //define regex for field types
-            var regex_table = this.settings.input.regex_table;
 
             //wrong inputs collection
             var wrong_inputs = []; // {obj: null, message: null}
-            i_text.each(function () {
-                var $this = $(this);
-                var $this_val = $this.val();
+
+            for(var i = 0; i < fields.length; i++) {
+                var field = fields[i];
+                var field_valid = this.ValidateField(field);
+
+                var $this = field.obj;
                 var $this_container = $this.closest('.input');
 
-                var data_type = $this.data('field-type');
-                if (data_type && data_type in regex_table) {
-                    var regex = regex_table[data_type];
-                    var valid = regex.test($this_val); //match()
+                //find and remove old status
+                var old_obj = $this_container.find('.' + form_obj_prefix + 'status');
 
-                    //remove old status
-                    var old_obj = $this.siblings('.' + form_obj_prefix + 'status');
-                    //if appending new status, delete the old status immediately. Otherwise, fade it out slowly
-                    if (settings.append_status) {
+                //if appending new status, delete the old status immediately. Otherwise, fade it out slowly
+                if (settings.append_status) {
+                    old_obj.remove();
+                } else {
+                    old_obj.fadeOut(settings.fade_duration, function () {
                         old_obj.remove();
-                    } else {
-                        old_obj.fadeOut(settings.fade_duration, function () {
-                            old_obj.remove();
-                        });
-                    }
-
-                    //apply / remove classes from inputs / input containers
-                    if (valid) {
-                        $this.removeClass('wrong-input');
-                        $this_container.removeClass('wrong-input');
-                        $this.addClass('correct-input');
-                        $this_container.addClass('correct-input');
-                    } else {
-                        $this.removeClass('correct-input');
-                        $this_container.removeClass('correct-input');
-                        $this.addClass('wrong-input');
-                        $this_container.addClass('wrong-input');
-
-                        wrong_inputs.push({obj: $this, message: ''});
-
-                        //add element signifying wrong input
-                        if (settings.append_status) {
-                            var $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
-                            $wrong_input_obj.text('Wrong input');
-                            $wrong_input_obj.hide();
-
-                            $wrong_input_obj.insertAfter($this);
-
-                            $wrong_input_obj.fadeIn(settings.fade_duration);
-                        }
-
-                        is_valid = false;
-                        //return false; //break the each loop or continue (true) checking other inputs to apply wrong input class
-                    }
+                    });
                 }
-            });
+
+                if(field_valid.is_valid) {
+                    $this.removeClass('wrong-input');
+                    $this_container.removeClass('wrong-input');
+                    $this.addClass('correct-input');
+                    $this_container.addClass('correct-input');
+                } else {
+                    $this.removeClass('correct-input');
+                    $this_container.removeClass('correct-input');
+                    $this.addClass('wrong-input');
+                    $this_container.addClass('wrong-input');
+
+                    wrong_inputs.push({field: field, message: ''});
+
+                    //add element signifying wrong input
+                    if (settings.append_status) {
+                        var $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
+                        $wrong_input_obj.text('Wrong input');
+                        $wrong_input_obj.hide();
+
+                        $wrong_input_obj.appendTo($this_container);
+
+                        $wrong_input_obj.fadeIn(settings.fade_duration);
+                    }
+
+                    is_valid = false;
+                }
+            }
 
             if (wrong_inputs.length > 0) {
                 //sort by position in DOM
-                wrong_inputs = this.objSortByPositionInDOM(wrong_inputs, 'obj');
+                wrong_inputs = this.objSortByPositionInDOM(wrong_inputs, 'field', 'obj');
 
-                wrong_inputs[0].obj.focus();
+                //focus first object in DOM
+                wrong_inputs[0].field.obj.focus();
             }
 
             //xxx
@@ -800,7 +884,7 @@
                     for (var i = 0; i < input_length; i++) {
                         output += 'data-' + _input[i][0] + '=' + _input[i][1] + ' ';
                     }
-                    if (output[output.length - 1] == ' ') {
+                    if (output[output.length - 1] === ' ') {
                         output = output.slice(0, -1);
                     }
                 } else {
@@ -847,16 +931,30 @@
         /*
          * Sort an array containing DOM elements by their position in the document (top to bottom)
          */
-        objSortByPositionInDOM: function (input, attr) {
+        objSortByPositionInDOM: function (input, attr, attr2) {
             //sort by position in DOM
             var _input = input;
             var output;
-            if (attr) {
+            if(attr && attr2) {
+                output = _input.sort(function (a, b) {
+                    if (a[attr][attr2][0] === b[attr][attr2][0]) return 0;
+                    if (!a[0].compareDocumentPosition) {
+                        // support for IE8 and below
+                        return a[attr][attr2][0].sourceIndex - b[attr][attr2][0].sourceIndex;
+                    }
+                    if (a[attr][attr2][0].compareDocumentPosition(b[attr][attr2][0]) & 2) {
+                        // b comes before a
+                        return 1;
+                    }
+                    return -1;
+                });
+            }
+            else if (attr) {
                 output = _input.sort(function (a, b) {
                     if (a[attr][0] === b[attr][0]) return 0;
                     if (!a[0].compareDocumentPosition) {
                         // support for IE8 and below
-                        return a[attr][0].sourceIndex - b[attr].sourceIndex;
+                        return a[attr][0].sourceIndex - b[attr][0].sourceIndex;
                     }
                     if (a[attr][0].compareDocumentPosition(b[attr][0]) & 2) {
                         // b comes before a
@@ -869,7 +967,7 @@
                     if (a[0] === b[0]) return 0;
                     if (!a[0].compareDocumentPosition) {
                         // support for IE8 and below
-                        return a[0].sourceIndex - b.sourceIndex;
+                        return a[0].sourceIndex - b[0].sourceIndex;
                     }
                     if (a[0].compareDocumentPosition(b[0]) & 2) {
                         // b comes before a

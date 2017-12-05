@@ -327,6 +327,7 @@ $font_color_secondary: #fff;
 
                     input {
                         margin: 0;
+                        visibility: hidden;
 
                         &:checked ~ .checkmark {
                             background-color: $btn_primary;
