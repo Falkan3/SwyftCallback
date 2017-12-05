@@ -282,41 +282,43 @@
             dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
 
             var $popupBody = '<div class="' + form_obj_prefix + 'overlay" style="display: none;">\n' +
-                '    <div class="' + form_obj_prefix + 'popup' + classes + '">\n' +
-                '        <div class="' + form_obj_prefix + 'btn_close"></div>\n' +
-                '        <div class="' + form_obj_prefix + 'title_section">\n' +
-                '            <p>' + this.settings.text_vars.popup_title + '</p>\n' +
-                '        </div>\n' +
+                '    <div class="' + form_obj_prefix + 'popup_container">\n' +
+                '        <div class="' + form_obj_prefix + 'popup' + classes + '">\n' +
+                '            <div class="' + form_obj_prefix + 'btn_close"></div>\n' +
+                '            <div class="' + form_obj_prefix + 'title_section">\n' +
+                '                <p>' + this.settings.text_vars.popup_title + '</p>\n' +
+                '            </div>\n' +
                 '\n' +
-                '        <div class="' + form_obj_prefix + 'body_section">\n' +
-                '            <p>' + this.settings.text_vars.popup_body + '</p>\n' +
-                '            <form ' + dynamic_attributes[0].formatted + '>\n' +
-                '                <div class="container-fluid no-padding">\n' +
-                '                    <div class="row">\n' +
-                '                        <div class="col-xs-12 ' + form_obj_prefix + 'fields_section">\n' +
+                '            <div class="' + form_obj_prefix + 'body_section">\n' +
+                '                <p>' + this.settings.text_vars.popup_body + '</p>\n' +
+                '                <form ' + dynamic_attributes[0].formatted + '>\n' +
+                '                    <div class="container-fluid no-padding">\n' +
+                '                        <div class="row">\n' +
+                '                            <div class="col-xs-12 ' + form_obj_prefix + 'fields_section">\n' +
                 //fields +
+                '                            </div>\n' +
+                '\n' +
+                '                            <div class="col-xs-12">\n' +
+                '                                <div class="' + form_obj_prefix + 'division">\n' +
+                '                                    <button type="submit" class="' + form_obj_prefix + 'btn_submit">' + this.settings.text_vars.send_button_text + '</button>\n' +
+                '                                </div>\n' +
+                '                            </div>\n' +
                 '                        </div>\n' +
                 '\n' +
-                '                        <div class="col-xs-12">\n' +
-                '                            <div class="' + form_obj_prefix + 'division">\n' +
-                '                                <button type="submit" class="' + form_obj_prefix + 'btn_submit">' + this.settings.text_vars.send_button_text + '</button>\n' +
+                '                        <div class="row ' + form_obj_prefix + 'agreements">\n' +
+                '                            <div class="col-xs-12 ' + form_obj_prefix + 'agreements_section">\n' +
+                //agreements +
                 '                            </div>\n' +
                 '                        </div>\n' +
                 '                    </div>\n' +
+                '                </form>\n' +
+                '            </div>\n' +
                 '\n' +
-                '                    <div class="row ' + form_obj_prefix + 'agreements">\n' +
-                '                        <div class="col-xs-12 ' + form_obj_prefix + 'agreements_section">\n' +
-                //agreements +
-                '                        </div>\n' +
-                '                    </div>\n' +
-                '                </div>\n' +
-                '            </form>\n' +
+                '            <div class="' + form_obj_prefix + 'footer_section">\n' +
+                '\n' +
+                '            </div>\n' +
                 '        </div>\n' +
-                '\n' +
-                '        <div class="' + form_obj_prefix + 'footer_section">\n' +
-                '\n' +
-                '        </div>\n' +
-                '    </div>\n' +
+                '    </div>' +
                 '</div>';
 
             return $popupBody;
