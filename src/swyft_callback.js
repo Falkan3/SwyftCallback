@@ -27,10 +27,16 @@
         input_all_mask = 'input, select, textarea',
 
         defaults = {
-            api_url: "test",
-            api_custom: [
-                {name: 'api_key', value: ''}
-            ],
+            api: {
+                url: 'test',
+                custom: [
+                    {name: 'api_key', value: ''},
+                ],
+                param: {
+                    success: {name: 'result', value: 'success'},
+                    message: '',
+                }
+            },
             form_method: "post",
             //data
             custom_button_class: "",
@@ -60,7 +66,7 @@
                         field_name: form_fields_prefix + 'telephone',
                         label: 'Phone number',
                         type: 'tel',
-                        data_field_type: 'phone', //possible types: phone, name, email
+                        data_field_type: 'phone', //possible types: phone, name, email. Used for regex_table
                         placeholder: '000-000-000',
                         max_length: 20,
                         required: true
@@ -266,7 +272,7 @@
                 {
                     name: 'form',
                     attributes: [
-                        {key: 'action', value: this.settings.api_url},
+                        {key: 'action', value: this.settings.api.url},
                         {key: 'method', value: this.settings.form_method},
                         {key: 'novalidate', value: this.settings.novalidate},
                     ],
@@ -478,11 +484,13 @@
             var status = {success: false, message: 'SendData: Error (Default)'};
 
             var defaults = {
-                url: this.settings.api_url,
-                api_custom: this.settings.api_custom,
+                url: this.settings.api.url,
+                api_custom: this.settings.api.custom,
                 data: this.popup.form.serialize(),
                 data_dictionary: this.settings.input.data_dictionary,
-                type: this.settings.form_method
+                type: this.settings.form_method,
+                success_param: this.settings.api.param.success, //bool - true for success, false for failure
+                return_param: this.settings.api.param.message, //the key of returned data (preferably an array) from the API which contains the response
             };
             var settings = $.extend(true, {}, defaults, options);
 
@@ -505,6 +513,10 @@
                 status = {success: false, message: 'SendData: Error (Validation)'};
             }
 
+            //set message showing that data is being sent
+            this.StatusClear();
+            this.StatusAdd('Sending form...', {});
+
             return status;
         },
         SendDataAjax: function (options) {
@@ -518,8 +530,8 @@
                 api_custom: [],
                 data: '',
                 data_dictionary: {},
-                success_param: 'success', //bool - true for success, false for failure
-                return_param: 'message', //the key of returned data (preferably an array) from the API which contains the response
+                success_param: {name: 'result', value: 'success'}, //name of parameter in returned data from API that contains the success reponse
+                return_param: 'message', //the key of returned data (preferably an array) from the API which contains the response message
                 /*
                 callback: {
                     success: {
@@ -606,21 +618,39 @@
                             console.log(data[settings.return_param]);
                         }
 
-                        if (data[settings.success_param]) {
+                        if (data[settings.success_param.name]) {
+                            if (data[settings.success_param.name] === settings.success_param.value) {
+                                status = {success: true, message: 'Success (API x:200)'};
 
+                                //CALLBACK
+
+                                //check if callback is set and is a function
+                                if (settings.callback.success.function && $.isFunction(settings.callback.success.function)) {
+                                    //call the callback function after the function is done
+                                    settings.callback.success.function.apply(settings.callback.success.this, settings.callback.success.parameters);
+                                }
+                            } else {
+                                //CALLBACK
+
+                                //ERROR
+                                //check if callback is set and is a function
+                                if (settings.callback.error.function && $.isFunction(settings.callback.error.function)) {
+                                    //call the callback function after the function is done
+                                    settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
+                                }
+                            }
+                        } else {
+                            //CALLBACK
+
+                            //ERROR
+                            //check if callback is set and is a function
+                            if (settings.callback.error.function && $.isFunction(settings.callback.error.function)) {
+                                //call the callback function after the function is done
+                                settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
+                            }
                         }
-
-                        status = {success: true, message: 'Success (API x:200)'};
 
                         objThis.settings.status.ajax_processing = false;
-
-                        //CALLBACK
-
-                        //check if callback is set and is a function
-                        if (settings.callback.success.function && $.isFunction(settings.callback.success.function)) {
-                            //call the callback function after the function is done
-                            settings.callback.success.function.apply(settings.callback.success.this, settings.callback.success.parameters);
-                        }
                     },
                     error: function (data) {
                         // Error...
@@ -634,6 +664,7 @@
 
                         //CALLBACK
 
+                        //ERROR
                         //check if callback is set and is a function
                         if (settings.callback.error.function && $.isFunction(settings.callback.error.function)) {
                             //call the callback function after the function is done

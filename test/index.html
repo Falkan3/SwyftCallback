@@ -36,16 +36,28 @@
     var x;
     $( function() {
         x = $( "body" ).swyftCallback( {
-            api_url: 'https://op.automatkredytowy.pl/api/leadApi/lead',
-            api_custom: [
-                {name: 'api_key', value: 'fN9vaME75zXqQTaf'},
-            ],
+            api: {
+                url: 'https://op.automatkredytowy.pl/api/leadApi/lead',
+                custom: [
+                    {name: 'api_key', value: 'fN9vaME75zXqQTaf'},
+                ],
+                params: {
+                    success: {name: 'result', value: 'success'},
+                }
+            },
             form_method: 'get',
             custom_button_class: ['wow', 'animated', 'tada', 'infinite'],
             //custom_button_data: [['wow-duration', '4s']],
             input: {
                 fields: [
-                    {name: 'phone', label: 'Telefon', field_name: 'phone'}
+                    {
+                        name: 'phone',
+                        label: 'Telefon',
+                        field_name: 'phone',
+                        data_field_type: 'phone',
+                        placeholder: '000-000-000',
+                        required: false
+                    }
                 ],
                 agreements: [
                     {

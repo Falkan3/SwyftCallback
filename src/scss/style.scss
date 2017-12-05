@@ -65,6 +65,15 @@ $font_color_secondary: #fff;
             bottom: -4rem;
             opacity: 0;
         }
+
+        @media (max-width: 991px) {
+            bottom: 2rem;
+            right: 2rem;
+        }
+        @media (max-width: 767px) {
+            bottom: 1rem;
+            right: 1rem;
+        }
     }
     &_round_container {
         width: 100%;
@@ -119,6 +128,9 @@ $font_color_secondary: #fff;
         transform: translate(-50%, -50%);
         width: 400px;
         max-width: 100%;
+        max-height: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
 
         background: $bg_primary;
 
@@ -150,6 +162,11 @@ $font_color_secondary: #fff;
 
             &:hover, &:focus, &:active {
                 transform: scale(1.1);
+            }
+
+            @media (max-width: 767px) {
+                right: 0;
+                top: 0;
             }
         }
 
