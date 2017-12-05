@@ -1,5 +1,5 @@
 /*
- *  Swyft Callback - v0.0.1
+ *  Swyft Callback - v0.0.2
  *  A dynamic callback contact form
  *
  *  Made by Adam Kocić (Falkan3)
@@ -108,7 +108,7 @@
         };
         //popup window
         this.popup = {
-            obj: null, form: null
+            obj: null, form: null, footer: null
         };
 
         this.init();
@@ -327,13 +327,18 @@
 
             //append the object to DOM
             this.popup.obj = $popupBody.appendTo($(this.element));
+
+            //find references to sections
             this.popup.form = this.popup.obj.find('form');
+            this.popup.footer = this.popup.obj.find('.' + form_obj_prefix + 'footer_section');
 
             //form fields
+            //add fields to popup body
             //var fields =
             this.initPopup_generate_fields($popupBody);
 
             //agreements
+            //add agreements to popup body
             //var agreements =
             this.initPopup_generate_popup_agreements($popupBody);
 
@@ -399,27 +404,19 @@
                 });
             }
 
-            /*
-            this.popup.form.find(input_all_mask).on('input', function (e) {
-                //validate input
-                var validated = objThis.ValidateForm($(this), {append_status: false});
-                //send form if validated
-                if (validated) {
-                    console.log('validation successful');
-                }
-
-                return false;
-            });
-            */
-
             //form submit
             this.popup.obj.on('submit', function (e) {
                 var status = objThis.SendData({
                     callback: {
                         success: {
-                            function: objThis.ResetInput,
+                            function: objThis.SendDataReturn,
                             this: objThis,
-                            parameters: []
+                            parameters: ['Form sent successfuly.', 'success']
+                        },
+                        error: {
+                            function: objThis.SendDataReturn,
+                            this: objThis,
+                            parameters: ['Server encountered an error.', 'error']
                         }
                     }
                 });
@@ -450,7 +447,7 @@
          */
         popupApplyMisc: function () {
             /* --- js input mask --- */
-            var inputs = $('input');
+            var inputs = $(input_all_mask);
 
             //check if exists
             console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
@@ -647,6 +644,43 @@
             }
 
             return status;
+        },
+
+        /* Status messages */
+
+        StatusAdd: function(_message, options) {
+            //set settings
+            var defaults = {
+                fade_duration: 300,
+                style: ''
+            };
+            var settings = $.extend({}, defaults, options);
+
+            /* --- */
+
+            var message = $('<p></p>');
+            message.text(_message);
+            message.appendTo(this.popup.footer);
+            message.hide();
+
+            if(settings.style === 'success') {
+                this.StatusClearStyle();
+                this.popup.footer.addClass('success');
+            } else if(settings.style === 'error') {
+                this.StatusClearStyle();
+                this.popup.footer.addClass('error');
+            }
+
+            message.fadeIn(settings.fade_duration);
+        },
+        StatusClearStyle: function() {
+            //reset css classes
+            this.popup.footer.removeClass('success error');
+        },
+        StatusClear: function() {
+            this.StatusClearStyle();
+            //remove contents
+            this.popup.footer.empty();
         },
 
         /* ------ Popup ------ */
@@ -853,6 +887,13 @@
 
             return is_valid;
         },
+
+        SendDataReturn: function(_message, _style) {
+            this.ResetInput();
+            this.StatusClear();
+            this.StatusAdd(_message, {style: _style});
+        },
+
         ResetInput: function () {
             var form = this.popup.form;//this.popup.obj.find('form');
             form[0].reset();
