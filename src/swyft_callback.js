@@ -48,6 +48,7 @@
                 popup_hidden: true,
                 button_disabled: false, //disable show/close functionality
                 ajax_processing: false,
+                response_from_api_visible: true,
             },
             //content - text
             text_vars: {
@@ -669,7 +670,8 @@
                                 settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
                             }
 
-                            if(return_message) {
+                            //if show response from api settings is set to true, view the message
+                            if(objThis.settings.status.response_from_api_visible && return_message) {
                                 objThis.StatusAdd(return_message, {style: 'error'});
                             }
                         }
