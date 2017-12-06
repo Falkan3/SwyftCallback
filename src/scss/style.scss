@@ -430,14 +430,17 @@ $font_color_secondary: #fff;
                     }
                 }
 
+				label, .sc_readmore_body {
+					font-size: 0.7em;
+					color: lighten($font_color_primary, 50%);
+				}
+
                 label {
                     display: inline-block;
                     margin-bottom: 0;
                     padding-left: 2rem;
 
                     font-weight: 300;
-                    font-size: 0.8em;
-                    color: lighten($font_color_primary, 50%);
 
                     cursor: pointer;
 
@@ -451,7 +454,7 @@ $font_color_secondary: #fff;
                     }
                 }
 
-                .sc_readmore {
+				.sc_readmore {
                     color: $border_hover;
 
                     &:hover, &:active, &:focus {
@@ -461,7 +464,6 @@ $font_color_secondary: #fff;
                 .sc_readmore_body {
                     display: block;
                     margin-top: 0.5rem;
-                    font-size: 0.8em;
                     font-weight: 300;
                     text-align: justify;
 
