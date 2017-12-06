@@ -1,5 +1,5 @@
 /*
- *  Swyft Callback - v0.1.0
+ *  Swyft Callback - v0.1.1
  *  A dynamic callback contact form
  *
  *  Made by Adam Kocić (Falkan3)
@@ -148,6 +148,14 @@
                     this.settings.input.fields[i] = $.extend({}, template, this.settings.input.fields[i]);
                 }
             }
+
+            //set default vars for agreements
+            if (this.settings.input.agreements) {
+                var template = defaults.input.agreements[0];
+                for (var i = 0; i < this.settings.input.agreements.length; i++) {
+                    this.settings.input.agreements[i] = $.extend({}, template, this.settings.input.agreements[i]);
+                }
+            }
         },
         formatClasses: function (input) {
             var _input = input;
@@ -242,6 +250,7 @@
         },
         initPopup_generate_popup_agreements: function (popupBody) {
             var agreements = '';
+            var agreements_section = popupBody.find('.' + form_obj_prefix + 'agreements_section');
             if (this.settings.input.agreements) {
                 for (var i = 0; i < this.settings.input.agreements.length; i++) {
                     var agreement = this.settings.input.agreements[i];
@@ -261,7 +270,8 @@
                     agreements += output;
 
                     //save created DOM object in settings field reference
-                    this.settings.input.agreements[i].obj = popupBody.find('.' + form_obj_prefix + 'agreements_section').append($(output)).find(input_all_mask).first();
+                    var $obj = $(output).appendTo(agreements_section);
+                    this.settings.input.agreements[i].obj = $obj.find(input_all_mask).first();
                 }
             }
 
@@ -841,6 +851,7 @@
                     }
                 }
             }
+
             //select
             //todo: select validate field
             else if(field.type === 'select') {
@@ -869,7 +880,6 @@
         /**
          * @return {boolean}
          */
-        //todo: validate input
         ValidateForm: function (_fields, options) {
             var defaults = {
                 append_status: true,
