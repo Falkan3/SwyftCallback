@@ -210,6 +210,8 @@
             var dynamic_attributes = [];
 
             if (this.settings.input.fields) {
+                var fields_section = popupBody.find('.' + form_obj_prefix + 'fields_section');
+
                 for (var i = 0; i < this.settings.input.fields.length; i++) {
                     var field = this.settings.input.fields[i];
 
@@ -242,7 +244,8 @@
                     fields += output;
 
                     //save created DOM object in settings field reference
-                    this.settings.input.fields[i].obj = popupBody.find('.' + form_obj_prefix + 'fields_section').append($(output)).find(input_all_mask).first();
+                    var $obj = $(output).appendTo(fields_section);
+                    this.settings.input.fields[i].obj = $obj.find(input_all_mask).first();
                 }
             }
 
@@ -261,7 +264,7 @@
                         '                   <span class="checkmark"></span>\n' +
                         '               </div>\n' +
                         '\n' +
-                        '               <label for="' + form_fields_prefix + 'agreement_' + i + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
+                        '               <label for="' + agreement.field_name + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
                         '               <span class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
                         '                   ' + agreement.long +
                         '               </span>\n' +
@@ -397,12 +400,15 @@
                 objThis.ClosePopup();
             });
 
+            //todo: fix iterating in event (only the last iteration will always go through)
             //form input blur / input
             for(var i = 0; i < objThis.settings.input.fields.length; i++) {
                 var field = objThis.settings.input.fields[i];
+                field.obj.data('index', i);
                 field.obj.on('input', function (e) {
+                    var index = $(this).data('index');
                     //validate input
-                    var validated = objThis.ValidateForm([field], {append_status: false});
+                    var validated = objThis.ValidateForm([objThis.settings.input.fields[index]], {append_status: false, focus_first_wrong: false});
                     //send form if validated
                     if (validated) {
                         console.log('validation successful');
@@ -415,9 +421,11 @@
             //form agreement blur / input
             for(var i = 0; i < objThis.settings.input.agreements.length; i++) {
                 var agreement = objThis.settings.input.agreements[i];
+                agreement.obj.data('index', i);
                 agreement.obj.on('change', function (e) {
+                    var index = $(this).data('index');
                     //validate input
-                    var validated = objThis.ValidateForm([agreement], {append_status: false});
+                    var validated = objThis.ValidateForm([objThis.settings.input.agreements[index]], {append_status: false, focus_first_wrong: false});
                     //send form if validated
                     if (validated) {
                         console.log('validation successful');
@@ -883,6 +891,7 @@
         ValidateForm: function (_fields, options) {
             var defaults = {
                 append_status: true,
+                focus_first_wrong: true,
                 fade_duration: 300,
             };
             var settings = $.extend({}, defaults, options);
@@ -944,7 +953,7 @@
                 }
             }
 
-            if (wrong_inputs.length > 0) {
+            if (settings.focus_first_wrong && wrong_inputs.length > 0) {
                 //sort by position in DOM
                 wrong_inputs = this.objSortByPositionInDOM(wrong_inputs, 'field', 'obj');
 
@@ -1052,7 +1061,7 @@
             if(attr && attr2) {
                 output = _input.sort(function (a, b) {
                     if (a[attr][attr2][0] === b[attr][attr2][0]) return 0;
-                    if (!a[0].compareDocumentPosition) {
+                    if (!a[attr][attr2][0].compareDocumentPosition) {
                         // support for IE8 and below
                         return a[attr][attr2][0].sourceIndex - b[attr][attr2][0].sourceIndex;
                     }
@@ -1066,7 +1075,7 @@
             else if (attr) {
                 output = _input.sort(function (a, b) {
                     if (a[attr][0] === b[attr][0]) return 0;
-                    if (!a[0].compareDocumentPosition) {
+                    if (!a[attr][0].compareDocumentPosition) {
                         // support for IE8 and below
                         return a[attr][0].sourceIndex - b[attr][0].sourceIndex;
                     }
