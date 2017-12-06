@@ -1,5 +1,5 @@
 /*
- *  Swyft Callback - v0.0.2
+ *  Swyft Callback - v0.1.0
  *  A dynamic callback contact form
  *
  *  Made by Adam Kocić (Falkan3)
@@ -54,6 +54,9 @@
                 popup_title: "Contact form",
                 popup_body: "Leave us your phone number. We'll call you back.",
                 send_button_text: "Send",
+                wrong_input_text: "Wrong input",
+                status_success: "Form sent successfuly",
+                status_error: "Server encountered and error",
             },
             //form info
             novalidate: true,
@@ -84,8 +87,9 @@
                     }
                 ],
                 regex_table: {
-                    'checkbox': /true|false/,
-                    'phone': /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/
+                    'phone': /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/,
+                    'email': /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    'name': /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšśžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŚŽ∂ð ,.'-]+$/
                 },
                 //dictionary is used to exchange input names into values from the dictionary on API request
                 data_dictionary: {} //'sc_fld_telephone': 'phone'
@@ -419,12 +423,12 @@
                         success: {
                             function: objThis.SendDataReturn,
                             this: objThis,
-                            parameters: ['Form sent successfuly.', 'success']
+                            parameters: [objThis.settings.text_vars.status_success, 'success']
                         },
                         error: {
                             function: objThis.SendDataReturn,
                             this: objThis,
-                            parameters: ['Server encountered an error.', 'error']
+                            parameters: [objThis.settings.text_vars.status_error, 'error']
                         }
                     }
                 });
@@ -496,6 +500,9 @@
             };
             var settings = $.extend(true, {}, defaults, options);
 
+            //remove all status messages
+            this.StatusClear();
+
             //find all input in form
             //var input = this.popup.form.find(input_all_mask);
 
@@ -509,15 +516,14 @@
                 console.log('Validation successful');
                 console.log('Attempting to send data...');
 
-                //todo: send AJAX call
+                //set message showing that data is being sent
+                this.StatusClear();
+                this.StatusAdd('Sending form...', {});
+
                 status = this.SendDataAjax(settings);
             } else {
                 status = {success: false, message: 'SendData: Error (Validation)'};
             }
-
-            //set message showing that data is being sent
-            this.StatusClear();
-            this.StatusAdd('Sending form...', {});
 
             return status;
         },
@@ -608,7 +614,11 @@
                     dataType: 'json',
                     processData: false,
                     success: function (data) {
+                        var response_success = false;
+                        var return_message;
+
                         console.log(data);
+
                         if (data[settings.return_param]) {
                             for (var index in data[settings.return_param]) {
                                 console.log(data[settings.return_param][index]);
@@ -620,35 +630,47 @@
                             console.log(data[settings.return_param]);
                         }
 
+                        //format return message
+                        if($.isArray(data[settings.return_param])) {
+                            return_message = data[settings.return_param].join(', ');
+                        } else {
+                            return_message = data[settings.return_param];
+                        }
+                        console.log(data[settings.return_param])
+
+                        //check if the call to API was successful
                         if (data[settings.success_param.name]) {
                             if (data[settings.success_param.name] === settings.success_param.value) {
                                 status = {success: true, message: 'Success (API x:200)'};
 
-                                //CALLBACK
-
-                                //check if callback is set and is a function
-                                if (settings.callback.success.function && $.isFunction(settings.callback.success.function)) {
-                                    //call the callback function after the function is done
-                                    settings.callback.success.function.apply(settings.callback.success.this, settings.callback.success.parameters);
-                                }
+                                response_success = true;
                             } else {
-                                //CALLBACK
+                                response_success = false;
+                            }
+                        } else {
+                            response_success = false;
+                        }
 
-                                //ERROR
-                                //check if callback is set and is a function
-                                if (settings.callback.error.function && $.isFunction(settings.callback.error.function)) {
-                                    //call the callback function after the function is done
-                                    settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
-                                }
+                        //perform callbacks according to response status
+                        if(response_success) {
+                            //CALLBACK
+                            //SUCCESS
+                            //check if callback is set and is a function
+                            if (settings.callback.success.function && $.isFunction(settings.callback.success.function)) {
+                                //call the callback function after the function is done
+                                settings.callback.success.function.apply(settings.callback.success.this, settings.callback.success.parameters);
                             }
                         } else {
                             //CALLBACK
-
                             //ERROR
                             //check if callback is set and is a function
                             if (settings.callback.error.function && $.isFunction(settings.callback.error.function)) {
                                 //call the callback function after the function is done
                                 settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
+                            }
+
+                            if(return_message) {
+                                objThis.StatusAdd(return_message, {style: 'error'});
                             }
                         }
 
@@ -771,7 +793,11 @@
 
             //fade out the popup window and reset the input
             this.popup.obj.fadeOut(settings.fade_duration, function () {
+                //reset input from fields
                 objThis.ResetInput();
+
+                //reset status messages
+                objThis.StatusClear();
             });
 
             //hide button
@@ -894,7 +920,7 @@
                     //add element signifying wrong input
                     if (settings.append_status) {
                         var $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
-                        $wrong_input_obj.text('Wrong input');
+                        $wrong_input_obj.text(this.settings.text_vars.wrong_input_text);
                         $wrong_input_obj.hide();
 
                         $wrong_input_obj.appendTo($this_container);

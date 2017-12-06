@@ -41,13 +41,23 @@
                 custom: [
                     {name: 'api_key', value: 'fN9vaME75zXqQTaf'},
                 ],
-                params: {
+                param: {
                     success: {name: 'result', value: 'success'},
+                    message: 'message'
                 }
             },
             form_method: 'get',
             custom_button_class: ['wow', 'animated', 'tada', 'infinite'],
             //custom_button_data: [['wow-duration', '4s']],
+            text_vars: {
+                popup_title: "Contact form",
+                popup_body: "Leave us your phone number. We'll call you back.",
+                send_button_text: "Send",
+                wrong_input_text: "Wrong input",
+
+                status_success: "Success",
+                status_error: "Server error",
+            },
             input: {
                 fields: [
                     {

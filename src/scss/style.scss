@@ -69,10 +69,14 @@ $font_color_secondary: #fff;
         @media (max-width: 991px) {
             bottom: 2rem;
             right: 2rem;
+            width: 56px;
+            height: 56px;
         }
         @media (max-width: 767px) {
             bottom: 1rem;
             right: 1rem;
+            width: 48px;
+            height: 48px;
         }
     }
     &_round_container {
@@ -139,7 +143,7 @@ $font_color_secondary: #fff;
         position: relative;
         width: 400px;
         max-width: 100%;
-        margin: 12px auto 0 auto;
+        margin: 0 auto;
 
         background: $bg_primary;
 
@@ -167,10 +171,11 @@ $font_color_secondary: #fff;
 
             cursor: pointer;
 
+            @include transform(scale(0.9));
             @include transition(ease-out transform, 0.3s);
 
             &:hover, &:focus, &:active {
-                transform: scale(1.1);
+                @include transform(scale(1));
             }
 
             @media (max-width: 767px) {
