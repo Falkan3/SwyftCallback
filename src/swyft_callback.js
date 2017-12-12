@@ -667,7 +667,7 @@
                         } else {
                             return_message = data[settings.return_param];
                         }
-                        console.log(data[settings.return_param])
+                        console.log(return_message);
 
                         //check if the call to API was successful
                         if (data[settings.success_param.name]) {
@@ -691,8 +691,9 @@
                                 //call the callback function after the function is done
                                 settings.callback.success.function.apply(settings.callback.success.this, settings.callback.success.parameters);
                             }
+                            //callback from obj settings
                             if (objThis.settings.api.callback.success.function && $.isFunction(objThis.settings.api.callback.success.function)) {
-                                objThis.settings.api.callback.success.function.apply(objThis.settings.api.callback.success.this, objThis.settings.api.callback.success.parameters);
+                                objThis.settings.api.callback.success.function.apply(objThis.settings.api.callback.success.this, [$.extend(true, {}, data, objThis.settings.api.callback.success.parameters)]);
                             }
                         } else {
                             //CALLBACK
@@ -702,8 +703,9 @@
                                 //call the callback function after the function is done
                                 settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
                             }
+                            //callback from obj settings
                             if (objThis.settings.api.callback.error.function && $.isFunction(objThis.settings.api.callback.error.function)) {
-                                objThis.settings.api.callback.error.function.apply(objThis.settings.api.callback.error.this, objThis.settings.api.callback.error.parameters);
+                                objThis.settings.api.callback.error.function.apply(objThis.settings.api.callback.error.this, [$.extend(true, {}, data, objThis.settings.api.callback.error.parameters)]);
                             }
 
                             //if show response from api settings is set to true, view the message

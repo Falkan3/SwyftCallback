@@ -47,12 +47,10 @@
                 },
                 callback: {
                     success: {
-                        function: alert,
-                        parameters: ['success'],
+                        function: function(input) {console.log(input)},
                     },
                     error: {
-                        function: alert,
-                        parameters: ['error'],
+                        function: function(input) {console.log(input)},
                     }
                 }
             },
