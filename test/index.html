@@ -44,6 +44,16 @@
                 param: {
                     success: {name: 'result', value: 'success'},
                     message: 'message'
+                },
+                callback: {
+                    success: {
+                        function: alert,
+                        parameters: ['success'],
+                    },
+                    error: {
+                        function: alert,
+                        parameters: ['error'],
+                    }
                 }
             },
             form_method: 'get',
@@ -68,14 +78,6 @@
                         placeholder: '000-000-000',
                         required: true
                     },
-                    {
-                        name: 'phone2',
-                        label: 'Phone',
-                        field_name: 'phone2',
-                        data_field_type: 'phone',
-                        placeholder: '000-000-000',
-                        required: true
-                    }
                 ],
                 agreements: [
                     {
@@ -88,6 +90,12 @@
                         field_name: 'agreement_2',
                         short: 'Short2',
                         long: 'Long2',
+                        readmore: 'More'
+                    },
+                    {
+                        field_name: 'agreement_3',
+                        short: 'Short3',
+                        long: 'Long3',
                         readmore: 'More'
                     }
                 ],
