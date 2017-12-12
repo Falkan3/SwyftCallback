@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10fc1a21-5cde-439f-b811-9191e2e35e63" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Swyft_Callback.iml" afterPath="$PROJECT_DIR$/.idea/Swyft_Callback.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/swyft_callback.js" afterPath="$PROJECT_DIR$/src/swyft_callback.js" />
-      <change beforePath="$PROJECT_DIR$/test/index.html" afterPath="$PROJECT_DIR$/test/index.html" />
+      <change beforePath="$PROJECT_DIR$/src/scss/style.scss" afterPath="$PROJECT_DIR$/src/scss/style.scss" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,7 +13,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="384">
@@ -27,11 +23,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.scss" pinned="false" current-in-tab="false">
+      <file leaf-file-name="style.scss" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="482">
-              <caret line="466" column="37" lean-forward="false" selection-start-line="466" selection-start-column="37" selection-end-line="466" selection-end-column="37" />
+            <state relative-caret-position="261">
+              <caret line="465" column="38" lean-forward="true" selection-start-line="465" selection-start-column="38" selection-end-line="465" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -122,8 +118,8 @@
       <find>SendData</find>
       <find>SendDataReturn</find>
       <find>callback</find>
-      <find>success</find>
       <find>parameters</find>
+      <find>success</find>
     </findStrings>
     <replaceStrings>
       <replace>' + form_fields_prefix + '</replace>
@@ -149,9 +145,9 @@
         <option value="$PROJECT_DIR$/src/php_templates/wrong_input_block.php" />
         <option value="$PROJECT_DIR$/src/scss/_bootstrap_overwrite.scss" />
         <option value="$PROJECT_DIR$/src/php_templates/popup.php" />
-        <option value="$PROJECT_DIR$/src/scss/style.scss" />
         <option value="$PROJECT_DIR$/src/swyft_callback.js" />
         <option value="$PROJECT_DIR$/test/index.html" />
+        <option value="$PROJECT_DIR$/src/scss/style.scss" />
       </list>
     </option>
   </component>
@@ -252,12 +248,12 @@
       <workItem from="1512379233393" duration="29274000" />
       <workItem from="1512486675636" duration="12681000" />
       <workItem from="1512574706238" duration="3197000" />
-      <workItem from="1513077304866" duration="1042000" />
+      <workItem from="1513077304866" duration="1195000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75397000" />
+    <option name="totallyTimeSpent" value="75550000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
@@ -654,14 +650,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="482">
-          <caret line="466" column="37" lean-forward="false" selection-start-line="466" selection-start-column="37" selection-end-line="466" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/swyft_callback.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="201">
@@ -697,6 +685,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
           <caret line="97" column="38" lean-forward="true" selection-start-line="97" selection-start-column="38" selection-end-line="97" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="465" column="38" lean-forward="true" selection-start-line="465" selection-start-column="38" selection-end-line="465" selection-end-column="38" />
           <folding />
         </state>
       </provider>
