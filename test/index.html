@@ -44,6 +44,14 @@
                 param: {
                     success: {name: 'result', value: 'success'},
                     message: 'message'
+                },
+                callback: {
+                    success: {
+                        function: function(input) {console.log(input)},
+                    },
+                    error: {
+                        function: function(input) {console.log(input)},
+                    }
                 }
             },
             form_method: 'get',
@@ -80,6 +88,12 @@
                         field_name: 'agreement_2',
                         short: 'Short2',
                         long: 'Long2',
+                        readmore: 'More'
+                    },
+                    {
+                        field_name: 'agreement_3',
+                        short: 'Short3',
+                        long: 'Long3',
                         readmore: 'More'
                     }
                 ],
