@@ -272,7 +272,7 @@
                     var output = '<div class="' + form_obj_prefix + 'division">' +
                         '           <div class="input">' +
                         '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
-                        '                   <input id="' + agreement.field_name + '" name = "' + agreement.field_name + '" type="checkbox" checked="checked" data-field-type="checkbox" />\n' +
+                        '                   <input id="' + agreement.field_name + '" name = "' + agreement.field_name + '" type="checkbox" checked="checked" value="true" data-field-type="checkbox" />\n' +
                         '                   <span class="checkmark"></span>\n' +
                         '               </div>\n' +
                         '\n' +
