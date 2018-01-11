@@ -74,6 +74,7 @@
                 send_button_text: "Send",
                 wrong_input_text: "Wrong input",
                 status_success: "Form sent successfuly",
+                status_sending: "Sending form...",
                 status_error: "Server encountered and error",
             },
             //form info
@@ -533,6 +534,7 @@
                 type: this.settings.data.form_method,
                 success_param: this.settings.api.param.success, //bool - true for success, false for failure
                 return_param: this.settings.api.param.message, //the key of returned data (preferably an array) from the API which contains the response
+                status_sending_text: this.settings.text_vars.status_sending,
             };
             var settings = $.extend(true, {}, defaults, options);
 
@@ -554,7 +556,7 @@
 
                 //set message showing that data is being sent
                 this.StatusClear();
-                this.StatusAdd('Sending form...', {});
+                this.StatusAdd(this.settings.status_sending_text, {});
 
                 status = this.SendDataAjax(settings);
             } else {
