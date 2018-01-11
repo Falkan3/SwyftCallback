@@ -460,15 +460,18 @@ $font_color_secondary: #fff;
                             position: absolute;
                             display: none;
 
-                            left: 8px;
-                            top: 4px;
+                            left: 50%;//8px;
+                            top: 50%;//4px;
                             width: 5px;
                             height: 10px;
                             border: solid white;
                             border-width: 0 3px 3px 0;
-                            -webkit-transform: rotate(45deg);
-                            -ms-transform: rotate(45deg);
-                            transform: rotate(45deg);
+
+                            -webkit-transform: translateY(-50%) translateX(-50%) rotate(45deg);
+                            -moz-transform: translateY(-50%) translateX(-50%) rotate(45deg);
+                            -ms-transform: translateY(-50%) translateX(-50%) rotate(45deg);
+                            -o-transform: translateY(-50%) translateX(-50%) rotate(45deg);
+                            transform: translateY(-50%) translateX(-50%) rotate(45deg);
                         }
                     }
 
