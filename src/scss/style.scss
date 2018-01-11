@@ -90,6 +90,11 @@ $font_color_secondary: #fff;
 
         @include transition(ease-in-out, 0.3s);
 
+        &.left {
+            right: auto;
+            left: 4rem;
+        }
+
         &.hide {
             bottom: -4rem;
             opacity: 0;
@@ -100,12 +105,22 @@ $font_color_secondary: #fff;
             right: 2rem;
             width: 56px;
             height: 56px;
+
+            &.left {
+                right: auto;
+                left: 2rem;
+            }
         }
         @media (max-width: 767px) {
             bottom: 1rem;
             right: 1rem;
             width: 48px;
             height: 48px;
+
+            &.left {
+                right: auto;
+                left: 1rem;
+            }
         }
     }
     &_round_container {

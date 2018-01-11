@@ -49,12 +49,17 @@
                     }
                 }
             },
-            form_method: "post",
             //data
-            custom_button_class: "",
-            custom_button_data: "",
-            custom_popup_class: "",
-            custom_popup_data: "",
+            data: {
+                form_method: "post",
+                custom_button_data: "",
+                custom_popup_data: "",
+            },
+            //appearance
+            appearance: {
+                custom_button_class: "",
+                custom_popup_class: "",
+            },
             //status
             status: {
                 popup_hidden: true,
@@ -194,8 +199,8 @@
 
         initButton: function () {
             var objThis = this;
-            var classes = this.formatClasses(this.settings.custom_button_class);
-            var data = this.formatData(this.settings.custom_button_data);
+            var classes = this.formatClasses(this.settings.appearance.custom_button_class);
+            var data = this.formatData(this.settings.data.custom_button_data);
             var $buttonBody = $(
                 '<div class="' + form_obj_prefix + 'tg_btn' + classes + '" ' + data + '>\n' +
                 '    <div class="' + form_obj_prefix + 'round_container">\n' +
@@ -296,14 +301,14 @@
             var dynamic_attributes = [];
 
             // generate attributes for popup body
-            var classes = this.formatClasses(this.settings.custom_popup_class);
+            var classes = this.formatClasses(this.settings.appearance.custom_popup_class);
             dynamic_attributes = [
                 //0
                 {
                     name: 'form',
                     attributes: [
                         {key: 'action', value: this.settings.api.url},
-                        {key: 'method', value: this.settings.form_method},
+                        {key: 'method', value: this.settings.data.form_method},
                         {key: 'novalidate', value: this.settings.novalidate},
                     ],
                     formatted: ''
@@ -525,7 +530,7 @@
                 api_custom: this.settings.api.custom,
                 data: this.popup.form.serialize(),
                 data_dictionary: this.settings.input.data_dictionary,
-                type: this.settings.form_method,
+                type: this.settings.data.form_method,
                 success_param: this.settings.api.param.success, //bool - true for success, false for failure
                 return_param: this.settings.api.param.message, //the key of returned data (preferably an array) from the API which contains the response
             };
