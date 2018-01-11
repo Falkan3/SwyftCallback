@@ -556,7 +556,7 @@
 
                 //set message showing that data is being sent
                 this.StatusClear();
-                this.StatusAdd(this.settings.status_sending_text, {});
+                this.StatusAdd(settings.status_sending_text, {});
 
                 status = this.SendDataAjax(settings);
             } else {
