@@ -52,6 +52,7 @@
             //data
             data: {
                 form_method: "post",
+                send_headers: true,
                 custom_button_data: "",
                 custom_popup_data: "",
             },
@@ -535,6 +536,7 @@
                 success_param: this.settings.api.param.success, //bool - true for success, false for failure
                 return_param: this.settings.api.param.message, //the key of returned data (preferably an array) from the API which contains the response
                 status_sending_text: this.settings.text_vars.status_sending,
+                send_headers: this.settings.data.send_headers
             };
             var settings = $.extend(true, {}, defaults, options);
 
@@ -578,6 +580,7 @@
                 data_dictionary: {},
                 success_param: {name: 'result', value: 'success'}, //name of parameter in returned data from API that contains the success reponse
                 return_param: 'message', //the key of returned data (preferably an array) from the API which contains the response message
+                send_headers: true,
                 /*
                 callback: {
                     success: {
@@ -636,13 +639,15 @@
                 status = {success: true, message: 'SendDataAjax: Success (Got into ajax)'};
 
                 //Configure
-                $.ajaxSetup({
-                    headers: {
-                        //'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
+                if(settings.send_headers) {
+                    $.ajaxSetup({
+                        headers: {
+                            //'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                }
 
                 $.ajax({
                     url: settings.url,
