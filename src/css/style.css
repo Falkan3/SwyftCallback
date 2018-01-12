@@ -349,7 +349,7 @@ body {
 
 /* line 342, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .input.wrong-input .sc_status::before {
-  border-top-color: #dd1531;
+  border-top-color: #ff8697;
 }
 
 /* line 349, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
@@ -463,7 +463,7 @@ body {
 
 /* line 439, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_checkbox_container input.wrong-input ~ .checkmark {
-  border: solid 1px #dd1531;
+  border: solid 2px #dd1531;
 }
 
 /* line 443, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */

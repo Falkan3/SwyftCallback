@@ -340,7 +340,7 @@ $font_color_secondary: #fff;
                         color: $border_wrong;
 
                         &::before {
-                            border-top-color: $border_wrong;
+                            border-top-color: darken($bg_wrong, 10%);
                         }
                     }
                 }
@@ -437,7 +437,7 @@ $font_color_secondary: #fff;
                         visibility: hidden;
 
                         &.wrong-input ~ .checkmark {
-                            border: solid 1px $border_wrong;
+                            border: solid 2px $border_wrong;
                         }
 
                         &:checked ~ .checkmark {
