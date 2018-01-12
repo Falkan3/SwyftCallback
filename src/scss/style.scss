@@ -45,6 +45,7 @@ body {
 
 $bg_primary: #FEF5EF;
 $bg_secondary: #584B53;
+$bg_wrong: #ffb9c3;
 
 $btn_primary: #E4BB97;
 $border: #D6E3F8;
@@ -335,7 +336,7 @@ $font_color_secondary: #fff;
                     }
 
                     .sc_status {
-                        background: #ffb9c3;
+                        background: $bg_wrong;
                         color: $border_wrong;
 
                         &::before {
@@ -434,6 +435,10 @@ $font_color_secondary: #fff;
                     input {
                         margin: 0;
                         visibility: hidden;
+
+                        &.wrong-input ~ .checkmark {
+                            background-color: $bg_wrong;
+                        }
 
                         &:checked ~ .checkmark {
                             background-color: $btn_primary;
