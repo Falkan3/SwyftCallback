@@ -437,7 +437,7 @@ $font_color_secondary: #fff;
                         visibility: hidden;
 
                         &.wrong-input ~ .checkmark {
-                            background-color: $bg_wrong;
+                            border: solid 1px $border_wrong;
                         }
 
                         &:checked ~ .checkmark {

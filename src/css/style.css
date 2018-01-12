@@ -463,7 +463,7 @@ body {
 
 /* line 439, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_checkbox_container input.wrong-input ~ .checkmark {
-  background-color: #ffb9c3;
+  border: solid 1px #dd1531;
 }
 
 /* line 443, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
