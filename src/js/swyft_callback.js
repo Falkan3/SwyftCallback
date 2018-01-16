@@ -1013,8 +1013,8 @@
             form[0].reset();
 
             //validate after resetting the form
-            this.ValidateForm(this.settings.input.fields);
-            this.ValidateForm(this.settings.input.agreements);
+            this.ValidateForm(this.settings.input.fields, {append_status: false, focus_first_wrong: false});
+            this.ValidateForm(this.settings.input.agreements, {append_status: false, focus_first_wrong: false});
 
             /*
             var input = form.find(input_all_mask);
