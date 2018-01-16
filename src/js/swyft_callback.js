@@ -419,7 +419,6 @@
                 objThis.ClosePopup();
             });
 
-            //todo: fix iterating in event (only the last iteration will always go through)
             //form input blur / input
             for(var i = 0; i < objThis.settings.input.fields.length; i++) {
                 var field = objThis.settings.input.fields[i];
@@ -1012,6 +1011,10 @@
         ResetInput: function () {
             var form = this.popup.form;//this.popup.obj.find('form');
             form[0].reset();
+
+            //validate after resetting the form
+            this.ValidateForm(this.settings.input.fields);
+            this.ValidateForm(this.settings.input.agreements);
 
             /*
             var input = form.find(input_all_mask);
