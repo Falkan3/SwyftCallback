@@ -284,9 +284,11 @@
                         '               </div>\n' +
                         '\n' +
                         '               <label for="' + agreement.field_name + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
-                        '               <span class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
+                        '               <div class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
+                        '                   <span>\n' +
                         '                   ' + agreement.long +
-                        '               </span>\n' +
+                        '                   </span>\n' +
+                        '               </div>' +
                         '           </div>' +
                         '         </div>';
                     agreements += output;

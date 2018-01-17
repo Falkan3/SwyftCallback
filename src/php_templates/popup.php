@@ -37,9 +37,9 @@
                                         </div>
 
                                         <label for="sc_fld_agreement_1">Agreement 3 body <span class="sc_readmore">More</span></label>
-                                        <span class="sc_readmore_body" style="display: none;">
-                                        Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor
-                                    </span>
+                                        <div class="sc_readmore_body" style="display: none;">
+                                            <span>Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor</span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -51,9 +51,9 @@
                                         </div>
 
                                         <label for="sc_fld_agreement_2">Agreement 3 body <span class="sc_readmore">More</span></label>
-                                        <span class="sc_readmore_body" style="display: none;">
-                                        Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor
-                                    </span>
+                                        <div class="sc_readmore_body" style="display: none;">
+                                            <span>Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor</span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -65,9 +65,9 @@
                                         </div>
 
                                         <label for="sc_fld_agreement_3">Agreement 3 body <span class="sc_readmore">More</span></label>
-                                        <span class="sc_readmore_body" style="display: none;">
-                                        Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor
-                                    </span>
+                                        <div class="sc_readmore_body" style="display: none;">
+                                           <span>Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
