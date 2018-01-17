@@ -498,7 +498,7 @@
          */
         popupApplyMisc: function () {
             /* --- js input mask --- */
-            var inputs = $(input_all_mask);
+            var inputs = this.popup.form.find(input_all_mask);
 
             //check if exists
             console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
