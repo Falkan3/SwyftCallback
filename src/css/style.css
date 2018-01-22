@@ -519,34 +519,35 @@ body {
 /* line 494, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements label {
   display: inline-block;
+  min-height: 1.5rem;
   margin-bottom: 0;
   padding-left: 2rem;
   font-weight: 300;
   cursor: pointer;
 }
 
-/* line 503, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 504, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements label a {
   color: #9D5C63;
   text-decoration: underline;
 }
 
-/* line 507, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 508, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements label a:hover, .sc_popup form .sc_agreements label a:active, .sc_popup form .sc_agreements label a:focus {
   color: #bb8b90;
 }
 
-/* line 513, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 514, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore {
   color: #9D5C63;
 }
 
-/* line 516, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 517, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore:hover, .sc_popup form .sc_agreements .sc_readmore:active, .sc_popup form .sc_agreements .sc_readmore:focus {
   color: #bb8b90;
 }
 
-/* line 520, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 521, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore_body {
   display: block;
   margin: 0.5rem 0;
@@ -554,13 +555,13 @@ body {
   text-align: justify;
 }
 
-/* line 526, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 527, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore_body a {
   color: #9D5C63;
   text-decoration: none;
 }
 
-/* line 530, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
+/* line 531, C:/Users/Adam/Documents/Repos/Plugins/Swyft_Callback/src/scss/style.scss */
 .sc_popup form .sc_agreements .sc_readmore_body a:hover, .sc_popup form .sc_agreements .sc_readmore_body a:active, .sc_popup form .sc_agreements .sc_readmore_body a:focus {
   color: #bb8b90;
 }
