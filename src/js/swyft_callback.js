@@ -502,7 +502,6 @@
                     }
 
                     if(!_no_check_all_status) {
-                        console.log('yea')
                         //change the check prop of check all button according to the status of all agreements
                         objThis.input_checkbox_check_all_status();
                     }

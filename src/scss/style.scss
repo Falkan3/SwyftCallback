@@ -309,22 +309,22 @@ $font_color_secondary: #fff;
                     position: relative;
                     width: 100%;
 
-                    padding: 0.5rem;
+                    padding: 0.3rem; //0.5rem;
                     background: transparent;
 
                     text-align: center;
                     color: inherit;
 
-                    &::before {
-                        content: "";
-                        display: block;
-                        position: absolute;
-                        left: 50%;
-                        top: 0;
-                        border: solid 0.5rem transparent;
-
-                        @include transform(translateX(-50%));
-                    }
+                    //&::before {
+                    //    content: "";
+                    //    display: block;
+                    //    position: absolute;
+                    //    left: 50%;
+                    //    top: 0;
+                    //    border: solid 0.5rem transparent;
+					//
+                    //    @include transform(translateX(-50%));
+                    //}
                 }
 
                 &.wrong-input {
@@ -335,12 +335,12 @@ $font_color_secondary: #fff;
                     }
 
                     .sc_status {
-                        background: $bg_wrong;
+                        //background: $bg_wrong;
                         color: $border_wrong;
 
-                        &::before {
-                            border-top-color: darken($bg_wrong, 10%);
-                        }
+                        //&::before {
+                        //    border-top-color: darken($bg_wrong, 10%);
+                        //}
                     }
                 }
             }
@@ -457,6 +457,8 @@ $font_color_secondary: #fff;
                         height: 1.5rem;
                         background-color: #eee;
                         cursor: pointer;
+
+                        @include transition(ease-in-out, 0.3s);
 
                         /* Create the checkmark/indicator (hidden when not checked) */
                         &:after {
