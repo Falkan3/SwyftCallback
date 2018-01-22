@@ -60,6 +60,7 @@
             appearance: {
                 custom_button_class: "",
                 custom_popup_class: "",
+                show_check_all_agreements: true,
             },
             //status
             status: {
@@ -103,9 +104,14 @@
                         short: 'Lorem',
                         long: 'Ipsum',
                         readmore: 'More',
-                        required: true
+                        required: true,
+                        checked: true,
                     }
                 ],
+                check_all_agreements: {
+                    obj: null,
+                    short: 'Check all agreements',
+                },
                 regex_table: {
                     'phone': /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/,
                     'email': /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -271,15 +277,58 @@
             return fields;
         },
         initPopup_generate_popup_agreements: function (popupBody) {
-            var agreements = '';
             var agreements_section = popupBody.find('.' + form_obj_prefix + 'agreements_section');
+            var agreements = '';
+            var output = '';
+            var $obj = null;
+
             if (this.settings.input.agreements) {
+                //append check all agreements button
+                if(this.settings.appearance.show_check_all_agreements && this.settings.input.agreements.length > 0) {
+                    output = '<div class="' + form_obj_prefix + 'division">\n' +
+                        '               <div class="input">\n' +
+                        '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
+                        '                       <input id="' + form_fields_prefix + 'agreement_all" name="' + form_fields_prefix + 'agreement_all" type="checkbox" data-field-type="checkbox" />\n' +
+                        '                       <span class="checkmark"></span>\n' +
+                        '                   </div>\n' +
+                        '\n' +
+                        '                   <label for="' + form_fields_prefix + 'agreement_all">' + this.settings.input.check_all_agreements.short + '</label>\n' +
+                        '               </div>\n' +
+                        '          </div>';
+
+                    //save created DOM object in settings field reference
+                    $obj = $(output).appendTo(agreements_section);
+                    this.settings.input.check_all_agreements.obj = $obj.find(input_all_mask).first();
+                }
+
                 for (var i = 0; i < this.settings.input.agreements.length; i++) {
                     var agreement = this.settings.input.agreements[i];
-                    var output = '<div class="' + form_obj_prefix + 'division">' +
+
+                    var dynamic_attributes = [];
+                    // generate attributes for agreement
+                    dynamic_attributes = [
+                        //0
+                        {
+                            name: agreement.field_name,
+                            attributes: [
+                                {key: 'id', value: agreement.field_name},
+                                {key: 'name', value: agreement.field_name},
+                                {key: 'type', value: 'checkbox'},
+                                {key: 'value', value: 'true'},
+                                {key: 'data-field-type', value: 'checkbox'},
+                            ],
+                            formatted: ''
+                        },
+                    ];
+                    if(agreement.checked) {
+                        dynamic_attributes[0].attributes.push({key: 'checked', value: 'checked'});
+                    }
+                    dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
+
+                    output = '<div class="' + form_obj_prefix + 'division">' +
                         '           <div class="input">' +
                         '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
-                        '                   <input id="' + agreement.field_name + '" name = "' + agreement.field_name + '" type="checkbox" checked="checked" value="true" data-field-type="checkbox" />\n' +
+                        '                   <input ' + dynamic_attributes[0].formatted + ' />\n' +
                         '                   <span class="checkmark"></span>\n' +
                         '               </div>\n' +
                         '\n' +
@@ -294,7 +343,7 @@
                     agreements += output;
 
                     //save created DOM object in settings field reference
-                    var $obj = $(output).appendTo(agreements_section);
+                    $obj = $(output).appendTo(agreements_section);
                     this.settings.input.agreements[i].obj = $obj.find(input_all_mask).first();
                 }
             }
@@ -406,8 +455,25 @@
             this.popup.form.find('.checkmark').on('click', function (e) {
                 e.preventDefault();
                 var input = $(this).siblings('input');
-                input.prop('checked', !input.prop('checked')).change();
+                var is_checked = input.prop('checked');
+                input.prop('checked', !is_checked).change();
+
+                //checkbox check all click
+                var check_all_clicked = input.attr('id') === form_fields_prefix + 'agreement_all';
+
+                //change checked status on all agreements to the prop of check all button
+                for(var i = 0; i < objThis.settings.input.agreements.length; i++) {
+                    if(check_all_clicked) {
+                        objThis.settings.input.agreements[i].obj.prop('checked', !is_checked).change();
+                    }
+                }
+
+                //change the check prop of check all button according to the status of all agreements
+                objThis.input_checkbox_check_all_status();
             });
+
+            //change the check prop of check all button according to the status of all agreements
+            objThis.input_checkbox_check_all_status();
 
             //readmore click
             this.popup.form.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
@@ -516,6 +582,21 @@
                 });
             }
             /* --- /js input mask --- */
+        },
+
+        /*
+         * Change the check prop of check all button according to the status of all agreements
+         */
+        input_checkbox_check_all_status: function () {
+            var all_checked = true;
+
+            for(var i = 0; i < this.settings.input.agreements.length; i++) {
+                if(!this.settings.input.agreements[i].obj.prop('checked')) {
+                    all_checked = false;
+                }
+            }
+
+            this.settings.input.check_all_agreements.obj.prop('checked', all_checked).change();
         },
 
         /* -------------------- PUBLIC METHODS -------------------- */
