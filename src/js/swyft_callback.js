@@ -456,24 +456,8 @@
                 e.preventDefault();
                 var input = $(this).siblings('input');
                 var is_checked = input.prop('checked');
-                input.prop('checked', !is_checked).change();
-
-                //checkbox check all click
-                var check_all_clicked = input.attr('id') === form_fields_prefix + 'agreement_all';
-
-                //change checked status on all agreements to the prop of check all button
-                for(var i = 0; i < objThis.settings.input.agreements.length; i++) {
-                    if(check_all_clicked) {
-                        objThis.settings.input.agreements[i].obj.prop('checked', !is_checked).change();
-                    }
-                }
-
-                //change the check prop of check all button according to the status of all agreements
-                objThis.input_checkbox_check_all_status();
+                input.prop('checked', !is_checked).trigger('change', []);
             });
-
-            //change the check prop of check all button according to the status of all agreements
-            objThis.input_checkbox_check_all_status();
 
             //readmore click
             this.popup.form.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
@@ -508,7 +492,7 @@
             for(var i = 0; i < objThis.settings.input.agreements.length; i++) {
                 var agreement = objThis.settings.input.agreements[i];
                 agreement.obj.data('index', i);
-                agreement.obj.on('change', function (e) {
+                agreement.obj.on('change', function (e, _no_check_all_status) {
                     var index = $(this).data('index');
                     //validate input
                     var validated = objThis.ValidateForm([objThis.settings.input.agreements[index]], {append_status: false, focus_first_wrong: false});
@@ -517,9 +501,32 @@
                         console.log('validation successful');
                     }
 
+                    if(!_no_check_all_status) {
+                        console.log('yea')
+                        //change the check prop of check all button according to the status of all agreements
+                        objThis.input_checkbox_check_all_status();
+                    }
+
                     return false;
                 });
             }
+
+            //checkbox check all click
+            if(this.settings.appearance.show_check_all_agreements) {
+                this.settings.input.check_all_agreements.obj.on('change', function(e, _no_check_all_status) {
+                    if(!_no_check_all_status) {
+                        var is_checked = $(this).prop('checked');
+
+                        //change checked status on all agreements to the prop of check all button
+                        for (var i = 0; i < objThis.settings.input.agreements.length; i++) {
+                            objThis.settings.input.agreements[i].obj.prop('checked', is_checked).trigger('change', [true]);
+                        }
+                    }
+                });
+            }
+
+            //change the check prop of check all button according to the status of all agreements
+            objThis.input_checkbox_check_all_status();
 
             //form submit
             this.popup.obj.on('submit', function (e) {
@@ -588,15 +595,17 @@
          * Change the check prop of check all button according to the status of all agreements
          */
         input_checkbox_check_all_status: function () {
-            var all_checked = true;
+            if(this.settings.appearance.show_check_all_agreements) {
+                var all_checked = true;
 
-            for(var i = 0; i < this.settings.input.agreements.length; i++) {
-                if(!this.settings.input.agreements[i].obj.prop('checked')) {
-                    all_checked = false;
+                for(var i = 0; i < this.settings.input.agreements.length; i++) {
+                    if(!this.settings.input.agreements[i].obj.prop('checked')) {
+                        all_checked = false;
+                    }
                 }
-            }
 
-            this.settings.input.check_all_agreements.obj.prop('checked', all_checked).change();
+                this.settings.input.check_all_agreements.obj.prop('checked', all_checked).trigger('change', [true]);
+            }
         },
 
         /* -------------------- PUBLIC METHODS -------------------- */
