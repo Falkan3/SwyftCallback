@@ -4,4 +4,6 @@
             <a href="#"></a>
         </div>
     </div>
+
+    <div class="sc_ripple"></div>
 </div>

@@ -60,6 +60,9 @@ $status_error: #ffb0b3;
 $font_color_primary: #212121;
 $font_color_secondary: #fff;
 
+//misc
+$ripple_color: #aeaeae;
+
 @mixin transition($property, $duration) {
     -webkit-transition: $property $duration;
     -moz-transition: $property $duration;
@@ -81,10 +84,15 @@ $font_color_secondary: #fff;
         position: fixed;
         bottom: 4rem;
         right: 4rem;
-        width: 64px;
-        height: 64px;
+        width: 68px; //64px;
+        height: 68px; //64px;
         opacity: 1;
         z-index: 10000;
+
+		border: solid 4px $bg_secondary;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
 
         -webkit-animation-duration: 2s;
         -moz-animation-duration: 2s;
@@ -106,8 +114,10 @@ $font_color_secondary: #fff;
         @media (max-width: 991px) {
             bottom: 2rem;
             right: 2rem;
-            width: 56px;
-            height: 56px;
+            width: 59px; //56px;
+            height: 59px; //56px;
+
+			border-width: 3px;
 
             &.left {
                 right: auto;
@@ -117,8 +127,10 @@ $font_color_secondary: #fff;
         @media (max-width: 767px) {
             bottom: 1rem;
             right: 1rem;
-            width: 48px;
-            height: 48px;
+            width: 50px; //48px;
+            height: 50px; //48px;
+
+			border-width: 2px;
 
             &.left {
                 right: auto;
@@ -127,6 +139,7 @@ $font_color_secondary: #fff;
         }
     }
     &_round_container {
+		position: relative;
         width: 100%;
         height: 100%;
 
@@ -135,6 +148,8 @@ $font_color_secondary: #fff;
         border-radius: 50%;
 
         background: $bg_primary;
+
+		z-index: 1;
 
         .sc_icon {
             position: absolute;
@@ -154,6 +169,39 @@ $font_color_secondary: #fff;
             }
         }
     }
+	&_ripple {
+		width: 110%; //64px;
+		height: 110%; //64px;
+		left: -5%;
+		top: -5%;
+		border-color: $ripple_color;
+		z-index: 0;
+
+		&, &::before, &::after {
+			display: block;
+			position: absolute;
+			border: 2px solid #fff;
+			-webkit-border-radius: 50%;
+			-webkit-animation: ripple 2s ease-out;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-delay: 0.4s;
+			opacity: 0;
+		}
+		//&::before {
+		//	content: "";
+		//	height: 130%; //72px;
+		//	width: 130%; //72px;
+		//	left: -18%;
+		//	top: -18%;
+		//}
+		&::after {
+			content: "";
+			height: 150%; //px;
+			width: 150%; //92px;
+			left: -27%;
+			top: -27%;
+		}
+	}
 
     /* ----------- */
 
@@ -458,7 +506,7 @@ $font_color_secondary: #fff;
                         background-color: #eee;
                         cursor: pointer;
 
-                        @include transition(ease-in-out, 0.3s);
+                        @include transition(ease-in-out background, 0.3s);
 
                         /* Create the checkmark/indicator (hidden when not checked) */
                         &:after {
@@ -541,4 +589,22 @@ $font_color_secondary: #fff;
         //overwrite some bootstrap styles
         @import '_bootstrap_overwrite';
     }
+}
+
+/* --- */
+
+@-webkit-keyframes ripple {
+	0% {
+		-webkit-transform: scale(.1,.1);
+		opacity: 0
+	}
+
+	50% {
+		opacity: 1
+	}
+
+	100% {
+		-webkit-transform: scale(1.2,1.2);
+		opacity: 0
+	}
 }

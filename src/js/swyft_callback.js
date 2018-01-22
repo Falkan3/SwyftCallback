@@ -216,6 +216,7 @@
                 '           <a href="#"></a>\n' +
                 '        </div>\n' +
                 '    </div>\n' +
+                '    <div class="sc_ripple"></div>\n' +
                 '</div>');
             this.button.obj = $buttonBody.appendTo($(this.element));
 
