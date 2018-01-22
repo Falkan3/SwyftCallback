@@ -89,11 +89,6 @@ $ripple_color: #aeaeae;
         opacity: 1;
         z-index: 10000;
 
-		border: solid 4px $bg_secondary;
-		-webkit-border-radius: 50%;
-		-moz-border-radius: 50%;
-		border-radius: 50%;
-
         -webkit-animation-duration: 2s;
         -moz-animation-duration: 2s;
         -o-animation-duration: 2s;
@@ -143,6 +138,7 @@ $ripple_color: #aeaeae;
         width: 100%;
         height: 100%;
 
+		border: solid 4px $bg_secondary;
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%;
