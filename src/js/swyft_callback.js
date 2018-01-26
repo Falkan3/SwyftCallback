@@ -1,5 +1,5 @@
 /*
- *  Swyft Callback - v0.2
+ *  Swyft Callback - v0.2.1
  *  A dynamic callback contact form
  *
  *  Made by Adam Kocić (Falkan3)
@@ -53,6 +53,7 @@
             //status
             status: {
                 popup_hidden: true,
+                popup_body_collapsed: false,
                 button_disabled: false, //disable show/close functionality
                 ajax_processing: false,
                 response_from_api_visible: true,
@@ -148,7 +149,7 @@
         };
         //popup window
         this.popup = {
-            obj: null, form: null, footer: null
+            obj: null, form: null, body: null, footer: null
         };
 
         this.init();
@@ -431,6 +432,7 @@
 
             //find references to sections
             this.popup.form = this.popup.obj.find('form');
+            this.popup.body = this.popup.obj.find('.' + form_obj_prefix + 'body_section');
             this.popup.footer = this.popup.obj.find('.' + form_obj_prefix + 'footer_section');
 
             //form fields
@@ -964,6 +966,50 @@
             //callback from obj settings
             if (objThis.settings.callbacks.onHide.function && $.isFunction(objThis.settings.callbacks.onHide.function)) {
                 objThis.settings.callbacks.onHide.function.apply(objThis.settings.callbacks.onHide.this, [$.extend(true, {}, this, objThis.settings.callbacks.onHide.parameters)]);
+            }
+        },
+
+        CollapsePopupBodyToggle: function (options) {
+            //set settings
+            var objThis = this;
+            var defaults = {
+                slide_duration: 300,
+                action: 'toggle',
+            };
+            var settings = $.extend({}, defaults, options);
+
+            switch (settings.action) {
+                case 'toggle':
+                    if (this.settings.status.popup_body_collapsed) {
+                        //fade in the popup window
+                        this.popup.body.slideDown(settings.slide_duration);
+
+                        //change hidden variable to false
+                        this.settings.status.popup_body_collapsed = false;
+                    } else {
+                        //fade in the popup window
+                        this.popup.body.slideUp(settings.slide_duration);
+
+                        //change hidden variable to false
+                        this.settings.status.popup_body_collapsed = true;
+                    }
+                    break;
+                case 'show':
+                    //fade in the popup window
+                    this.popup.body.slideDown(settings.slide_duration);
+
+                    //change hidden variable to false
+                    this.settings.status.popup_body_collapsed = false;
+                    break;
+                case 'hide':
+                    //fade in the popup window
+                    this.popup.body.slideUp(settings.slide_duration);
+
+                    //change hidden variable to false
+                    this.settings.status.popup_body_collapsed = true;
+                    break;
+                default:
+                    break;
             }
         },
 
