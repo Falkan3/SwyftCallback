@@ -1113,6 +1113,8 @@
                 }
 
                 if(settings.clear_status_only) {
+                    $this.removeClass('correct-input');
+                    $this_container.removeClass('correct-input');
                     $this.removeClass('wrong-input');
                     $this_container.removeClass('wrong-input');
                 } else {
