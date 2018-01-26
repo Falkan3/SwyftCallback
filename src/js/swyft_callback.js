@@ -36,18 +36,6 @@
                     success: {name: 'result', value: 'success'},
                     message: '',
                 },
-                callback: {
-                    success: {
-                        function: null,
-                        this: this,
-                        parameters: null,
-                    },
-                    error: {
-                        function: null,
-                        this: this,
-                        parameters: null,
-                    }
-                }
             },
             //data
             data: {
@@ -120,6 +108,22 @@
                 //dictionary is used to exchange input names into values from the dictionary on API request
                 data_dictionary: {} //'sc_fld_telephone': 'phone'
             },
+            callbacks: {
+                onShow: null,
+                onHide: null,
+                onSend: {
+                    success: {
+                        function: null,
+                        this: this,
+                        parameters: null,
+                    },
+                    error: {
+                        function: null,
+                        this: this,
+                        parameters: null,
+                    }
+                }
+            }
         };
 
     // The actual plugin constructor
@@ -469,7 +473,7 @@
             //close click
             this.popup.obj.find('.' + form_obj_prefix + 'btn_close').on('click', function (e) {
                 e.preventDefault();
-                objThis.ClosePopup();
+                objThis.HidePopup();
             });
 
             //form input blur / input
@@ -795,8 +799,8 @@
                                 settings.callback.success.function.apply(settings.callback.success.this, settings.callback.success.parameters);
                             }
                             //callback from obj settings
-                            if (objThis.settings.api.callback.success.function && $.isFunction(objThis.settings.api.callback.success.function)) {
-                                objThis.settings.api.callback.success.function.apply(objThis.settings.api.callback.success.this, [$.extend(true, {}, data, objThis.settings.api.callback.success.parameters)]);
+                            if (objThis.settings.callbacks.onSend.success.function && $.isFunction(objThis.settings.callbacks.onSend.success.function)) {
+                                objThis.settings.callbacks.onSend.success.function.apply(objThis.settings.callbacks.onSend.success.this, [$.extend(true, {}, data, objThis.settings.callbacks.onSend.success.parameters)]);
                             }
                         } else {
                             //CALLBACK
@@ -807,8 +811,8 @@
                                 settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
                             }
                             //callback from obj settings
-                            if (objThis.settings.api.callback.error.function && $.isFunction(objThis.settings.api.callback.error.function)) {
-                                objThis.settings.api.callback.error.function.apply(objThis.settings.api.callback.error.this, [$.extend(true, {}, data, objThis.settings.api.callback.error.parameters)]);
+                            if (objThis.settings.callbacks.onSend.error.function && $.isFunction(objThis.settings.callbacks.onSend.error.function)) {
+                                objThis.settings.callbacks.onSend.error.function.apply(objThis.settings.callbacks.onSend.error.this, [$.extend(true, {}, data, objThis.settings.callbacks.onSend.error.parameters)]);
                             }
 
                             //if show response from api settings is set to true, view the message
@@ -837,8 +841,8 @@
                             //call the callback function after the function is done
                             settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
                         }
-                        if (objThis.settings.api.callback.error.function && $.isFunction(objThis.settings.api.callback.error.function)) {
-                            objThis.settings.api.callback.error.function.apply(objThis.settings.api.callback.error.this, objThis.settings.api.callback.error.parameters);
+                        if (objThis.settings.callbacks.onSend.error.function && $.isFunction(objThis.settings.callbacks.onSend.error.function)) {
+                            objThis.settings.callbacks.onSend.error.function.apply(objThis.settings.callbacks.onSend.error.this, objThis.settings.callbacks.onSend.error.parameters);
                         }
                     }
                 });
@@ -896,7 +900,7 @@
             if (this.settings.status.popup_hidden) {
                 this.ShowPopup(options);
             } else {
-                this.ClosePopup(options);
+                this.HidePopup(options);
             }
         },
 
@@ -923,9 +927,14 @@
 
             //change hidden variable to false
             this.settings.status.popup_hidden = false;
+
+            //callback from obj settings
+            if (objThis.settings.callbacks.onShow.function && $.isFunction(objThis.settings.callbacks.onShow.function)) {
+                objThis.settings.callbacks.onShow.function.apply(objThis.settings.callbacks.onShow.this, [$.extend(true, {}, this, objThis.settings.callbacks.onShow.parameters)]);
+            }
         },
 
-        ClosePopup: function (options) {
+        HidePopup: function (options) {
             if (this.settings.status.button_disabled) {
                 return;
             }
@@ -951,6 +960,11 @@
 
             //change hidden variable to true
             this.settings.status.popup_hidden = true;
+
+            //callback from obj settings
+            if (objThis.settings.callbacks.onHide.function && $.isFunction(objThis.settings.callbacks.onHide.function)) {
+                objThis.settings.callbacks.onHide.function.apply(objThis.settings.callbacks.onHide.this, [$.extend(true, {}, this, objThis.settings.callbacks.onHide.parameters)]);
+            }
         },
 
         DisableButton: function (input) {

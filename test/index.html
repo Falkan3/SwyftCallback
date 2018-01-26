@@ -61,20 +61,12 @@
                     success: {name: 'result', value: 'success'},
                     message: 'message'
                 },
-                callback: {
-                    success: {
-                        function: function(input) {console.log(input)},
-                    },
-                    error: {
-                        function: function(input) {console.log(input)},
-                    }
-                }
             },
             data: {
                 form_method: 'get',
             },
             appearance: {
-                custom_button_class: ['left', 'wow', 'animated', 'pulse', 'infinite'],
+                custom_button_class: ['left', 'wow', 'animated', 'pulse', 'infinite']
             },
             //custom_button_data: [['wow-duration', '4s']],
             text_vars: {
@@ -119,6 +111,22 @@
                     }
                 ],
                 data_dictionary: {'api_key': 'key', 'sc_fld_telephone': 'phone'}
+            },
+            callbacks: {
+                onShow: {
+                    function: function() {console.log('popup: open')},
+                },
+                onHide: {
+                    function: function() {console.log('popup: close')},
+                },
+                onSend: {
+                    success: {
+                        function: function(input) {console.log(input)},
+                    },
+                    error: {
+                        function: function(input) {console.log(input)},
+                    }
+                }
             }
         } );
     } );
