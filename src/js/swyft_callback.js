@@ -1,5 +1,5 @@
 /*
- *  Swyft Callback - v0.1.1
+ *  Swyft Callback - v0.2
  *  A dynamic callback contact form
  *
  *  Made by Adam Kocić (Falkan3)
@@ -948,8 +948,8 @@
 
             //fade out the popup window and reset the input
             this.popup.obj.fadeOut(settings.fade_duration, function () {
-                //reset input from fields
-                objThis.ResetInput();
+                //reset input from fields and only clear right/wrong status on inputs in validation function
+                objThis.ResetInput({clear_status_only: true});
 
                 //reset status messages
                 objThis.StatusClear();
@@ -1033,6 +1033,7 @@
                 append_status: true,
                 focus_first_wrong: true,
                 fade_duration: 300,
+                clear_status_only: false
             };
             var settings = $.extend({}, defaults, options);
 
@@ -1065,31 +1066,36 @@
                     });
                 }
 
-                if(field_valid.is_valid) {
+                if(settings.clear_status_only) {
                     $this.removeClass('wrong-input');
                     $this_container.removeClass('wrong-input');
-                    $this.addClass('correct-input');
-                    $this_container.addClass('correct-input');
                 } else {
-                    $this.removeClass('correct-input');
-                    $this_container.removeClass('correct-input');
-                    $this.addClass('wrong-input');
-                    $this_container.addClass('wrong-input');
+                    if(field_valid.is_valid) {
+                        $this.removeClass('wrong-input');
+                        $this_container.removeClass('wrong-input');
+                        $this.addClass('correct-input');
+                        $this_container.addClass('correct-input');
+                    } else {
+                        $this.removeClass('correct-input');
+                        $this_container.removeClass('correct-input');
+                        $this.addClass('wrong-input');
+                        $this_container.addClass('wrong-input');
 
-                    wrong_inputs.push({field: field, message: ''});
+                        wrong_inputs.push({field: field, message: ''});
 
-                    //add element signifying wrong input
-                    if (settings.append_status) {
-                        var $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
-                        $wrong_input_obj.text(this.settings.text_vars.wrong_input_text);
-                        $wrong_input_obj.hide();
+                        //add element signifying wrong input
+                        if (settings.append_status) {
+                            var $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
+                            $wrong_input_obj.text(this.settings.text_vars.wrong_input_text);
+                            $wrong_input_obj.hide();
 
-                        $wrong_input_obj.appendTo($this_container);
+                            $wrong_input_obj.appendTo($this_container);
 
-                        $wrong_input_obj.fadeIn(settings.fade_duration);
+                            $wrong_input_obj.fadeIn(settings.fade_duration);
+                        }
+
+                        is_valid = false;
                     }
-
-                    is_valid = false;
                 }
             }
 
@@ -1109,18 +1115,23 @@
         },
 
         SendDataReturn: function(_message, _style) {
-            this.ResetInput();
+            this.ResetInput({clear_status_only: true});
             this.StatusClear();
             this.StatusAdd(_message, {style: _style});
         },
 
-        ResetInput: function () {
+        ResetInput: function (options) {
+            var defaults = {
+                clear_status_only: false,
+            };
+            var settings = $.extend({}, defaults, options);
+
             var form = this.popup.form;//this.popup.obj.find('form');
             form[0].reset();
 
             //validate after resetting the form
-            this.ValidateForm(this.settings.input.fields, {append_status: false, focus_first_wrong: false});
-            this.ValidateForm(this.settings.input.agreements, {append_status: false, focus_first_wrong: false});
+            this.ValidateForm(this.settings.input.fields, {append_status: false, focus_first_wrong: false, clear_status_only: settings.clear_status_only});
+            this.ValidateForm(this.settings.input.agreements, {append_status: false, focus_first_wrong: false, clear_status_only: settings.clear_status_only});
 
             /*
             var input = form.find(input_all_mask);
