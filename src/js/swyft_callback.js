@@ -49,6 +49,7 @@
                 custom_button_class: "",
                 custom_popup_class: "",
                 show_check_all_agreements: true,
+                overflown_overlay: true,
             },
             //status
             status: {
@@ -143,6 +144,7 @@
         this.setDefaultVars();
 
         //dynamic vars
+        this.html = $('html');
         //button used to bring up popup window
         this.button = {
             obj: null
@@ -918,6 +920,11 @@
             };
             var settings = $.extend({}, defaults, options);
 
+            //add overflown class to the overlay to disable content scrolling
+            if (objThis.settings.appearance.overflown_overlay) {
+                this.html.addClass('overflown');
+            }
+
             //fade in the popup window
             this.popup.obj.fadeIn(settings.fade_duration);
 
@@ -948,6 +955,11 @@
             };
             var settings = $.extend({}, defaults, options);
 
+            //remove overflown class from the overlay to enable content scrolling
+            if (objThis.settings.appearance.overflown_overlay) {
+                this.html.removeClass('overflown');
+            }
+            
             //fade out the popup window and reset the input
             this.popup.obj.fadeOut(settings.fade_duration, function () {
                 //reset input from fields and only clear right/wrong status on inputs in validation function

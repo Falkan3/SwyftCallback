@@ -1,7 +1,6 @@
 html {
     font-size: 14px;
 
-
     @media (max-width: 1399px) {
         font-size: 13px;
     }
@@ -25,6 +24,10 @@ html {
         font-size: 14px;
     }
     */
+
+    &.overflown {
+        overflow: hidden;
+    }
 }
 
 /*
