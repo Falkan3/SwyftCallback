@@ -355,7 +355,7 @@ body {
   display: block;
   position: relative;
   width: 100%;
-  padding: 0.3rem;
+  padding: 0.3rem 0;
   background: transparent;
   text-align: left;
   color: inherit;

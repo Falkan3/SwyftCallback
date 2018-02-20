@@ -67,7 +67,7 @@
                 wrong_input_text: "Wrong input",
                 status_success: "Form sent successfuly",
                 status_sending: "Sending form...",
-                status_error: "Server encountered and error",
+                status_error: "Server encountered an error",
             },
             //form info
             novalidate: true,
@@ -543,12 +543,12 @@
                         success: {
                             function: objThis.SendDataReturn,
                             this: objThis,
-                            parameters: [objThis.settings.text_vars.status_success, 'success']
+                            parameters: [{reset_input: true, message: objThis.settings.text_vars.status_success, style: 'success'}]
                         },
                         error: {
                             function: objThis.SendDataReturn,
                             this: objThis,
-                            parameters: [objThis.settings.text_vars.status_error, 'error']
+                            parameters: [{reset_input: false, message: objThis.settings.text_vars.status_error, style: 'error'}]
                         }
                     }
                 });
@@ -571,7 +571,7 @@
          * Readmore hide all readmore sections
          */
         hideReadmore_all: function () {
-            this.popup.form.find('agreements input[type="checkbox"]').prop('checked', false);
+            this.popup.form.find('.agreements input[type="checkbox"]').prop('checked', false);
         },
 
         /*
@@ -1174,10 +1174,19 @@
             return is_valid;
         },
 
-        SendDataReturn: function(_message, _style) {
-            this.ResetInput({clear_status_only: true});
+        SendDataReturn: function(options) {
+            var defaults = {
+                reset_input: true,
+                message: '',
+                style: '',
+            };
+            var settings = $.extend({}, defaults, options);
+
+            if(settings.reset_input) {
+                this.ResetInput({clear_status_only: true});
+            }
             this.StatusClear();
-            this.StatusAdd(_message, {style: _style});
+            this.StatusAdd(settings.message, {style: settings.style});
         },
 
         ResetInput: function (options) {
@@ -1200,7 +1209,7 @@
             input.filter('select').prop('selectedIndex',0);
             */
 
-            this.hideReadmore_all();
+            //this.hideReadmore_all();
         },
 
         /* ------------------------------ HELPERS ------------------------------- */
@@ -1256,7 +1265,7 @@
                 }
 
                 //remove last space
-                if (formatted.length > 0 && formatted[formatted.length - 1] == ' ') {
+                if (formatted.length > 0 && formatted[formatted.length - 1] === ' ') {
                     formatted = formatted.slice(0, -1);
                 }
 
@@ -1338,26 +1347,6 @@
         }
 
         return null
-
-        /*
-        return this.each(function () {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                var instance = new Plugin(this, options);
-                $.data(this, "plugin_" +
-                    pluginName, instance);
-            }
-        });
-        */
     };
-
-    /*
-    $.fn.swyftCallback = function () {
-        return {
-            DisableButton: function(input) {
-                this.DisableButton(input);
-            }
-        }
-    };
-    */
 
 })(jQuery, window, document);
