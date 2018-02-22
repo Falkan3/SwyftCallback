@@ -23,7 +23,7 @@
     // Create the defaults once
     var pluginName = "swyftCallback",
         form_obj_prefix = 'sc_',
-        form_fields_prefix = 'sc_fld_',
+        form_fields_prefix = form_obj_prefix + 'fld_',
         input_all_mask = 'input, select, textarea',
 
         defaults = {
@@ -33,8 +33,8 @@
                     {name: 'api_key', value: ''},
                 ],
                 param: {
-                    success: {name: 'result', value: 'success'},
-                    message: '',
+                    success: {name: 'result', value: 'success'}, //parameter named result will contain information about the call's success
+                    message: '', //the key of returned data (preferably an array) from the API which contains the response
                 },
             },
             //data
@@ -105,7 +105,8 @@
                 regex_table: {
                     'phone': /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/,
                     'email': /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                    'name': /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšśžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŚŽ∂ð ,.'-]+$/
+                    //^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčśšśžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŚŠŚŽ∂ð ,.'-]+$
+                    'name': /^[a-zA-Z\u00E0\u00E1\u00E2\u00E4\u00E3\u00E5\u0105\u010D\u0107\u0119\u00E8\u00E9\u00EA\u00EB\u0117\u012F\u00EC\u00ED\u00EE\u00EF\u0142\u0144\u00F2\u00F3\u00F4\u00F6\u00F5\u00F8\u00F9\u00FA\u00FB\u00FC\u0173\u016B\u00FF\u00FD\u017C\u017A\u00F1\u00E7\u010D\u015B\u0161\u015B\u017E\u00C0\u00C1\u00C2\u00C4\u00C3\u00C5\u0104\u0106\u010C\u0116\u0118\u00C8\u00C9\u00CA\u00CB\u00CC\u00CD\u00CE\u00CF\u012E\u0141\u0143\u00D2\u00D3\u00D4\u00D6\u00D5\u00D8\u00D9\u00DA\u00DB\u00DC\u0172\u016A\u0178\u00DD\u017B\u0179\u00D1\u00DF\u00C7\u0152\u00C6\u010C\u015A\u0160\u015A\u017D\u2202\u00F0 ,.'-]+$/,
                 },
                 //dictionary is used to exchange input names into values from the dictionary on API request
                 data_dictionary: {} //'sc_fld_telephone': 'phone'
@@ -292,7 +293,7 @@
 
             if (this.settings.input.agreements) {
                 //append check all agreements button
-                if(this.settings.appearance.show_check_all_agreements && this.settings.input.agreements.length > 0) {
+                if (this.settings.appearance.show_check_all_agreements && this.settings.input.agreements.length > 0) {
                     output = '<div class="' + form_obj_prefix + 'division">\n' +
                         '               <div class="input">\n' +
                         '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
@@ -328,7 +329,7 @@
                             formatted: ''
                         },
                     ];
-                    if(agreement.checked) {
+                    if (agreement.checked) {
                         dynamic_attributes[0].attributes.push({key: 'checked', value: 'checked'});
                     }
                     dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
@@ -481,7 +482,7 @@
             });
 
             //form input blur / input
-            for(var i = 0; i < objThis.settings.input.fields.length; i++) {
+            for (var i = 0; i < objThis.settings.input.fields.length; i++) {
                 var field = objThis.settings.input.fields[i];
                 field.obj.data('index', i);
                 field.obj.on('input', function (e) {
@@ -498,7 +499,7 @@
             }
 
             //form agreement blur / input
-            for(var i = 0; i < objThis.settings.input.agreements.length; i++) {
+            for (var i = 0; i < objThis.settings.input.agreements.length; i++) {
                 var agreement = objThis.settings.input.agreements[i];
                 agreement.obj.data('index', i);
                 agreement.obj.on('change', function (e, _no_check_all_status) {
@@ -510,7 +511,7 @@
                         console.log('validation successful');
                     }
 
-                    if(!_no_check_all_status) {
+                    if (!_no_check_all_status) {
                         //change the check prop of check all button according to the status of all agreements
                         objThis.input_checkbox_check_all_status();
                     }
@@ -520,9 +521,9 @@
             }
 
             //checkbox check all click
-            if(this.settings.appearance.show_check_all_agreements) {
-                this.settings.input.check_all_agreements.obj.on('change', function(e, _no_check_all_status) {
-                    if(!_no_check_all_status) {
+            if (this.settings.appearance.show_check_all_agreements) {
+                this.settings.input.check_all_agreements.obj.on('change', function (e, _no_check_all_status) {
+                    if (!_no_check_all_status) {
                         var is_checked = $(this).prop('checked');
 
                         //change checked status on all agreements to the prop of check all button
@@ -603,11 +604,11 @@
          * Change the check prop of check all button according to the status of all agreements
          */
         input_checkbox_check_all_status: function () {
-            if(this.settings.appearance.show_check_all_agreements) {
+            if (this.settings.appearance.show_check_all_agreements) {
                 var all_checked = true;
 
-                for(var i = 0; i < this.settings.input.agreements.length; i++) {
-                    if(!this.settings.input.agreements[i].obj.prop('checked')) {
+                for (var i = 0; i < this.settings.input.agreements.length; i++) {
+                    if (!this.settings.input.agreements[i].obj.prop('checked')) {
                         all_checked = false;
                     }
                 }
@@ -738,7 +739,7 @@
                 status = {success: true, message: 'SendDataAjax: Success (Got into ajax)'};
 
                 //Configure
-                if(settings.send_headers) {
+                if (settings.send_headers) {
                     $.ajaxSetup({
                         headers: {
                             //'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -773,7 +774,7 @@
                         }
 
                         //format return message
-                        if($.isArray(data[settings.return_param])) {
+                        if ($.isArray(data[settings.return_param])) {
                             return_message = data[settings.return_param].join(', ');
                         } else {
                             return_message = data[settings.return_param];
@@ -794,7 +795,7 @@
                         }
 
                         //perform callbacks according to response status
-                        if(response_success) {
+                        if (response_success) {
                             //CALLBACK
                             //SUCCESS
                             //check if callback is set and is a function
@@ -820,7 +821,7 @@
                             }
 
                             //if show response from api settings is set to true, view the message
-                            if(objThis.settings.status.response_from_api_visible && return_message) {
+                            if (objThis.settings.status.response_from_api_visible && return_message) {
                                 objThis.StatusAdd(return_message, {style: 'error'});
                             }
                         }
@@ -857,7 +858,7 @@
 
         /* Status messages */
 
-        StatusAdd: function(_message, options) {
+        StatusAdd: function (_message, options) {
             //set settings
             var defaults = {
                 fade_duration: 300,
@@ -872,21 +873,21 @@
             message.appendTo(this.popup.footer);
             message.hide();
 
-            if(settings.style === 'success') {
+            if (settings.style === 'success') {
                 this.StatusClearStyle();
                 this.popup.footer.addClass('success');
-            } else if(settings.style === 'error') {
+            } else if (settings.style === 'error') {
                 this.StatusClearStyle();
                 this.popup.footer.addClass('error');
             }
 
             message.fadeIn(settings.fade_duration);
         },
-        StatusClearStyle: function() {
+        StatusClearStyle: function () {
             //reset css classes
             this.popup.footer.removeClass('success error');
         },
-        StatusClear: function() {
+        StatusClear: function () {
             this.StatusClearStyle();
             //remove contents
             this.popup.footer.empty();
@@ -959,7 +960,7 @@
             if (objThis.settings.appearance.overflown_overlay) {
                 this.html.removeClass('overflown');
             }
-            
+
             //fade out the popup window and reset the input
             this.popup.obj.fadeOut(settings.fade_duration, function () {
                 //reset input from fields and only clear right/wrong status on inputs in validation function
@@ -1035,9 +1036,7 @@
          * @return {{is_valid: boolean, field: *}}
          */
         ValidateField: function (_field, options) {
-            var defaults = {
-
-            };
+            var defaults = {};
             var settings = $.extend({}, defaults, options);
 
             var field = _field;
@@ -1050,8 +1049,8 @@
 
             //special validation for select and checbkox
             //checkbox
-            if(field.type === 'checkbox') {
-                if(field.required === true) {
+            if (field.type === 'checkbox') {
+                if (field.required === true) {
                     if (!$this.prop('checked')) {
                         is_valid = false;
                     }
@@ -1060,12 +1059,12 @@
 
             //select
             //todo: select validate field
-            else if(field.type === 'select') {
+            else if (field.type === 'select') {
 
             }
             //rest (textfields)
             else {
-                if(field.required === true || $this.val() !== '') {
+                if (field.required === true || $this.val() !== '') {
                     //define regex for field types
                     var regex_table = this.settings.input.regex_table;
 
@@ -1105,7 +1104,7 @@
             //wrong inputs collection
             var wrong_inputs = []; // {obj: null, message: null}
 
-            for(var i = 0; i < fields.length; i++) {
+            for (var i = 0; i < fields.length; i++) {
                 var field = fields[i];
                 var field_valid = this.ValidateField(field);
 
@@ -1124,13 +1123,13 @@
                     });
                 }
 
-                if(settings.clear_status_only) {
+                if (settings.clear_status_only) {
                     $this.removeClass('correct-input');
                     $this_container.removeClass('correct-input');
                     $this.removeClass('wrong-input');
                     $this_container.removeClass('wrong-input');
                 } else {
-                    if(field_valid.is_valid) {
+                    if (field_valid.is_valid) {
                         $this.removeClass('wrong-input');
                         $this_container.removeClass('wrong-input');
                         $this.addClass('correct-input');
@@ -1174,7 +1173,7 @@
             return is_valid;
         },
 
-        SendDataReturn: function(options) {
+        SendDataReturn: function (options) {
             var defaults = {
                 reset_input: true,
                 message: '',
@@ -1182,7 +1181,7 @@
             };
             var settings = $.extend({}, defaults, options);
 
-            if(settings.reset_input) {
+            if (settings.reset_input) {
                 this.ResetInput({clear_status_only: true});
             }
             this.StatusClear();
@@ -1282,7 +1281,7 @@
             //sort by position in DOM
             var _input = input;
             var output;
-            if(attr && attr2) {
+            if (attr && attr2) {
                 output = _input.sort(function (a, b) {
                     if (a[attr][attr2][0] === b[attr][attr2][0]) return 0;
                     if (!a[attr][attr2][0].compareDocumentPosition) {
