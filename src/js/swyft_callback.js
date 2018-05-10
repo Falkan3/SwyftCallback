@@ -467,7 +467,7 @@
             //checkbox click
             objThis.popup.form.find('.checkmark').on('click', function (e) {
                 e.preventDefault();
-                var input = $(objThis).siblings('input');
+                var input = $(this).siblings('input');
                 var is_checked = input.prop('checked');
                 input.prop('checked', !is_checked).trigger('change', []);
             });
@@ -475,7 +475,7 @@
             //readmore click
             objThis.popup.form.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
                 e.preventDefault();
-                objThis.showReadmore(objThis);
+                objThis.showReadmore(this);
             });
 
             //close click
