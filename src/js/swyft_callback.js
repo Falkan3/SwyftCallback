@@ -226,9 +226,9 @@
                 '    </div>\n' +
                 '    <div class="sc_ripple"></div>\n' +
                 '</div>');
-            this.button.obj = $buttonBody.appendTo($(this.element));
+            objThis.button.obj = $buttonBody.appendTo($(objThis.element));
 
-            this.button.obj.find('a').on('click', function (e) {
+            objThis.button.obj.find('a').on('click', function (e) {
                 e.preventDefault();
 
                 objThis.TogglePopup();
@@ -239,15 +239,16 @@
          * Builders for popup body
          */
         initPopup_generate_fields: function (popupBody) {
+            var objThis = this;
             //form fields
             var fields = '';
             var dynamic_attributes = [];
 
-            if (this.settings.input.fields) {
+            if (objThis.settings.input.fields) {
                 var fields_section = popupBody.find('.' + form_obj_prefix + 'fields_section');
 
-                for (var i = 0; i < this.settings.input.fields.length; i++) {
-                    var field = this.settings.input.fields[i];
+                for (var i = 0; i < objThis.settings.input.fields.length; i++) {
+                    var field = objThis.settings.input.fields[i];
 
                     // generate attributes for popup body
                     dynamic_attributes = [
@@ -267,7 +268,7 @@
                             formatted: ''
                         },
                     ];
-                    dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
+                    dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
 
                     var output = '<div class="' + form_obj_prefix + 'division">\n' +
                         '               <div class="input">\n' +
@@ -279,21 +280,22 @@
 
                     //save created DOM object in settings field reference
                     var $obj = $(output).appendTo(fields_section);
-                    this.settings.input.fields[i].obj = $obj.find(input_all_mask).first();
+                    objThis.settings.input.fields[i].obj = $obj.find(input_all_mask).first();
                 }
             }
 
             return fields;
         },
         initPopup_generate_popup_agreements: function (popupBody) {
+            var objThis = this;
             var agreements_section = popupBody.find('.' + form_obj_prefix + 'agreements_section');
             var agreements = '';
             var output = '';
             var $obj = null;
 
-            if (this.settings.input.agreements) {
+            if (objThis.settings.input.agreements) {
                 //append check all agreements button
-                if (this.settings.appearance.show_check_all_agreements && this.settings.input.agreements.length > 0) {
+                if (objThis.settings.appearance.show_check_all_agreements && objThis.settings.input.agreements.length > 0) {
                     output = '<div class="' + form_obj_prefix + 'division">\n' +
                         '               <div class="input">\n' +
                         '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
@@ -301,17 +303,17 @@
                         '                       <span class="checkmark"></span>\n' +
                         '                   </div>\n' +
                         '\n' +
-                        '                   <label for="' + form_fields_prefix + 'agreement_all">' + this.settings.input.check_all_agreements.short + '</label>\n' +
+                        '                   <label for="' + form_fields_prefix + 'agreement_all">' + objThis.settings.input.check_all_agreements.short + '</label>\n' +
                         '               </div>\n' +
                         '          </div>';
 
                     //save created DOM object in settings field reference
                     $obj = $(output).appendTo(agreements_section);
-                    this.settings.input.check_all_agreements.obj = $obj.find(input_all_mask).first();
+                    objThis.settings.input.check_all_agreements.obj = $obj.find(input_all_mask).first();
                 }
 
-                for (var i = 0; i < this.settings.input.agreements.length; i++) {
-                    var agreement = this.settings.input.agreements[i];
+                for (var i = 0; i < objThis.settings.input.agreements.length; i++) {
+                    var agreement = objThis.settings.input.agreements[i];
 
                     var dynamic_attributes = [];
                     // generate attributes for agreement
@@ -332,7 +334,7 @@
                     if (agreement.checked) {
                         dynamic_attributes[0].attributes.push({key: 'checked', value: 'checked'});
                     }
-                    dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
+                    dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
 
                     output = '<div class="' + form_obj_prefix + 'division">' +
                         '           <div class="input">' +
@@ -353,41 +355,42 @@
 
                     //save created DOM object in settings field reference
                     $obj = $(output).appendTo(agreements_section);
-                    this.settings.input.agreements[i].obj = $obj.find(input_all_mask).first();
+                    objThis.settings.input.agreements[i].obj = $obj.find(input_all_mask).first();
                 }
             }
 
             return agreements;
         },
         initPopup_generate_popup_body: function () {
+            var objThis = this;
             var dynamic_attributes = [];
 
             // generate attributes for popup body
-            var classes = this.formatClasses(this.settings.appearance.custom_popup_class);
+            var classes = objThis.formatClasses(objThis.settings.appearance.custom_popup_class);
             dynamic_attributes = [
                 //0
                 {
                     name: 'form',
                     attributes: [
-                        {key: 'action', value: this.settings.api.url},
-                        {key: 'method', value: this.settings.data.form_method},
-                        {key: 'novalidate', value: this.settings.novalidate},
+                        {key: 'action', value: objThis.settings.api.url},
+                        {key: 'method', value: objThis.settings.data.form_method},
+                        {key: 'novalidate', value: objThis.settings.novalidate},
                     ],
                     formatted: ''
                 },
             ];
-            dynamic_attributes = this.formatDynamicAttributes(dynamic_attributes);
+            dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
 
             var $popupBody = '<div class="' + form_obj_prefix + 'overlay" style="display: none;">\n' +
                 '    <div class="' + form_obj_prefix + 'popup_container">\n' +
                 '        <div class="' + form_obj_prefix + 'popup' + classes + '">\n' +
                 '            <div class="' + form_obj_prefix + 'btn_close"></div>\n' +
                 '            <div class="' + form_obj_prefix + 'title_section">\n' +
-                '                <p>' + this.settings.text_vars.popup_title + '</p>\n' +
+                '                <p>' + objThis.settings.text_vars.popup_title + '</p>\n' +
                 '            </div>\n' +
                 '\n' +
                 '            <div class="' + form_obj_prefix + 'body_section">\n' +
-                '                <p>' + this.settings.text_vars.popup_body + '</p>\n' +
+                '                <p>' + objThis.settings.text_vars.popup_body + '</p>\n' +
                 '                <form ' + dynamic_attributes[0].formatted + '>\n' +
                 '                    <div class="container-fluid no-padding">\n' +
                 '                        <div class="row">\n' +
@@ -397,7 +400,7 @@
                 '\n' +
                 '                            <div class="col-xs-12">\n' +
                 '                                <div class="' + form_obj_prefix + 'division">\n' +
-                '                                    <button type="submit" class="' + form_obj_prefix + 'btn_submit">' + this.settings.text_vars.send_button_text + '</button>\n' +
+                '                                    <button type="submit" class="' + form_obj_prefix + 'btn_submit">' + objThis.settings.text_vars.send_button_text + '</button>\n' +
                 '                                </div>\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
@@ -428,31 +431,31 @@
             var objThis = this;
 
             //body
-            var $popupBody = $(this.initPopup_generate_popup_body());
+            var $popupBody = $(objThis.initPopup_generate_popup_body());
 
             //append the object to DOM
-            this.popup.obj = $popupBody.appendTo($(this.element));
+            objThis.popup.obj = $popupBody.appendTo($(objThis.element));
 
             //find references to sections
-            this.popup.form = this.popup.obj.find('form');
-            this.popup.body = this.popup.obj.find('.' + form_obj_prefix + 'body_section');
-            this.popup.footer = this.popup.obj.find('.' + form_obj_prefix + 'footer_section');
+            objThis.popup.form = objThis.popup.obj.find('form');
+            objThis.popup.body = objThis.popup.obj.find('.' + form_obj_prefix + 'body_section');
+            objThis.popup.footer = objThis.popup.obj.find('.' + form_obj_prefix + 'footer_section');
 
             //form fields
             //add fields to popup body
             //var fields =
-            this.initPopup_generate_fields($popupBody);
+            objThis.initPopup_generate_fields($popupBody);
 
             //agreements
             //add agreements to popup body
             //var agreements =
-            this.initPopup_generate_popup_agreements($popupBody);
+            objThis.initPopup_generate_popup_agreements($popupBody);
 
             //apply event listeners to elements contained in popup
-            this.popupAppendEventListeners();
+            objThis.popupAppendEventListeners();
 
             //apply miscellaneous plugins
-            this.popupApplyMisc();
+            objThis.popupApplyMisc();
         },
 
         /*
@@ -462,21 +465,21 @@
             var objThis = this;
 
             //checkbox click
-            this.popup.form.find('.checkmark').on('click', function (e) {
+            objThis.popup.form.find('.checkmark').on('click', function (e) {
                 e.preventDefault();
-                var input = $(this).siblings('input');
+                var input = $(objThis).siblings('input');
                 var is_checked = input.prop('checked');
                 input.prop('checked', !is_checked).trigger('change', []);
             });
 
             //readmore click
-            this.popup.form.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
+            objThis.popup.form.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
                 e.preventDefault();
-                objThis.showReadmore(this);
+                objThis.showReadmore(objThis);
             });
 
             //close click
-            this.popup.obj.find('.' + form_obj_prefix + 'btn_close').on('click', function (e) {
+            objThis.popup.obj.find('.' + form_obj_prefix + 'btn_close').on('click', function (e) {
                 e.preventDefault();
                 objThis.HidePopup();
             });
@@ -521,8 +524,8 @@
             }
 
             //checkbox check all click
-            if (this.settings.appearance.show_check_all_agreements) {
-                this.settings.input.check_all_agreements.obj.on('change', function (e, _no_check_all_status) {
+            if (objThis.settings.appearance.show_check_all_agreements) {
+                objThis.settings.input.check_all_agreements.obj.on('change', function (e, _no_check_all_status) {
                     if (!_no_check_all_status) {
                         var is_checked = $(this).prop('checked');
 
@@ -538,7 +541,7 @@
             objThis.input_checkbox_check_all_status();
 
             //form submit
-            this.popup.obj.on('submit', function (e) {
+            objThis.popup.obj.on('submit', function (e) {
                 var status = objThis.SendData({
                     callback: {
                         success: {
@@ -732,10 +735,10 @@
             //AJAX CALL
 
             //if no ajax call is currently processing
-            if (this.settings.status.ajax_processing) {
+            if (objThis.settings.status.ajax_processing) {
                 status = {success: false, message: 'SendDataAjax: Error (Processing...)'};
             } else {
-                this.settings.status.ajax_processing = true;
+                objThis.settings.status.ajax_processing = true;
                 status = {success: true, message: 'SendDataAjax: Success (Got into ajax)'};
 
                 //Configure
@@ -910,12 +913,13 @@
         },
 
         ShowPopup: function (options) {
-            if (this.settings.status.button_disabled) {
+            var objThis = this;
+
+            if (objThis.settings.status.button_disabled) {
                 return;
             }
 
             //set settings
-            var objThis = this;
             var defaults = {
                 fade_duration: 300,
             };
@@ -923,34 +927,35 @@
 
             //add overflown class to the overlay to disable content scrolling
             if (objThis.settings.appearance.overflown_overlay) {
-                this.html.addClass('overflown');
+                objThis.html.addClass('overflown');
             }
 
             //fade in the popup window
-            this.popup.obj.fadeIn(settings.fade_duration);
+            objThis.popup.obj.fadeIn(settings.fade_duration);
 
             //focus first input in popup form
-            this.popup.form.find(input_all_mask).first().focus();
+            objThis.popup.form.find(input_all_mask).first().focus();
 
             //hide button
-            this.button.obj.addClass('hide');
+            objThis.button.obj.addClass('hide');
 
             //change hidden variable to false
-            this.settings.status.popup_hidden = false;
+            objThis.settings.status.popup_hidden = false;
 
             //callback from obj settings
             if (objThis.settings.callbacks.onShow.function && $.isFunction(objThis.settings.callbacks.onShow.function)) {
-                objThis.settings.callbacks.onShow.function.apply(objThis.settings.callbacks.onShow.this, [$.extend(true, {}, this, objThis.settings.callbacks.onShow.parameters)]);
+                objThis.settings.callbacks.onShow.function.apply(objThis.settings.callbacks.onShow.this, [$.extend(true, {}, objThis, objThis.settings.callbacks.onShow.parameters)]);
             }
         },
 
         HidePopup: function (options) {
-            if (this.settings.status.button_disabled) {
+            var objThis = this;
+
+            if (objThis.settings.status.button_disabled) {
                 return;
             }
 
             //set settings
-            var objThis = this;
             var defaults = {
                 fade_duration: 300,
             };
@@ -958,11 +963,11 @@
 
             //remove overflown class from the overlay to enable content scrolling
             if (objThis.settings.appearance.overflown_overlay) {
-                this.html.removeClass('overflown');
+                objThis.html.removeClass('overflown');
             }
 
             //fade out the popup window and reset the input
-            this.popup.obj.fadeOut(settings.fade_duration, function () {
+            objThis.popup.obj.fadeOut(settings.fade_duration, function () {
                 //reset input from fields and only clear right/wrong status on inputs in validation function
                 objThis.ResetInput({clear_status_only: true});
 
@@ -971,14 +976,14 @@
             });
 
             //hide button
-            this.button.obj.removeClass('hide');
+            objThis.button.obj.removeClass('hide');
 
             //change hidden variable to true
-            this.settings.status.popup_hidden = true;
+            objThis.settings.status.popup_hidden = true;
 
             //callback from obj settings
             if (objThis.settings.callbacks.onHide.function && $.isFunction(objThis.settings.callbacks.onHide.function)) {
-                objThis.settings.callbacks.onHide.function.apply(objThis.settings.callbacks.onHide.this, [$.extend(true, {}, this, objThis.settings.callbacks.onHide.parameters)]);
+                objThis.settings.callbacks.onHide.function.apply(objThis.settings.callbacks.onHide.this, [$.extend(true, {}, objThis, objThis.settings.callbacks.onHide.parameters)]);
             }
         },
 
@@ -993,33 +998,33 @@
 
             switch (settings.action) {
                 case 'toggle':
-                    if (this.settings.status.popup_body_collapsed) {
+                    if (objThis.settings.status.popup_body_collapsed) {
                         //fade in the popup window
-                        this.popup.body.slideDown(settings.slide_duration);
+                        objThis.popup.body.slideDown(settings.slide_duration);
 
                         //change hidden variable to false
-                        this.settings.status.popup_body_collapsed = false;
+                        objThis.settings.status.popup_body_collapsed = false;
                     } else {
                         //fade in the popup window
-                        this.popup.body.slideUp(settings.slide_duration);
+                        objThis.popup.body.slideUp(settings.slide_duration);
 
                         //change hidden variable to false
-                        this.settings.status.popup_body_collapsed = true;
+                        objThis.settings.status.popup_body_collapsed = true;
                     }
                     break;
                 case 'show':
                     //fade in the popup window
-                    this.popup.body.slideDown(settings.slide_duration);
+                    objThis.popup.body.slideDown(settings.slide_duration);
 
                     //change hidden variable to false
-                    this.settings.status.popup_body_collapsed = false;
+                    objThis.settings.status.popup_body_collapsed = false;
                     break;
                 case 'hide':
                     //fade in the popup window
-                    this.popup.body.slideUp(settings.slide_duration);
+                    objThis.popup.body.slideUp(settings.slide_duration);
 
                     //change hidden variable to false
-                    this.settings.status.popup_body_collapsed = true;
+                    objThis.settings.status.popup_body_collapsed = true;
                     break;
                 default:
                     break;
