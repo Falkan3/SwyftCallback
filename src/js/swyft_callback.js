@@ -21,7 +21,7 @@
     // minified (especially when both are regularly referenced in your plugin).
 
     // Create the defaults once
-    var pluginName = "swyftCallback",
+    const pluginName = "swyftCallback",
         form_obj_prefix = 'sc_',
         form_fields_prefix = form_obj_prefix + 'fld_',
         input_all_mask = 'input, select, textarea',
@@ -178,33 +178,33 @@
         setDefaultVars: function () {
             //set default vars for form fields
             if (this.settings.input.fields) {
-                var template = defaults.input.fields[0];
-                for (var i = 0; i < this.settings.input.fields.length; i++) {
+                const template = defaults.input.fields[0];
+                for (let i = 0; i < this.settings.input.fields.length; i++) {
                     this.settings.input.fields[i] = $.extend({}, template, this.settings.input.fields[i]);
                 }
             }
 
             //set default vars for agreements
             if (this.settings.input.agreements) {
-                var template = defaults.input.agreements[0];
-                for (var i = 0; i < this.settings.input.agreements.length; i++) {
+                const template = defaults.input.agreements[0];
+                for (let i = 0; i < this.settings.input.agreements.length; i++) {
                     this.settings.input.agreements[i] = $.extend({}, template, this.settings.input.agreements[i]);
                 }
             }
         },
         formatClasses: function (input) {
-            var _input = input;
-            var input_length = _input.length;
-            var output = '';
+            const _input = input;
+            const input_length = _input.length;
+            let output = '';
             if (input) {
                 output += ' ';
 
                 //is array
                 if (input.constructor === Array) {
-                    for (var i = 0; i < input_length; i++) {
+                    for (let i = 0; i < input_length; i++) {
                         output += _input[i] + ' ';
                     }
-                    if (output[output.length - 1] == ' ') {
+                    if (output[output.length - 1] === ' ') {
                         output = output.slice(0, -1);
                     }
                 } else {
@@ -216,10 +216,10 @@
         },
 
         initButton: function () {
-            var objThis = this;
-            var classes = this.formatClasses(this.settings.appearance.custom_button_class);
-            var data = this.formatData(this.settings.data.custom_button_data);
-            var $buttonBody = $(
+            const objThis = this;
+            const classes = this.formatClasses(this.settings.appearance.custom_button_class);
+            const data = this.formatData(this.settings.data.custom_button_data);
+            const $buttonBody = $(
                 '<div class="' + form_obj_prefix + 'tg_btn' + classes + '" ' + data + '>\n' +
                 '    <div class="' + form_obj_prefix + 'round_container">\n' +
                 '        <div class="' + form_obj_prefix + 'icon">' +
@@ -241,16 +241,16 @@
          * Builders for popup body
          */
         initPopup_generate_fields: function (popupBody) {
-            var objThis = this;
+            const objThis = this;
             //form fields
-            var fields = '';
-            var dynamic_attributes = [];
+            let fields = '';
+            let dynamic_attributes = [];
 
             if (objThis.settings.input.fields) {
-                var fields_section = popupBody.find('.' + form_obj_prefix + 'fields_section');
+                const fields_section = popupBody.find('.' + form_obj_prefix + 'fields_section');
 
-                for (var i = 0; i < objThis.settings.input.fields.length; i++) {
-                    var field = objThis.settings.input.fields[i];
+                for (let i = 0; i < objThis.settings.input.fields.length; i++) {
+                    const field = objThis.settings.input.fields[i];
 
                     // generate attributes for popup body
                     dynamic_attributes = [
@@ -272,7 +272,7 @@
                     ];
                     dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
 
-                    var output = '<div class="' + form_obj_prefix + 'division">\n' +
+                    const output = '<div class="' + form_obj_prefix + 'division">\n' +
                         '               <div class="input">\n' +
                         '                   <label for="' + field.field_name + '">' + field.label + '</label>\n' +
                         '                   <input ' + dynamic_attributes[0].formatted + '/>\n' +
@@ -281,7 +281,7 @@
                     fields += output;
 
                     //save created DOM object in settings field reference
-                    var $obj = $(output).appendTo(fields_section);
+                    const $obj = $(output).appendTo(fields_section);
                     objThis.settings.input.fields[i].obj = $obj.find(input_all_mask).first();
                 }
             }
@@ -289,11 +289,11 @@
             return fields;
         },
         initPopup_generate_popup_agreements: function (popupBody) {
-            var objThis = this;
-            var agreements_section = popupBody.find('.' + form_obj_prefix + 'agreements_section');
-            var agreements = '';
-            var output = '';
-            var $obj = null;
+            const objThis = this;
+            const agreements_section = popupBody.find('.' + form_obj_prefix + 'agreements_section');
+            let agreements = '';
+            let output = '';
+            let $obj = null;
 
             if (objThis.settings.input.agreements) {
                 //append check all agreements button
@@ -314,10 +314,10 @@
                     objThis.settings.input.check_all_agreements.obj = $obj.find(input_all_mask).first();
                 }
 
-                for (var i = 0; i < objThis.settings.input.agreements.length; i++) {
-                    var agreement = objThis.settings.input.agreements[i];
+                for (let i = 0; i < objThis.settings.input.agreements.length; i++) {
+                    const agreement = objThis.settings.input.agreements[i];
 
-                    var dynamic_attributes = [];
+                    let dynamic_attributes = [];
                     // generate attributes for agreement
                     dynamic_attributes = [
                         //0
@@ -364,11 +364,11 @@
             return agreements;
         },
         initPopup_generate_popup_body: function () {
-            var objThis = this;
-            var dynamic_attributes = [];
+            const objThis = this;
+            let dynamic_attributes = [];
 
             // generate attributes for popup body
-            var classes = objThis.formatClasses(objThis.settings.appearance.custom_popup_class);
+            const classes = objThis.formatClasses(objThis.settings.appearance.custom_popup_class);
             dynamic_attributes = [
                 //0
                 {
@@ -383,7 +383,7 @@
             ];
             dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
 
-            var $popupBody = '<div class="' + form_obj_prefix + 'overlay" style="display: none;">\n' +
+            const $popupBody = '<div class="' + form_obj_prefix + 'overlay" style="display: none;">\n' +
                 '    <div class="' + form_obj_prefix + 'popup_container">\n' +
                 '        <div class="' + form_obj_prefix + 'popup' + classes + '">\n' +
                 '            <div class="' + form_obj_prefix + 'btn_close"></div>\n' +
@@ -430,10 +430,10 @@
          * Main function for initializing popup body
          */
         initPopup: function () {
-            var objThis = this;
+            const objThis = this;
 
             //body
-            var $popupBody = $(objThis.initPopup_generate_popup_body());
+            const $popupBody = $(objThis.initPopup_generate_popup_body());
 
             //append the object to DOM
             objThis.popup.obj = $popupBody.appendTo($(objThis.element));
@@ -445,12 +445,12 @@
 
             //form fields
             //add fields to popup body
-            //var fields =
+            //let fields =
             objThis.initPopup_generate_fields($popupBody);
 
             //agreements
             //add agreements to popup body
-            //var agreements =
+            //let agreements =
             objThis.initPopup_generate_popup_agreements($popupBody);
 
             //apply event listeners to elements contained in popup
@@ -464,13 +464,13 @@
          * Append event listeners for clickable elements in popup window
          */
         popupAppendEventListeners: function () {
-            var objThis = this;
+            const objThis = this;
 
             //checkbox click
             objThis.popup.form.find('.checkmark').on('click', function (e) {
                 e.preventDefault();
-                var input = $(this).siblings('input');
-                var is_checked = input.prop('checked');
+                const input = $(this).siblings('input');
+                const is_checked = input.prop('checked');
                 input.prop('checked', !is_checked).trigger('change', []);
             });
 
@@ -487,13 +487,13 @@
             });
 
             //form input blur / input
-            for (var i = 0; i < objThis.settings.input.fields.length; i++) {
-                var field = objThis.settings.input.fields[i];
+            for (let i = 0; i < objThis.settings.input.fields.length; i++) {
+                const field = objThis.settings.input.fields[i];
                 field.obj.data('index', i);
                 field.obj.on('input', function (e) {
-                    var index = $(this).data('index');
+                    const index = $(this).data('index');
                     //validate input
-                    var validated = objThis.ValidateForm([objThis.settings.input.fields[index]], {append_status: false, focus_first_wrong: false});
+                    const validated = objThis.ValidateForm([objThis.settings.input.fields[index]], {append_status: false, focus_first_wrong: false});
                     //send form if validated
                     if (validated) {
                         console.log('validation successful');
@@ -504,13 +504,13 @@
             }
 
             //form agreement blur / input
-            for (var i = 0; i < objThis.settings.input.agreements.length; i++) {
-                var agreement = objThis.settings.input.agreements[i];
+            for (let i = 0; i < objThis.settings.input.agreements.length; i++) {
+                const agreement = objThis.settings.input.agreements[i];
                 agreement.obj.data('index', i);
                 agreement.obj.on('change', function (e, _no_check_all_status) {
-                    var index = $(this).data('index');
+                    const index = $(this).data('index');
                     //validate input
-                    var validated = objThis.ValidateForm([objThis.settings.input.agreements[index]], {append_status: false, focus_first_wrong: false});
+                    const validated = objThis.ValidateForm([objThis.settings.input.agreements[index]], {append_status: false, focus_first_wrong: false});
                     //send form if validated
                     if (validated) {
                         console.log('validation successful');
@@ -529,10 +529,10 @@
             if (objThis.settings.appearance.show_check_all_agreements) {
                 objThis.settings.input.check_all_agreements.obj.on('change', function (e, _no_check_all_status) {
                     if (!_no_check_all_status) {
-                        var is_checked = $(this).prop('checked');
+                        const is_checked = $(this).prop('checked');
 
                         //change checked status on all agreements to the prop of check all button
-                        for (var i = 0; i < objThis.settings.input.agreements.length; i++) {
+                        for (let i = 0; i < objThis.settings.input.agreements.length; i++) {
                             objThis.settings.input.agreements[i].obj.prop('checked', is_checked).trigger('change', [true]);
                         }
                     }
@@ -544,7 +544,7 @@
 
             //form submit
             objThis.popup.obj.on('submit', function (e) {
-                var status = objThis.SendData({
+                const status = objThis.SendData({
                     callback: {
                         success: {
                             function: objThis.SendDataReturn,
@@ -570,7 +570,7 @@
          * Readmore click event
          */
         showReadmore: function (obj) {
-            var $this = $(obj);
+            const $this = $(obj);
             $this.closest('.' + form_obj_prefix + 'division').find('.' + form_obj_prefix + 'readmore_body').slideToggle();
         },
         /*
@@ -585,13 +585,13 @@
          */
         popupApplyMisc: function () {
             /* --- js input mask --- */
-            var inputs = this.popup.form.find(input_all_mask);
+            const inputs = this.popup.form.find(input_all_mask);
 
             //check if exists
             console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
             if (typeof $.fn.inputmask !== 'undefined') {
-                var input_masked_items = inputs.filter('input[type="tel"], .jsm_phone');
-                var phones_mask = ["###-###-###", "## ###-##-##"];
+                const input_masked_items = inputs.filter('input[type="tel"], .jsm_phone');
+                const phones_mask = ["###-###-###", "## ###-##-##"];
 
                 console.log('js input mask || masked items: ');
                 console.log(input_masked_items);
@@ -610,9 +610,9 @@
          */
         input_checkbox_check_all_status: function () {
             if (this.settings.appearance.show_check_all_agreements) {
-                var all_checked = true;
+                let all_checked = true;
 
-                for (var i = 0; i < this.settings.input.agreements.length; i++) {
+                for (let i = 0; i < this.settings.input.agreements.length; i++) {
                     if (!this.settings.input.agreements[i].obj.prop('checked')) {
                         all_checked = false;
                     }
@@ -630,9 +630,9 @@
          * @return {boolean}
          */
         SendData: function (options) {
-            var status = {success: false, message: 'SendData: Error (Default)'};
+            let status = {success: false, message: 'SendData: Error (Default)'};
 
-            var defaults = {
+            const defaults = {
                 url: this.settings.api.url,
                 api_custom: this.settings.api.custom,
                 data: this.popup.form.serialize(),
@@ -643,18 +643,18 @@
                 status_sending_text: this.settings.text_vars.status_sending,
                 send_headers: this.settings.data.send_headers
             };
-            var settings = $.extend(true, {}, defaults, options);
+            const settings = $.extend(true, {}, defaults, options);
 
             //remove all status messages
             this.StatusClear();
 
             //find all input in form
-            //var input = this.popup.form.find(input_all_mask);
+            //const input = this.popup.form.find(input_all_mask);
 
             //validate input
-            var validated_fields = this.ValidateForm(this.settings.input.fields);
-            var validated_agreements = this.ValidateForm(this.settings.input.agreements);
-            var validated = validated_fields && validated_agreements;
+            const validated_fields = this.ValidateForm(this.settings.input.fields);
+            const validated_agreements = this.ValidateForm(this.settings.input.agreements);
+            const validated = validated_fields && validated_agreements;
 
             //send form if validated
             if (validated) {
@@ -667,7 +667,7 @@
 
                 //Add utm params to api custom data
                 if (this.settings.data.add_utm_params) {
-                    var unique_utm_params = this.ArrayGetDistinct(settings.api_custom, this.URLGetUTMs(this.settings.data.utm_params_dictionary), ['name']);
+                    const unique_utm_params = this.ArrayGetDistinct(settings.api_custom, this.URLGetUTMs(this.settings.data.utm_params_dictionary), ['name']);
 
                     settings.api_custom = $.merge(settings.api_custom, unique_utm_params);
                 }
@@ -680,11 +680,11 @@
             return status;
         },
         SendDataAjax: function (options) {
-            var status = {success: false, message: 'SendDataAjax: Error (Default)'};
+            let status = {success: false, message: 'SendDataAjax: Error (Default)'};
 
             //set settings
-            var objThis = this;
-            var defaults = {
+            const objThis = this;
+            const defaults = {
                 url: '/',
                 type: 'POST',
                 api_custom: [],
@@ -708,18 +708,18 @@
                 }
                 */
             };
-            var settings = $.extend(true, {}, defaults, options);
+            const settings = $.extend(true, {}, defaults, options);
 
             //extend data from form with custom data
             if (settings.api_custom) {
-                var api_custom_length = settings.api_custom.length;
-                var custom_data_string = '';
+                const api_custom_length = settings.api_custom.length;
+                let custom_data_string = '';
 
                 if (settings.data.length > 0) {
                     custom_data_string += '&';
                 }
 
-                for (var i = 0; i < api_custom_length; i++) {
+                for (let i = 0; i < api_custom_length; i++) {
                     custom_data_string += settings.api_custom[i].name + '=' + settings.api_custom[i].value;
 
                     if (i < api_custom_length - 1) {
@@ -731,9 +731,9 @@
             }
 
             //use a custom dictionary specific to API to convert key names to the valid values
-            var data_dictionary_keys = Object.keys(settings.data_dictionary);
-            for (var i = 0; i < data_dictionary_keys.length; i++) {
-                var regex = settings.data_dictionary[data_dictionary_keys[i]];
+            const data_dictionary_keys = Object.keys(settings.data_dictionary);
+            for (let i = 0; i < data_dictionary_keys.length; i++) {
+                const regex = settings.data_dictionary[data_dictionary_keys[i]];
                 console.log(data_dictionary_keys[i] + ' > ' + regex);
                 //use regex to replace form field names into those specified in the dictionary
                 settings.data = settings.data.replace(data_dictionary_keys[i], regex);
@@ -769,14 +769,14 @@
                     dataType: 'json',
                     processData: false,
                     success: function (data) {
-                        var response_success = false;
-                        var return_message;
+                        let response_success = false;
+                        let return_message;
 
                         console.log(data);
 
                         if (data[settings.return_param]) {
                             if ($.isArray(data[settings.return_param]) || (data[settings.return_param] !== null && typeof data[settings.return_param] === 'object')) {
-                                for (var index in data[settings.return_param]) {
+                                for (let index in data[settings.return_param]) {
                                     console.log(data[settings.return_param][index]);
                                 }
                             }
@@ -874,15 +874,15 @@
 
         StatusAdd: function (_message, options) {
             //set settings
-            var defaults = {
+            const defaults = {
                 fade_duration: 300,
                 style: ''
             };
-            var settings = $.extend({}, defaults, options);
+            const settings = $.extend({}, defaults, options);
 
             /* --- */
 
-            var message = $('<p></p>');
+            let message = $('<p></p>');
             message.text(_message);
             message.appendTo(this.popup.footer);
             message.hide();
@@ -910,31 +910,31 @@
         /* ------ Popup ------ */
 
         TogglePopup: function (options) {
-            if (this.settings.status.button_disabled) {
+            const objThis = this;
+
+            if (objThis.settings.status.button_disabled) {
                 return;
             }
 
-            //var objThis = this;
-
-            if (this.settings.status.popup_hidden) {
-                this.ShowPopup(options);
+            if (objThis.settings.status.popup_hidden) {
+                objThis.ShowPopup(options);
             } else {
-                this.HidePopup(options);
+                objThis.HidePopup(options);
             }
         },
 
         ShowPopup: function (options) {
-            var objThis = this;
+            const objThis = this;
 
             if (objThis.settings.status.button_disabled) {
                 return;
             }
 
             //set settings
-            var defaults = {
+            const defaults = {
                 fade_duration: 300,
             };
-            var settings = $.extend({}, defaults, options);
+            const settings = $.extend({}, defaults, options);
 
             //add overflown class to the overlay to disable content scrolling
             if (objThis.settings.appearance.overflown_overlay) {
@@ -960,17 +960,17 @@
         },
 
         HidePopup: function (options) {
-            var objThis = this;
+            const objThis = this;
 
             if (objThis.settings.status.button_disabled) {
                 return;
             }
 
             //set settings
-            var defaults = {
+            const defaults = {
                 fade_duration: 300,
             };
-            var settings = $.extend({}, defaults, options);
+            const settings = $.extend({}, defaults, options);
 
             //remove overflown class from the overlay to enable content scrolling
             if (objThis.settings.appearance.overflown_overlay) {
@@ -1000,12 +1000,12 @@
 
         CollapsePopupBodyToggle: function (options) {
             //set settings
-            var objThis = this;
-            var defaults = {
+            const objThis = this;
+            const defaults = {
                 slide_duration: 300,
                 action: 'toggle',
             };
-            var settings = $.extend({}, defaults, options);
+            const settings = $.extend({}, defaults, options);
 
             switch (settings.action) {
                 case 'toggle':
@@ -1052,14 +1052,14 @@
          * @return {{is_valid: boolean, field: *}}
          */
         ValidateField: function (_field, options) {
-            var defaults = {};
-            var settings = $.extend({}, defaults, options);
+            const defaults = {};
+            const settings = $.extend({}, defaults, options);
 
-            var field = _field;
-            var $this = field.obj;
+            const field = _field;
+            const $this = field.obj;
 
             //return value. If all inputs are correctly validated, the value will remain true. If one fails, it switches to false
-            var is_valid = true;
+            let is_valid = true;
 
             /* --- Validation --- */
 
@@ -1082,10 +1082,10 @@
             else {
                 if (field.required === true || $this.val() !== '') {
                     //define regex for field types
-                    var regex_table = this.settings.input.regex_table;
+                    const regex_table = this.settings.input.regex_table;
 
                     if (field.data_field_type && field.data_field_type in regex_table) {
-                        var regex = regex_table[field.data_field_type];
+                        const regex = regex_table[field.data_field_type];
                         if (!regex.test($this.val())) {
                             is_valid = false;
                         }
@@ -1102,33 +1102,33 @@
          * @return {boolean}
          */
         ValidateForm: function (_fields, options) {
-            var defaults = {
+            const defaults = {
                 append_status: true,
                 focus_first_wrong: true,
                 fade_duration: 300,
                 clear_status_only: false
             };
-            var settings = $.extend({}, defaults, options);
+            const settings = $.extend({}, defaults, options);
 
-            var fields = _fields;
+            const fields = _fields;
 
             //return value. If all inputs are correctly validated, the value will remain true. If one fails, it switches to false
-            var is_valid = true;
+            let is_valid = true;
 
             /* --- Validation --- */
 
             //wrong inputs collection
-            var wrong_inputs = []; // {obj: null, message: null}
+            let wrong_inputs = []; // {obj: null, message: null}
 
-            for (var i = 0; i < fields.length; i++) {
-                var field = fields[i];
-                var field_valid = this.ValidateField(field);
+            for (let i = 0; i < fields.length; i++) {
+                const field = fields[i];
+                const field_valid = this.ValidateField(field);
 
-                var $this = field.obj;
-                var $this_container = $this.closest('.input');
+                const $this = field.obj;
+                const $this_container = $this.closest('.input');
 
                 //find and remove old status
-                var old_obj = $this_container.find('.' + form_obj_prefix + 'status');
+                const old_obj = $this_container.find('.' + form_obj_prefix + 'status');
 
                 //if appending new status, delete the old status immediately. Otherwise, fade it out slowly
                 if (settings.append_status) {
@@ -1160,7 +1160,7 @@
 
                         //add element signifying wrong input
                         if (settings.append_status) {
-                            var $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
+                            const $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
                             $wrong_input_obj.text(this.settings.text_vars.wrong_input_text);
                             $wrong_input_obj.hide();
 
@@ -1190,12 +1190,12 @@
         },
 
         SendDataReturn: function (options) {
-            var defaults = {
+            const defaults = {
                 reset_input: true,
                 message: '',
                 style: '',
             };
-            var settings = $.extend({}, defaults, options);
+            const settings = $.extend({}, defaults, options);
 
             if (settings.reset_input) {
                 this.ResetInput({clear_status_only: true});
@@ -1205,12 +1205,12 @@
         },
 
         ResetInput: function (options) {
-            var defaults = {
+            const defaults = {
                 clear_status_only: false,
             };
-            var settings = $.extend({}, defaults, options);
+            const settings = $.extend({}, defaults, options);
 
-            var form = this.popup.form;//this.popup.obj.find('form');
+            const form = this.popup.form;//this.popup.obj.find('form');
             form[0].reset();
 
             //validate after resetting the form
@@ -1218,7 +1218,7 @@
             this.ValidateForm(this.settings.input.agreements, {append_status: false, focus_first_wrong: false, clear_status_only: settings.clear_status_only});
 
             /*
-            var input = form.find(input_all_mask);
+            const input = form.find(input_all_mask);
             input.filter('[type="text"], [type="tel"], textarea').val('');
             input.filter('[type="checkbox"]').prop('checked', true);
             input.filter('select').prop('selectedIndex',0);
@@ -1235,15 +1235,15 @@
          * Function that formats data attributes into a string
          */
         formatData: function (input) {
-            var _input = input;
-            var input_length = _input.length;
-            var output = '';
+            const _input = input;
+            const input_length = _input.length;
+            let output = '';
             if (_input) {
                 output += ' ';
 
                 //is array
                 if (input.constructor === Array) {
-                    for (var i = 0; i < input_length; i++) {
+                    for (let i = 0; i < input_length; i++) {
                         output += 'data-' + _input[i][0] + '=' + _input[i][1] + ' ';
                     }
                     if (output[output.length - 1] === ' ') {
@@ -1264,13 +1264,13 @@
          * To retrieve the string, use the genearated key obj[x].formatted
          */
         formatDynamicAttributes: function (collection) {
-            var _collection = collection;
-            for (var i = 0; i < _collection.length; i++) {
-                var attributes = _collection[i].attributes;
-                var formatted = '';
+            const _collection = collection;
+            for (let i = 0; i < _collection.length; i++) {
+                const attributes = _collection[i].attributes;
+                let formatted = '';
 
                 //format attributes into a string
-                for (var x = 0; x < attributes.length; x++) {
+                for (let x = 0; x < attributes.length; x++) {
                     //open attr
                     formatted += attributes[x].key + '="';
                     //insert attr value
@@ -1301,16 +1301,16 @@
                 url = window.location.href;
             }
 
-            var request = {};
-            var qIndex = url.indexOf('?');
+            let request = {};
+            const qIndex = url.indexOf('?');
             if (qIndex === -1) {
                 return undefined;
             }
-            var pairs = url.substring(qIndex + 1).split('&');
-            for (var i = 0; i < pairs.length; i++) {
+            const pairs = url.substring(qIndex + 1).split('&');
+            for (let i = 0; i < pairs.length; i++) {
                 if (!pairs[i])
                     continue;
-                var pair = pairs[i].split('=');
+                const pair = pairs[i].split('=');
                 request[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
             }
             return request;
@@ -1323,10 +1323,10 @@
          * To retrieve a parameter, get the value of the paramter from the returned object (response['utm_source'])
          */
         URLGetUTMs: function (utm_params_dictionary) {
-            var url_params = this.URLGetParams();
-            var utm_params = []; //{name: '', value: ''}
+            const url_params = this.URLGetParams();
+            let utm_params = []; //{name: '', value: ''}
 
-            for (var key in url_params) {
+            for (const key in url_params) {
                 //check if key exists and it is a valid utm param from the settings
                 if (url_params.hasOwnProperty(key) && (utm_params_dictionary.indexOf(key) > -1)) {
                     utm_params.push({name: key, value: url_params[key]});
@@ -1346,8 +1346,8 @@
             let unique_dictionary = {};
             let distinct = [];
 
-            for (let param in param_names) {
-                for (let key in array_1) {
+            for (const param in param_names) {
+                for (const key in array_1) {
                     if (array_1[key].hasOwnProperty(param_names[param])) {
                         if (!unique_dictionary.hasOwnProperty(param_names[param])) {
                             unique_dictionary[param_names[param]] = [];
@@ -1357,8 +1357,8 @@
                 }
             }
 
-            for (let param in param_names) {
-                for (let key in array_2) {
+            for (const param in param_names) {
+                for (const key in array_2) {
                     if (array_2[key].hasOwnProperty(param_names[param])) {
                         if(unique_dictionary[param_names[param]].indexOf(array_2[key][param_names[param]]) === -1) {
                             distinct.push(array_2[key]);
@@ -1375,8 +1375,8 @@
          */
         objSortByPositionInDOM: function (input, attr, attr2) {
             //sort by position in DOM
-            var _input = input;
-            var output;
+            const _input = input;
+            let output;
             if (attr && attr2) {
                 output = _input.sort(function (a, b) {
                     if (a[attr][attr2][0] === b[attr][attr2][0]) return 0;
@@ -1426,11 +1426,11 @@
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
     $.fn[pluginName] = function (options) {
-        var instances = [];
+        let instances = [];
 
         this.each(function () {
             if (!$.data(this, "plugin_" + pluginName)) {
-                var instance = new Plugin(this, options);
+                const instance = new Plugin(this, options);
                 $.data(this, "plugin_" +
                     pluginName, instance);
                 instances.push(instance);
