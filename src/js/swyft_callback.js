@@ -666,8 +666,10 @@
                 this.StatusAdd(settings.status_sending_text, {});
 
                 //Add utm params to api custom data
-                if(this.settings.data.add_utm_params) {
-                    settings.api_custom = $.merge(settings.api_custom, this.URLGetUTMs(this.settings.data.utm_params_dictionary));
+                if (this.settings.data.add_utm_params) {
+                    var unique_utm_params = this.ArrayGetDistinct(settings.api_custom, this.URLGetUTMs(this.settings.data.utm_params_dictionary), ['name']);
+
+                    settings.api_custom = $.merge(settings.api_custom, unique_utm_params);
                 }
 
                 status = this.SendDataAjax(settings);
@@ -773,7 +775,7 @@
                         console.log(data);
 
                         if (data[settings.return_param]) {
-                            if($.isArray(data[settings.return_param]) || (data[settings.return_param] !== null && typeof data[settings.return_param] === 'object')) {
+                            if ($.isArray(data[settings.return_param]) || (data[settings.return_param] !== null && typeof data[settings.return_param] === 'object')) {
                                 for (var index in data[settings.return_param]) {
                                     console.log(data[settings.return_param][index]);
                                 }
@@ -1295,7 +1297,7 @@
          * To retrieve a parameter, get the value of the paramter from the returned object (response['utm_source'])
          */
         URLGetParams: function (url) {
-            if(typeof url === 'undefined') {
+            if (typeof url === 'undefined') {
                 url = window.location.href;
             }
 
@@ -1332,6 +1334,40 @@
             }
 
             return utm_params;
+        },
+
+        /*
+         * Input: Array [{name: 'utm_source'}], Array [{name: 'utm_source'}, {name: 'test'}], Array ['name']
+         * Output: Array Array [{name: 'test'}]
+         * Remove duplicate entries in the second Array based on the values in the first array. Both arrays contain objects with the structure {key:value}
+         * Return the second array with removed items.
+         */
+        ArrayGetDistinct: function (array_1, array_2, param_names) {
+            let unique_dictionary = {};
+            let distinct = [];
+
+            for (let param in param_names) {
+                for (let key in array_1) {
+                    if (array_1[key].hasOwnProperty(param_names[param])) {
+                        if (!unique_dictionary.hasOwnProperty(param_names[param])) {
+                            unique_dictionary[param_names[param]] = [];
+                        }
+                        unique_dictionary[param_names[param]].push(array_1[key][param_names[param]]);
+                    }
+                }
+            }
+
+            for (let param in param_names) {
+                for (let key in array_2) {
+                    if (array_2[key].hasOwnProperty(param_names[param])) {
+                        if(unique_dictionary[param_names[param]].indexOf(array_2[key][param_names[param]]) === -1) {
+                            distinct.push(array_2[key]);
+                        }
+                    }
+                }
+            }
+
+            return distinct;
         },
 
         /*
