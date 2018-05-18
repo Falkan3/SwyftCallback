@@ -43,6 +43,7 @@
                 send_headers: true,
                 custom_button_data: "",
                 custom_popup_data: "",
+                add_utm_params: false,
                 utm_params_dictionary: ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'keypartner'],
             },
             //appearance
@@ -665,8 +666,9 @@
                 this.StatusAdd(settings.status_sending_text, {});
 
                 //Add utm params to api custom data
-
-                settings.api_custom = $.merge(settings.api_custom, this.URLGetUTMs(this.settings.data.utm_params_dictionary));
+                if(this.settings.data.add_utm_params) {
+                    settings.api_custom = $.merge(settings.api_custom, this.URLGetUTMs(this.settings.data.utm_params_dictionary));
+                }
 
                 status = this.SendDataAjax(settings);
             } else {
