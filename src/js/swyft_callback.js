@@ -43,6 +43,7 @@
                 send_headers: true,
                 custom_button_data: "",
                 custom_popup_data: "",
+                utm_params_dictionary: ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'keypartner'],
             },
             //appearance
             appearance: {
@@ -663,6 +664,10 @@
                 this.StatusClear();
                 this.StatusAdd(settings.status_sending_text, {});
 
+                //Add utm params to api custom data
+
+                settings.api_custom = $.merge(settings.api_custom, this.URLGetUTMs(this.settings.data.utm_params_dictionary));
+
                 status = this.SendDataAjax(settings);
             } else {
                 status = {success: false, message: 'SendData: Error (Validation)'};
@@ -766,8 +771,10 @@
                         console.log(data);
 
                         if (data[settings.return_param]) {
-                            for (var index in data[settings.return_param]) {
-                                console.log(data[settings.return_param][index]);
+                            if($.isArray(data[settings.return_param]) || (data[settings.return_param] !== null && typeof data[settings.return_param] === 'object')) {
+                                for (var index in data[settings.return_param]) {
+                                    console.log(data[settings.return_param][index]);
+                                }
                             }
 
                             //Show message from API
@@ -1277,6 +1284,52 @@
             }
 
             return _collection;
+        },
+
+        /*
+         * Input: String (optional)
+         * Output: Object / Undefined
+         * Function that returns GET paramters from the given url (window url default)
+         * To retrieve a parameter, get the value of the paramter from the returned object (response['utm_source'])
+         */
+        URLGetParams: function (url) {
+            if(typeof url === 'undefined') {
+                url = window.location.href;
+            }
+
+            var request = {};
+            var qIndex = url.indexOf('?');
+            if (qIndex === -1) {
+                return undefined;
+            }
+            var pairs = url.substring(qIndex + 1).split('&');
+            for (var i = 0; i < pairs.length; i++) {
+                if (!pairs[i])
+                    continue;
+                var pair = pairs[i].split('=');
+                request[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+            }
+            return request;
+        },
+
+        /*
+         * Input: Array
+         * Output: Object
+         * Function that grabs utm parameters (according to dictionary in settings.data) and returns them from the url
+         * To retrieve a parameter, get the value of the paramter from the returned object (response['utm_source'])
+         */
+        URLGetUTMs: function (utm_params_dictionary) {
+            var url_params = this.URLGetParams();
+            var utm_params = []; //{name: '', value: ''}
+
+            for (var key in url_params) {
+                //check if key exists and it is a valid utm param from the settings
+                if (url_params.hasOwnProperty(key) && (utm_params_dictionary.indexOf(key) > -1)) {
+                    utm_params.push({name: key, value: url_params[key]});
+                }
+            }
+
+            return utm_params;
         },
 
         /*
