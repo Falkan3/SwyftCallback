@@ -1435,6 +1435,13 @@
                     pluginName, instance);
                 instances.push(instance);
             }
+
+            // Make it possible to access methods from public.
+            // e.g `$element.plugin('method');`
+            if (typeof options === 'string') {
+                const args = Array.prototype.slice.call(arguments, 1);
+                data[options].apply(data, args);
+            }
         });
 
         if (instances.length === 1) {
