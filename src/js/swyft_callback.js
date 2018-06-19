@@ -105,6 +105,9 @@
                     short: 'Check all agreements',
                 },
                 regex_table: {
+                    inputmask: {
+                        phone: ["###-###-###", "## ###-##-##", "(###)###-####"]
+                    },
                     'phone': /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/,
                     'email': /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     //^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčśšśžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŚŠŚŽ∂ð ,.'-]+$
@@ -591,7 +594,7 @@
             console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
             if (typeof $.fn.inputmask !== 'undefined') {
                 const input_masked_items = inputs.filter('input[type="tel"], .jsm_phone');
-                const phones_mask = ["###-###-###", "## ###-##-##"];
+                const phones_mask = this.settings.input.regex_table.inputmask.phone;//["###-###-###", "## ###-##-##", "(###)###-####"];
 
                 console.log('js input mask || masked items: ');
                 console.log(input_masked_items);
@@ -599,7 +602,8 @@
                 input_masked_items.inputmask({
                     mask: phones_mask,
                     greedy: false,
-                    definitions: {'#': {validator: "[0-9]", cardinality: 1}}
+                    definitions: {'#': {validator: "[0-9]", cardinality: 1}},
+                    'autoUnmask' : true
                 });
             }
             /* --- /js input mask --- */
