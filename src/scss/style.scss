@@ -44,6 +44,8 @@ body {
 }
 */
 
+$pp: '.sc'; // Plugin prefix
+
 $bg_primary: #FEF5EF;
 $bg_secondary: #584B53;
 $bg_wrong: #ffb9c3;
@@ -80,7 +82,7 @@ $ripple_color: #aeaeae;
     transform: $transforms;
 }
 
-.sc {
+#{$pp} {
     &_tg_btn {
         position: fixed;
         bottom: 4rem;
@@ -148,7 +150,7 @@ $ripple_color: #aeaeae;
 
 		z-index: 1;
 
-        .sc_icon {
+        #{$pp}_icon {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -248,7 +250,7 @@ $ripple_color: #aeaeae;
 			color: inherit;
         }
 
-        .sc_btn_close {
+        #{$pp}_btn_close {
             position: absolute;
             width: 32px;
             height: 32px;
@@ -256,11 +258,16 @@ $ripple_color: #aeaeae;
             top: -12px;
 
             background: transparent url(../img/close.svg);
+            border: none;
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
             border-radius: 50%;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
 
             cursor: pointer;
+			outline: none;
 
             @include transform(scale(0.9));
             @include transition(ease-out transform, 0.3s);
@@ -275,11 +282,11 @@ $ripple_color: #aeaeae;
             }
         }
 
-        .sc_title_section {
+        #{$pp}_title_section {
             padding: 2rem;
         }
 
-        .sc_title_section {
+        #{$pp}_title_section {
             background: $bg_secondary;
 
             color: $font_color_secondary;
@@ -289,7 +296,7 @@ $ripple_color: #aeaeae;
             text-align: center;
         }
 
-        .sc_body_section, .sc_footer_section {
+        #{$pp}_body_section, #{$pp}_footer_section {
             p {
                 margin: 0 0 1rem 0;
                 font-weight: 300;
@@ -297,11 +304,11 @@ $ripple_color: #aeaeae;
             }
         }
 
-		.sc_body_section {
+		#{$pp}_body_section {
             padding: 2rem 2rem 0.5rem 2rem;
 		}
 
-        .sc_footer_section {
+        #{$pp}_footer_section {
             padding: 1rem 2rem 1rem 2rem;
             text-align: center;
 
@@ -319,7 +326,7 @@ $ripple_color: #aeaeae;
             }
         }
 
-        .sc_division {
+        #{$pp}_division {
             position: relative;
             margin-bottom: 1rem;
         }
@@ -349,7 +356,7 @@ $ripple_color: #aeaeae;
                 }
 
                 //status underneath input
-                .sc_status {
+                #{$pp}_status {
                     display: block;
                     position: relative;
                     width: 100%;
@@ -379,7 +386,7 @@ $ripple_color: #aeaeae;
                         }
                     }
 
-                    .sc_status {
+                    #{$pp}_status {
                         //background: $bg_wrong;
                         color: $border_wrong;
 
@@ -468,8 +475,8 @@ $ripple_color: #aeaeae;
                 }
             }
 
-            .sc_agreements {
-                .sc_checkbox_container {
+            #{$pp}_agreements {
+                #{$pp}_checkbox_container {
                     position: absolute;
                     left: 0;
                     top: 0;
@@ -533,7 +540,7 @@ $ripple_color: #aeaeae;
                     }
                 }
 
-				label, .sc_readmore_body {
+				label, #{$pp}_readmore_body {
 					font-size: 0.7em;
 					color: lighten($font_color_primary, 50%);
 				}
@@ -558,14 +565,14 @@ $ripple_color: #aeaeae;
                     }
                 }
 
-				.sc_readmore {
+				#{$pp}_readmore {
                     color: $border_hover;
 
                     &:hover, &:active, &:focus {
                         color: lighten($border_hover, 15%);
                     }
                 }
-                .sc_readmore_body {
+                #{$pp}_readmore_body {
                     display: block;
                     margin: 0.5rem 0;
                     font-weight: 300;

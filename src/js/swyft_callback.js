@@ -386,7 +386,7 @@
             const $popupBody = '<div class="' + form_obj_prefix + 'overlay" style="display: none;">\n' +
                 '    <div class="' + form_obj_prefix + 'popup_container">\n' +
                 '        <div class="' + form_obj_prefix + 'popup' + classes + '">\n' +
-                '            <div class="' + form_obj_prefix + 'btn_close"></div>\n' +
+                '            <button class="' + form_obj_prefix + 'btn_close" type="button"></button>\n' +
                 '            <div class="' + form_obj_prefix + 'title_section">\n' +
                 '                <p>' + objThis.settings.text_vars.popup_title + '</p>\n' +
                 '            </div>\n' +

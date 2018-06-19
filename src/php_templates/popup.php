@@ -1,7 +1,7 @@
 <div class="sc_overlay">
     <div class="sc_popup_container">
         <div class="sc_popup">
-            <div class="sc_btn_close"></div>
+            <button class="sc_btn_close" type="button"></button>
 
             <div class="sc_title_section">
                 <p>Title</p>
