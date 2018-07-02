@@ -341,21 +341,37 @@
                     }
                     dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
 
-                    output = '<div class="' + form_obj_prefix + 'division">' +
-                        '           <div class="input">' +
-                        '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
-                        '                   <input ' + dynamic_attributes[0].formatted + ' />\n' +
-                        '                   <span class="checkmark"></span>\n' +
-                        '               </div>\n' +
-                        '\n' +
-                        '               <label for="' + agreement.field_name + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + ' </span></label>\n' +
-                        '               <div class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
-                        '                   <span>\n' +
-                        '                   ' + agreement.long +
-                        '                   </span>\n' +
-                        '               </div>' +
-                        '           </div>' +
-                        '         </div>';
+                    // if agreement has no longer version
+
+                    if(agreement.long === '') {
+                        output = '<div class="' + form_obj_prefix + 'division">' +
+                            '           <div class="input">' +
+                            '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
+                            '                   <input ' + dynamic_attributes[0].formatted + ' />\n' +
+                            '                   <span class="checkmark"></span>\n' +
+                            '               </div>\n' +
+                            '\n' +
+                            '               <label for="' + agreement.field_name + '">' + agreement.short + '</label>\n' +
+                            '           </div>' +
+                            '         </div>';
+                    } else {
+                        output = '<div class="' + form_obj_prefix + 'division">' +
+                            '           <div class="input">' +
+                            '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
+                            '                   <input ' + dynamic_attributes[0].formatted + ' />\n' +
+                            '                   <span class="checkmark"></span>\n' +
+                            '               </div>\n' +
+                            '\n' +
+                            '               <label for="' + agreement.field_name + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + '</span></label>\n' +
+                            '               <div class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
+                            '                   <span>\n' +
+                            '                   ' + agreement.long +
+                            '                   </span>\n' +
+                            '               </div>' +
+                            '           </div>' +
+                            '         </div>';
+                    }
+
                     agreements += output;
 
                     //save created DOM object in settings field reference
