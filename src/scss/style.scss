@@ -580,11 +580,6 @@ $ripple_color: #aeaeae;
                     font-weight: 300;
                     text-align: justify;
 
-                    p {
-                        display: inline;
-                        font-size: inherit;
-                    }
-
                     a {
                         color: $border_hover;
                         text-decoration: none;
@@ -593,6 +588,11 @@ $ripple_color: #aeaeae;
                             color: lighten($border_hover, 15%);
                         }
                     }
+                }
+
+                p {
+                    display: inline;
+                    font-size: inherit;
                 }
             }
         }

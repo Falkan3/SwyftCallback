@@ -137,11 +137,11 @@ body {
 
 .sc_popup form .sc_agreements .sc_readmore_body { display: block; margin: 0.5rem 0; font-weight: 300; text-align: justify; }
 
-.sc_popup form .sc_agreements .sc_readmore_body p { display: inline; font-size: inherit; }
-
 .sc_popup form .sc_agreements .sc_readmore_body a { color: #9D5C63; text-decoration: none; }
 
 .sc_popup form .sc_agreements .sc_readmore_body a:hover, .sc_popup form .sc_agreements .sc_readmore_body a:active, .sc_popup form .sc_agreements .sc_readmore_body a:focus { color: #bb8b90; }
+
+.sc_popup form .sc_agreements p { display: inline; font-size: inherit; }
 
 .sc_popup .container.no-padding, .sc_popup .container-fluid.no-padding { padding-left: 0; padding-right: 0; }
 
