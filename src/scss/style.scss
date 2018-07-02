@@ -256,6 +256,8 @@ $ripple_color: #aeaeae;
             height: 32px;
             right: -12px;
             top: -12px;
+            margin: 0;
+            padding: 0;
 
             background: transparent url(../img/close.svg);
             border: none;
@@ -577,6 +579,11 @@ $ripple_color: #aeaeae;
                     margin: 0.5rem 0;
                     font-weight: 300;
                     text-align: justify;
+
+                    p {
+                        display: inline;
+                        font-size: inherit;
+                    }
 
                     a {
                         color: $border_hover;
