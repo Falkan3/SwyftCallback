@@ -403,19 +403,19 @@
             let output = '';
             let $obj = null;
 
-            if (objThis.settings.footer) {
-                for (let i = 0; i < objThis.settings.footer.length; i++) {
-                    const footer_item = objThis.settings.footer[i];
+            if (objThis.settings.body_content) {
+                for (let i = 0; i < objThis.settings.body_content.length; i++) {
+                    const body_content_item = objThis.settings.body_content[i];
 
-                    if (typeof footer_item.long === 'undefined' || footer_item.long === '') {
+                    if (typeof body_content_item.long === 'undefined' || body_content_item.long === '') {
                         output = '<div class="' + form_obj_prefix + 'division">\n' +
-                            '         <p>' + footer_item.short + '</p>\n' +
+                            '         <p>' + body_content_item.short + '</p>\n' +
                             '    </div>';
                     } else {
                         output = '<div class="' + form_obj_prefix + 'division">\n' +
-                            '         <p>' + footer_item.short + ' <button class="' + form_obj_prefix + 'readmore">' + footer_item.readmore + '</button></p>\n' +
+                            '         <p>' + body_content_item.short + ' <button class="' + form_obj_prefix + 'readmore">' + body_content_item.readmore + '</button></p>\n' +
                             '         <div class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
-                            '             <span>' + footer_item.long + '</span>\n' +
+                            '             <span>' + body_content_item.long + '</span>\n' +
                             '         </div>\n' +
                             '    </div>';
                     }
