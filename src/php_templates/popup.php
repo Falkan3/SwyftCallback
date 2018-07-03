@@ -88,7 +88,13 @@
             </div>
 
             <div class="sc_footer_section">
-
+				<div class="sc_status"></div>
+				<div class="sc_division">
+					<p>Lorem ipsum <span class="sc_readmore">More</span></p>
+					<div class="sc_readmore_body" style="display: none;">
+						<span>Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor Lorem ipsum Dolor</span>
+					</div>
+				</div>
             </div>
         </div>
     </div>

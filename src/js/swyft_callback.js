@@ -116,6 +116,13 @@
                 //dictionary is used to exchange input names into values from the dictionary on API request
                 data_dictionary: {} //'sc_fld_telephone': 'phone'
             },
+            body_content: [
+                {
+                    short: 'Short',
+                    long: 'Long',
+                    readmore: 'More',
+                }
+            ],
             callbacks: {
                 onShow: null,
                 onHide: null,
@@ -157,7 +164,7 @@
         };
         //popup window
         this.popup = {
-            obj: null, form: null, body: null, footer: null
+            obj: null, form: null, body: null, body_content: null, footer: null
         };
 
         this.init();
@@ -305,7 +312,7 @@
                         '               <div class="input">\n' +
                         '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
                         '                       <input id="' + form_fields_prefix + 'agreement_all" name="' + form_fields_prefix + 'agreement_all" type="checkbox" data-field-type="checkbox" />\n' +
-                        '                       <span class="checkmark"></span>\n' +
+                        '                       <button class="checkmark"></button>\n' +
                         '                   </div>\n' +
                         '\n' +
                         '                   <label for="' + form_fields_prefix + 'agreement_all">' + objThis.settings.input.check_all_agreements.short + '</label>\n' +
@@ -343,12 +350,12 @@
 
                     // if agreement has no longer version
 
-                    if(agreement.long === '') {
+                    if (typeof agreement.long === 'undefined' || agreement.long === '') {
                         output = '<div class="' + form_obj_prefix + 'division">' +
                             '           <div class="input">' +
                             '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
                             '                   <input ' + dynamic_attributes[0].formatted + ' />\n' +
-                            '                   <span class="checkmark"></span>\n' +
+                            '                   <button class="checkmark"></button>\n' +
                             '               </div>\n' +
                             '\n' +
                             '               <label for="' + agreement.field_name + '">' + agreement.short + '</label>\n' +
@@ -359,14 +366,12 @@
                             '           <div class="input">' +
                             '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
                             '                   <input ' + dynamic_attributes[0].formatted + ' />\n' +
-                            '                   <span class="checkmark"></span>\n' +
+                            '                   <button class="checkmark"></button>\n' +
                             '               </div>\n' +
                             '\n' +
-                            '               <label for="' + agreement.field_name + '">' + agreement.short + ' <span class="' + form_obj_prefix + 'readmore">' + agreement.readmore + '</span></label>\n' +
+                            '               <label for="' + agreement.field_name + '">' + agreement.short + ' <button class="' + form_obj_prefix + 'readmore">' + agreement.readmore + '</button></label>\n' +
                             '               <div class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
-                            '                   <span>\n' +
-                            '                   ' + agreement.long +
-                            '                   </span>\n' +
+                            '                   <span>' + agreement.long + '</span>\n' +
                             '               </div>' +
                             '           </div>' +
                             '         </div>';
@@ -381,6 +386,40 @@
             }
 
             return agreements;
+        },
+        initPopup_generate_popup_body_content: function (popupBody) {
+            const objThis = this;
+            const body_content_section = objThis.popup.body_content; //popupBody.find('.' + form_obj_prefix + 'body_content_section');
+            let body_content_items = '';
+            let output = '';
+            let $obj = null;
+
+            if (objThis.settings.footer) {
+                for (let i = 0; i < objThis.settings.footer.length; i++) {
+                    const footer_item = objThis.settings.footer[i];
+
+                    if (typeof footer_item.long === 'undefined' || footer_item.long === '') {
+                        output = '<div class="' + form_obj_prefix + 'division">\n' +
+                            '         <p>' + footer_item.short + '</p>\n' +
+                            '    </div>';
+                    } else {
+                        output = '<div class="' + form_obj_prefix + 'division">\n' +
+                            '         <p>' + footer_item.short + ' <button class="' + form_obj_prefix + 'readmore">' + footer_item.readmore + '</button></p>\n' +
+                            '         <div class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
+                            '             <span>' + footer_item.long + '</span>\n' +
+                            '         </div>\n' +
+                            '    </div>';
+                    }
+
+                    body_content_items += output;
+
+                    //save created DOM object in settings field reference
+                    $obj = $(output).prependTo(body_content_section);
+                    objThis.settings.body_content[i].obj = $obj;
+                }
+            }
+
+            return body_content_items;
         },
         initPopup_generate_popup_body: function () {
             const objThis = this;
@@ -421,7 +460,7 @@
                 '\n' +
                 '                            <div class="col-xs-12">\n' +
                 '                                <div class="' + form_obj_prefix + 'division">\n' +
-                '                                    <button type="submit" class="' + form_obj_prefix + 'btn_submit">' + objThis.settings.text_vars.send_button_text + '</button>\n' +
+                '                                    <button type="submit" class="' + form_obj_prefix + 'btn btn_submit">' + objThis.settings.text_vars.send_button_text + '</button>\n' +
                 '                                </div>\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
@@ -433,6 +472,7 @@
                 '                        </div>\n' +
                 '                    </div>\n' +
                 '                </form>\n' +
+                '                <div class="' + form_obj_prefix + 'body_content_section"></div>\n' +
                 '            </div>\n' +
                 '\n' +
                 '            <div class="' + form_obj_prefix + 'footer_section">\n' +
@@ -460,6 +500,7 @@
             //find references to sections
             objThis.popup.form = objThis.popup.obj.find('form');
             objThis.popup.body = objThis.popup.obj.find('.' + form_obj_prefix + 'body_section');
+            objThis.popup.body_content = objThis.popup.obj.find('.' + form_obj_prefix + 'body_content_section');
             objThis.popup.footer = objThis.popup.obj.find('.' + form_obj_prefix + 'footer_section');
 
             //form fields
@@ -471,6 +512,9 @@
             //add agreements to popup body
             //let agreements =
             objThis.initPopup_generate_popup_agreements($popupBody);
+
+            //footer
+            objThis.initPopup_generate_popup_body_content($popupBody);
 
             //apply event listeners to elements contained in popup
             objThis.popupAppendEventListeners();
@@ -494,7 +538,7 @@
             });
 
             //readmore click
-            objThis.popup.form.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
+            objThis.popup.obj.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
                 e.preventDefault();
                 objThis.showReadmore(this);
             });
@@ -619,7 +663,7 @@
                     mask: phones_mask,
                     greedy: false,
                     definitions: {'#': {validator: "[0-9]", cardinality: 1}},
-                    'autoUnmask' : true
+                    'autoUnmask': true
                 });
             }
             /* --- /js input mask --- */
@@ -1380,7 +1424,7 @@
             for (const param in param_names) {
                 for (const key in array_2) {
                     if (array_2[key].hasOwnProperty(param_names[param])) {
-                        if(unique_dictionary[param_names[param]].indexOf(array_2[key][param_names[param]]) === -1) {
+                        if (unique_dictionary[param_names[param]].indexOf(array_2[key][param_names[param]]) === -1) {
                             distinct.push(array_2[key]);
                         }
                     }

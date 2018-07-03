@@ -82,6 +82,37 @@ $ripple_color: #aeaeae;
     transform: $transforms;
 }
 
+%read_more_button {
+    color: $border_hover;
+
+    &:hover, &:active, &:focus {
+        color: lighten($border_hover, 15%);
+    }
+}
+
+%read_more_body {
+    @extend %smaller_text_section;
+
+    display: block;
+    margin: 0.5rem 0;
+    font-weight: 300;
+    text-align: justify;
+
+    a {
+        color: $border_hover;
+        text-decoration: none;
+
+        &:hover, &:active, &:focus {
+            color: lighten($border_hover, 15%);
+        }
+    }
+}
+
+%smaller_text_section {
+    font-size: 0.7em;
+    color: lighten($font_color_primary, 50%);
+}
+
 #{$pp} {
     &_tg_btn {
         position: fixed;
@@ -231,6 +262,8 @@ $ripple_color: #aeaeae;
 
         overflow-x: hidden;
         overflow-y: auto;
+
+		@import 'general_overwrite';
     }
 
     &_popup {
@@ -448,7 +481,7 @@ $ripple_color: #aeaeae;
                 letter-spacing: 1px;
             }
 
-            input[type="submit"], input[type="button"], button, .btn {
+			#{$pp}_btn {
                 display: block;
                 width: 100%;
                 max-width: 100%;
@@ -543,8 +576,7 @@ $ripple_color: #aeaeae;
                 }
 
 				label, #{$pp}_readmore_body {
-					font-size: 0.7em;
-					color: lighten($font_color_primary, 50%);
+                    @extend %smaller_text_section;
 				}
 
                 label {
@@ -568,26 +600,10 @@ $ripple_color: #aeaeae;
                 }
 
 				#{$pp}_readmore {
-                    color: $border_hover;
-
-                    &:hover, &:active, &:focus {
-                        color: lighten($border_hover, 15%);
-                    }
+                    @extend %read_more_button;
                 }
                 #{$pp}_readmore_body {
-                    display: block;
-                    margin: 0.5rem 0;
-                    font-weight: 300;
-                    text-align: justify;
-
-                    a {
-                        color: $border_hover;
-                        text-decoration: none;
-
-                        &:hover, &:active, &:focus {
-                            color: lighten($border_hover, 15%);
-                        }
-                    }
+                    @extend %read_more_body;
                 }
 
                 p {
@@ -596,6 +612,21 @@ $ripple_color: #aeaeae;
                 }
             }
         }
+
+		#{$pp}_body_content_section {
+			text-align: center;
+			
+			#{$pp}_readmore {
+				@extend %read_more_button;
+			}
+			#{$pp}_readmore_body {
+				@extend %read_more_body;
+			}
+
+			p {
+				margin-bottom: 0;
+			}
+		}
 
         //overwrite some bootstrap styles
         @import '_bootstrap_overwrite';
