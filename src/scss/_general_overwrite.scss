@@ -1,10 +1,14 @@
 button {
+	display: inline;
+	margin: 0;
+	padding: 0;
 	border: none;
 	background: none;
 	font-family: inherit;
 	font-size: inherit;
 	font-weight: inherit;
 	line-height: inherit;
+	text-transform: none;
 	cursor: pointer;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;

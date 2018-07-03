@@ -362,7 +362,7 @@ $ripple_color: #aeaeae;
             p {
                 margin: 0 0 1rem 0;
                 font-weight: 300;
-                font-size: 1rem;
+                font-size: inherit;
             }
         }
 
@@ -602,7 +602,7 @@ $ripple_color: #aeaeae;
                     }
                 }
 
-				label, #{$pp}_readmore_body {
+				label {
                     @extend %smaller_text_section;
 				}
 
@@ -626,13 +626,6 @@ $ripple_color: #aeaeae;
                     }
                 }
 
-				#{$pp}_readmore {
-                    @extend %read_more_button;
-                }
-                #{$pp}_readmore_body {
-                    @extend %read_more_body;
-                }
-
                 p {
                     display: inline;
                     font-size: inherit;
@@ -642,17 +635,18 @@ $ripple_color: #aeaeae;
 
 		#{$pp}_body_content_section {
 			text-align: center;
-			
-			#{$pp}_readmore {
-				@extend %read_more_button;
-			}
-			#{$pp}_readmore_body {
-				@extend %read_more_body;
-			}
 
 			p {
 				margin-bottom: 0;
 			}
+		}
+
+		#{$pp}_readmore {
+			@extend %read_more_button;
+		}
+		#{$pp}_readmore_body {
+			@extend %smaller_text_section;
+			@extend %read_more_body;
 		}
 
         //overwrite some bootstrap styles
