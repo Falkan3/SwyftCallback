@@ -52,6 +52,7 @@
                 custom_popup_class: "",
                 show_check_all_agreements: true,
                 overflown_overlay: true,
+                ripple_effect: 1, //available: [1, 2]
             },
             //status
             status: {
@@ -229,6 +230,14 @@
             const objThis = this;
             const classes = this.formatClasses(this.settings.appearance.custom_button_class);
             const data = this.formatData(this.settings.data.custom_button_data);
+
+            let rippleClass = 'ripple';
+            switch(objThis.settings.appearance.ripple_effect) {
+                case 2:
+                    rippleClass = 'ripple2';
+                    break;
+            }
+
             const $buttonBody = $(
                 '<div class="' + form_obj_prefix + 'tg_btn' + classes + '" ' + data + '>\n' +
                 '    <div class="' + form_obj_prefix + 'round_container">\n' +
@@ -236,7 +245,7 @@
                 '           <a href="#"></a>\n' +
                 '        </div>\n' +
                 '    </div>\n' +
-                '    <div class="sc_ripple"></div>\n' +
+                '    <div class="' + form_obj_prefix + rippleClass + '"></div>\n' +
                 '</div>');
             objThis.button.obj = $buttonBody.appendTo($(objThis.element));
 
