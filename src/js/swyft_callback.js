@@ -118,11 +118,13 @@
                 data_dictionary: {} //'sc_fld_telephone': 'phone'
             },
             body_content: [
+                /*
                 {
                     short: 'Short',
                     long: 'Long',
                     readmore: 'More',
                 }
+                */
             ],
             callbacks: {
                 onShow: null,
