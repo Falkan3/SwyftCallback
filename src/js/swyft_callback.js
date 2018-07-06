@@ -22,9 +22,10 @@
 
     // Create the defaults once
     const pluginName = "swyftCallback",
-        form_obj_prefix = 'sc_',
-        form_fields_prefix = form_obj_prefix + 'fld_',
-        input_all_mask = 'input, select, textarea',
+        pluginNameLower = pluginName.toLowerCase(),
+        formObjPrefix = 'sc_',
+        formFieldsPrefix = formObjPrefix + 'fld_',
+        inputAllMask = 'input, select, textarea',
 
         defaults = {
             api: {
@@ -75,12 +76,12 @@
             //form info
             novalidate: true,
             input: {
-                prefix: form_fields_prefix,
+                prefix: formObjPrefix,
                 fields: [
                     {
                         obj: null,
                         name: 'phone',
-                        field_name: form_fields_prefix + 'telephone',
+                        field_name: formObjPrefix + 'telephone',
                         label: 'Phone number',
                         type: 'tel',
                         data_field_type: 'phone', //possible types: phone, name, email. Used for regex_table
@@ -92,7 +93,7 @@
                 agreements: [
                     {
                         obj: null,
-                        field_name: form_fields_prefix + 'agreement',
+                        field_name: formObjPrefix + 'agreement',
                         type: 'checkbox',
                         short: 'Lorem',
                         long: 'Ipsum',
@@ -147,6 +148,7 @@
     // The actual plugin constructor
     function Plugin(element, options) {
         this.element = element;
+        this.$element = $(element);
 
         // jQuery has an extend method which merges the contents of two or
         // more objects, storing the result in the first object. The first object
@@ -155,9 +157,13 @@
         this.settings = $.extend(true, {}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
+        this._nameLower = pluginNameLower;
+        this._objPrefix = formObjPrefix;
+        this._methods = methods;
+        this._inputAllMask = inputAllMask;
 
         //set default vars for the fields in form
-        this.setDefaultVars();
+        this._methods.setDefaultVars(this);
 
         //dynamic vars
         this.html = $('html');
@@ -170,14 +176,15 @@
             obj: null, form: null, body: null, body_content: null, footer: null
         };
 
-        this.init();
+        this._methods.init(this);
     }
 
     // Avoid Plugin.prototype conflicts
-    $.extend(Plugin.prototype, {
+    // $.extend(Plugin.prototype, {
+    const methods = {
         //if(jQuery.fn.pluginName) {...} - check for functions from other plugins (dependencies)
 
-        init: function () {
+        init: function (instance) {
 
             // Place initialization logic here
             // You already have access to the DOM element and
@@ -185,23 +192,23 @@
             // and this.settings
             // you can add more functions like the one below and
             // call them like the example bellow
-            this.initPopup();
-            this.initButton();
+            instance._methods.initPopup(instance);
+            instance._methods.initButton(instance);
         },
-        setDefaultVars: function () {
+        setDefaultVars: function (instance) {
             //set default vars for form fields
-            if (this.settings.input.fields) {
+            if (instance.settings.input.fields) {
                 const template = defaults.input.fields[0];
-                for (let i = 0; i < this.settings.input.fields.length; i++) {
-                    this.settings.input.fields[i] = $.extend({}, template, this.settings.input.fields[i]);
+                for (let i = 0; i < instance.settings.input.fields.length; i++) {
+                    instance.settings.input.fields[i] = $.extend({}, template, instance.settings.input.fields[i]);
                 }
             }
 
             //set default vars for agreements
-            if (this.settings.input.agreements) {
+            if (instance.settings.input.agreements) {
                 const template = defaults.input.agreements[0];
-                for (let i = 0; i < this.settings.input.agreements.length; i++) {
-                    this.settings.input.agreements[i] = $.extend({}, template, this.settings.input.agreements[i]);
+                for (let i = 0; i < instance.settings.input.agreements.length; i++) {
+                    instance.settings.input.agreements[i] = $.extend({}, template, instance.settings.input.agreements[i]);
                 }
             }
         },
@@ -228,50 +235,48 @@
             return output;
         },
 
-        initButton: function () {
-            const objThis = this;
-            const classes = this.formatClasses(this.settings.appearance.custom_button_class);
-            const data = this.formatData(this.settings.data.custom_button_data);
+        initButton: function (instance) {
+            const classes = instance._methods.formatClasses(instance.settings.appearance.custom_button_class);
+            const data = instance._methods.formatData(instance.settings.data.custom_button_data);
 
             let rippleClass = 'ripple';
-            switch(objThis.settings.appearance.ripple_effect) {
+            switch(instance.settings.appearance.ripple_effect) {
                 case 2:
                     rippleClass = 'ripple2';
                     break;
             }
 
             const $buttonBody = $(
-                '<div class="' + form_obj_prefix + 'tg_btn' + classes + '" ' + data + '>\n' +
-                '    <div class="' + form_obj_prefix + 'round_container">\n' +
-                '        <div class="' + form_obj_prefix + 'icon">' +
+                '<div class="' + instance._objPrefix + 'tg_btn' + classes + '" ' + data + '>\n' +
+                '    <div class="' + instance._objPrefix + 'round_container">\n' +
+                '        <div class="' + instance._objPrefix + 'icon">' +
                 '           <a href="#"></a>\n' +
                 '        </div>\n' +
                 '    </div>\n' +
-                '    <div class="' + form_obj_prefix + rippleClass + '"></div>\n' +
+                '    <div class="' + instance._objPrefix + rippleClass + '"></div>\n' +
                 '</div>');
-            objThis.button.obj = $buttonBody.appendTo($(objThis.element));
+            instance.button.obj = $buttonBody.appendTo(instance.$element);
 
-            objThis.button.obj.find('a').on('click', function (e) {
+            instance.button.obj.find('a').on('click', function (e) {
                 e.preventDefault();
 
-                objThis.TogglePopup();
+                instance._methods.TogglePopup(instance);
             });
         },
 
         /*
          * Builders for popup body
          */
-        initPopup_generate_fields: function (popupBody) {
-            const objThis = this;
+        initPopup_generate_fields: function (instance, popupBody) {
             //form fields
             let fields = '';
             let dynamic_attributes = [];
 
-            if (objThis.settings.input.fields) {
-                const fields_section = popupBody.find('.' + form_obj_prefix + 'fields_section');
+            if (instance.settings.input.fields) {
+                const fields_section = popupBody.find('.' + instance._objPrefix + 'fields_section');
 
-                for (let i = 0; i < objThis.settings.input.fields.length; i++) {
-                    const field = objThis.settings.input.fields[i];
+                for (let i = 0; i < instance.settings.input.fields.length; i++) {
+                    const field = instance.settings.input.fields[i];
 
                     // generate attributes for popup body
                     dynamic_attributes = [
@@ -291,9 +296,9 @@
                             formatted: ''
                         },
                     ];
-                    dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
+                    dynamic_attributes = instance._methods.formatDynamicAttributes(dynamic_attributes);
 
-                    const output = '<div class="' + form_obj_prefix + 'division">\n' +
+                    const output = '<div class="' + instance._objPrefix + 'division">\n' +
                         '               <div class="input">\n' +
                         '                   <label for="' + field.field_name + '">' + field.label + '</label>\n' +
                         '                   <input ' + dynamic_attributes[0].formatted + '/>\n' +
@@ -303,40 +308,39 @@
 
                     //save created DOM object in settings field reference
                     const $obj = $(output).appendTo(fields_section);
-                    objThis.settings.input.fields[i].obj = $obj.find(input_all_mask).first();
+                    instance.settings.input.fields[i].obj = $obj.find(instance._inputAllMask).first();
                 }
             }
 
             return fields;
         },
-        initPopup_generate_popup_agreements: function (popupBody) {
-            const objThis = this;
-            const agreements_section = popupBody.find('.' + form_obj_prefix + 'agreements_section');
+        initPopup_generate_popup_agreements: function (instance, popupBody) {
+            const agreements_section = popupBody.find('.' + instance._objPrefix + 'agreements_section');
             let agreements = '';
             let output = '';
             let $obj = null;
 
-            if (objThis.settings.input.agreements) {
+            if (instance.settings.input.agreements) {
                 //append check all agreements button
-                if (objThis.settings.appearance.show_check_all_agreements && objThis.settings.input.agreements.length > 0) {
-                    output = '<div class="' + form_obj_prefix + 'division">\n' +
+                if (instance.settings.appearance.show_check_all_agreements && instance.settings.input.agreements.length > 0) {
+                    output = '<div class="' + instance._objPrefix + 'division">\n' +
                         '               <div class="input">\n' +
-                        '                   <div class="' + form_obj_prefix + 'checkbox_container">\n' +
-                        '                       <input id="' + form_fields_prefix + 'agreement_all" name="' + form_fields_prefix + 'agreement_all" type="checkbox" data-field-type="checkbox" />\n' +
+                        '                   <div class="' + instance._objPrefix + 'checkbox_container">\n' +
+                        '                       <input id="' + instance._objPrefix + 'agreement_all" name="' + instance._objPrefix + 'agreement_all" type="checkbox" data-field-type="checkbox" />\n' +
                         '                       <button class="checkmark"></button>\n' +
                         '                   </div>\n' +
                         '\n' +
-                        '                   <label for="' + form_fields_prefix + 'agreement_all">' + objThis.settings.input.check_all_agreements.short + '</label>\n' +
+                        '                   <label for="' + instance._objPrefix + 'agreement_all">' + instance.settings.input.check_all_agreements.short + '</label>\n' +
                         '               </div>\n' +
                         '          </div>';
 
                     //save created DOM object in settings field reference
                     $obj = $(output).appendTo(agreements_section);
-                    objThis.settings.input.check_all_agreements.obj = $obj.find(input_all_mask).first();
+                    instance.settings.input.check_all_agreements.obj = $obj.find(instance._inputAllMask).first();
                 }
 
-                for (let i = 0; i < objThis.settings.input.agreements.length; i++) {
-                    const agreement = objThis.settings.input.agreements[i];
+                for (let i = 0; i < instance.settings.input.agreements.length; i++) {
+                    const agreement = instance.settings.input.agreements[i];
 
                     let dynamic_attributes = [];
                     // generate attributes for agreement
@@ -357,14 +361,14 @@
                     if (agreement.checked) {
                         dynamic_attributes[0].attributes.push({key: 'checked', value: 'checked'});
                     }
-                    dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
+                    dynamic_attributes = instance._methods.formatDynamicAttributes(dynamic_attributes);
 
                     // if agreement has no longer version
 
                     if (typeof agreement.long === 'undefined' || agreement.long === '') {
-                        output = '<div class="' + form_obj_prefix + 'division">' +
+                        output = '<div class="' + instance._objPrefix + 'division">' +
                             '           <div class="input">' +
-                            '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
+                            '               <div class="' + instance._objPrefix + 'checkbox_container">\n' +
                             '                   <input ' + dynamic_attributes[0].formatted + ' />\n' +
                             '                   <button class="checkmark"></button>\n' +
                             '               </div>\n' +
@@ -373,15 +377,15 @@
                             '           </div>' +
                             '         </div>';
                     } else {
-                        output = '<div class="' + form_obj_prefix + 'division">' +
+                        output = '<div class="' + instance._objPrefix + 'division">' +
                             '           <div class="input">' +
-                            '               <div class="' + form_obj_prefix + 'checkbox_container">\n' +
+                            '               <div class="' + instance._objPrefix + 'checkbox_container">\n' +
                             '                   <input ' + dynamic_attributes[0].formatted + ' />\n' +
                             '                   <button class="checkmark"></button>\n' +
                             '               </div>\n' +
                             '\n' +
-                            '               <label for="' + agreement.field_name + '">' + agreement.short + ' <button class="' + form_obj_prefix + 'readmore">' + agreement.readmore + '</button></label>\n' +
-                            '               <div class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
+                            '               <label for="' + agreement.field_name + '">' + agreement.short + ' <button class="' + instance._objPrefix + 'readmore">' + agreement.readmore + '</button></label>\n' +
+                            '               <div class="' + instance._objPrefix + 'readmore_body" style="display: none;">\n' +
                             '                   <span>' + agreement.long + '</span>\n' +
                             '               </div>' +
                             '           </div>' +
@@ -392,31 +396,30 @@
 
                     //save created DOM object in settings field reference
                     $obj = $(output).appendTo(agreements_section);
-                    objThis.settings.input.agreements[i].obj = $obj.find(input_all_mask).first();
+                    instance.settings.input.agreements[i].obj = $obj.find(instance._inputAllMask).first();
                 }
             }
 
             return agreements;
         },
-        initPopup_generate_popup_body_content: function (popupBody) {
-            const objThis = this;
-            const body_content_section = objThis.popup.body_content; //popupBody.find('.' + form_obj_prefix + 'body_content_section');
+        initPopup_generate_popup_body_content: function (instance) {
+            const body_content_section = instance.popup.body_content; //popupBody.find('.' + instance._objPrefix + 'body_content_section');
             let body_content_items = '';
             let output = '';
             let $obj = null;
 
-            if (objThis.settings.body_content) {
-                for (let i = 0; i < objThis.settings.body_content.length; i++) {
-                    const body_content_item = objThis.settings.body_content[i];
+            if (instance.settings.body_content) {
+                for (let i = 0; i < instance.settings.body_content.length; i++) {
+                    const body_content_item = instance.settings.body_content[i];
 
                     if (typeof body_content_item.long === 'undefined' || body_content_item.long === '') {
-                        output = '<div class="' + form_obj_prefix + 'division">\n' +
+                        output = '<div class="' + instance._objPrefix + 'division">\n' +
                             '         <p>' + body_content_item.short + '</p>\n' +
                             '    </div>';
                     } else {
-                        output = '<div class="' + form_obj_prefix + 'division">\n' +
-                            '         <p>' + body_content_item.short + ' <button class="' + form_obj_prefix + 'readmore">' + body_content_item.readmore + '</button></p>\n' +
-                            '         <div class="' + form_obj_prefix + 'readmore_body" style="display: none;">\n' +
+                        output = '<div class="' + instance._objPrefix + 'division">\n' +
+                            '         <p>' + body_content_item.short + ' <button class="' + instance._objPrefix + 'readmore">' + body_content_item.readmore + '</button></p>\n' +
+                            '         <div class="' + instance._objPrefix + 'readmore_body" style="display: none;">\n' +
                             '             <span>' + body_content_item.long + '</span>\n' +
                             '         </div>\n' +
                             '    </div>';
@@ -426,67 +429,66 @@
 
                     //save created DOM object in settings field reference
                     $obj = $(output).prependTo(body_content_section);
-                    objThis.settings.body_content[i].obj = $obj;
+                    instance.settings.body_content[i].obj = $obj;
                 }
             }
 
             return body_content_items;
         },
-        initPopup_generate_popup_body: function () {
-            const objThis = this;
+        initPopup_generate_popup_body: function (instance) {
             let dynamic_attributes = [];
 
             // generate attributes for popup body
-            const classes = objThis.formatClasses(objThis.settings.appearance.custom_popup_class);
+            const classes = instance._methods.formatClasses(instance.settings.appearance.custom_popup_class);
             dynamic_attributes = [
                 //0
                 {
                     name: 'form',
                     attributes: [
-                        {key: 'action', value: objThis.settings.api.url},
-                        {key: 'method', value: objThis.settings.data.form_method},
-                        {key: 'novalidate', value: objThis.settings.novalidate},
+                        {key: 'action', value: instance.settings.api.url},
+                        {key: 'method', value: instance.settings.data.form_method},
+                        {key: 'novalidate', value: instance.settings.novalidate},
                     ],
                     formatted: ''
                 },
             ];
-            dynamic_attributes = objThis.formatDynamicAttributes(dynamic_attributes);
+            dynamic_attributes = instance._methods.formatDynamicAttributes(dynamic_attributes);
 
-            const $popupBody = '<div class="' + form_obj_prefix + 'overlay" style="display: none;">\n' +
-                '    <div class="' + form_obj_prefix + 'popup_container">\n' +
-                '        <div class="' + form_obj_prefix + 'popup' + classes + '">\n' +
-                '            <button class="' + form_obj_prefix + 'btn_close" type="button"></button>\n' +
-                '            <div class="' + form_obj_prefix + 'title_section">\n' +
-                '                <p>' + objThis.settings.text_vars.popup_title + '</p>\n' +
+            const $popupBody = '<div class="' + instance._objPrefix + 'overlay" style="display: none;">\n' +
+                '    <div class="' + instance._objPrefix + 'popup_container">\n' +
+                '        <div class="' + instance._objPrefix + 'popup' + classes + '">\n' +
+                '            <button class="' + instance._objPrefix + 'btn_close" type="button"></button>\n' +
+                '            <div class="' + instance._objPrefix + 'title_section">\n' +
+                '                <p>' + instance.settings.text_vars.popup_title + '</p>\n' +
                 '            </div>\n' +
                 '\n' +
-                '            <div class="' + form_obj_prefix + 'body_section">\n' +
-                '                <p>' + objThis.settings.text_vars.popup_body + '</p>\n' +
+                '            <div class="' + instance._objPrefix + 'body_section">\n' +
+                '                <p>' + instance.settings.text_vars.popup_body + '</p>\n' +
                 '                <form ' + dynamic_attributes[0].formatted + '>\n' +
                 '                    <div class="container-fluid no-padding">\n' +
                 '                        <div class="row">\n' +
-                '                            <div class="col-xs-12 ' + form_obj_prefix + 'fields_section">\n' +
+                '                            <div class="col-xs-12 ' + instance._objPrefix + 'fields_section">\n' +
                 //fields +
                 '                            </div>\n' +
                 '\n' +
                 '                            <div class="col-xs-12">\n' +
-                '                                <div class="' + form_obj_prefix + 'division">\n' +
-                '                                    <button type="submit" class="' + form_obj_prefix + 'btn btn_submit">' + objThis.settings.text_vars.send_button_text + '</button>\n' +
+                '                                <div class="' + instance._objPrefix + 'division">\n' +
+                '                                    <button type="submit" class="' + instance._objPrefix + 'btn btn_submit">' + instance.settings.text_vars.send_button_text + '</button>\n' +
                 '                                </div>\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
                 '\n' +
-                '                        <div class="row ' + form_obj_prefix + 'agreements">\n' +
-                '                            <div class="col-xs-12 ' + form_obj_prefix + 'agreements_section">\n' +
+                '                        <div class="row ' + instance._objPrefix + 'agreements">\n' +
+                '                            <div class="col-xs-12 ' + instance._objPrefix + 'agreements_section">\n' +
                 //agreements +
                 '                            </div>\n' +
                 '                        </div>\n' +
                 '                    </div>\n' +
                 '                </form>\n' +
-                '                <div class="' + form_obj_prefix + 'body_content_section"></div>\n' +
+                '                <div class="' + instance._objPrefix + 'body_content_section"></div>\n' +
                 '            </div>\n' +
                 '\n' +
-                '            <div class="' + form_obj_prefix + 'footer_section">\n' +
+                '            <div class="' + instance._objPrefix + 'footer_section">\n' +
                 '\n' +
                 '            </div>\n' +
                 '        </div>\n' +
@@ -499,49 +501,45 @@
         /*
          * Main function for initializing popup body
          */
-        initPopup: function () {
-            const objThis = this;
-
+        initPopup: function (instance) {
             //body
-            const $popupBody = $(objThis.initPopup_generate_popup_body());
+            const $popupBody = $(instance._methods.initPopup_generate_popup_body(instance));
 
             //append the object to DOM
-            objThis.popup.obj = $popupBody.appendTo($(objThis.element));
+            instance.popup.obj = $popupBody.appendTo(instance.$element);
 
             //find references to sections
-            objThis.popup.form = objThis.popup.obj.find('form');
-            objThis.popup.body = objThis.popup.obj.find('.' + form_obj_prefix + 'body_section');
-            objThis.popup.body_content = objThis.popup.obj.find('.' + form_obj_prefix + 'body_content_section');
-            objThis.popup.footer = objThis.popup.obj.find('.' + form_obj_prefix + 'footer_section');
+            instance.popup.form = instance.popup.obj.find('form');
+            instance.popup.body = instance.popup.obj.find('.' + instance._objPrefix + 'body_section');
+            instance.popup.body_content = instance.popup.obj.find('.' + instance._objPrefix + 'body_content_section');
+            instance.popup.footer = instance.popup.obj.find('.' + instance._objPrefix + 'footer_section');
 
             //form fields
             //add fields to popup body
             //let fields =
-            objThis.initPopup_generate_fields($popupBody);
+            instance._methods.initPopup_generate_fields(instance, $popupBody);
 
             //agreements
             //add agreements to popup body
             //let agreements =
-            objThis.initPopup_generate_popup_agreements($popupBody);
+            instance._methods.initPopup_generate_popup_agreements(instance, $popupBody);
 
             //footer
-            objThis.initPopup_generate_popup_body_content($popupBody);
+            instance._methods.initPopup_generate_popup_body_content(instance);
 
             //apply event listeners to elements contained in popup
-            objThis.popupAppendEventListeners();
+            instance._methods.popupAppendEventListeners(instance);
 
             //apply miscellaneous plugins
-            objThis.popupApplyMisc();
+            instance._methods.popupApplyMisc(instance);
         },
 
         /*
          * Append event listeners for clickable elements in popup window
          */
-        popupAppendEventListeners: function () {
-            const objThis = this;
-
+        popupAppendEventListeners: function (instance) {
             //checkbox click
-            objThis.popup.form.find('.checkmark').on('click', function (e) {
+            instance.popup.form.find('.checkmark').on('click', function (e) {
                 e.preventDefault();
                 const input = $(this).siblings('input');
                 const is_checked = input.prop('checked');
@@ -549,25 +547,25 @@
             });
 
             //readmore click
-            objThis.popup.obj.find('.' + form_obj_prefix + 'readmore').on('click', function (e) {
+            instance.popup.obj.find('.' + instance._objPrefix + 'readmore').on('click', function (e) {
                 e.preventDefault();
-                objThis.showReadmore(this);
+                instance._methods.showReadmore(instance, this);
             });
 
             //close click
-            objThis.popup.obj.find('.' + form_obj_prefix + 'btn_close').on('click', function (e) {
+            instance.popup.obj.find('.' + instance._objPrefix + 'btn_close').on('click', function (e) {
                 e.preventDefault();
-                objThis.HidePopup();
+                instance._methods.HidePopup(instance);
             });
 
             //form input blur / input
-            for (let i = 0; i < objThis.settings.input.fields.length; i++) {
-                const field = objThis.settings.input.fields[i];
+            for (let i = 0; i < instance.settings.input.fields.length; i++) {
+                const field = instance.settings.input.fields[i];
                 field.obj.data('index', i);
                 field.obj.on('input', function (e) {
                     const index = $(this).data('index');
                     //validate input
-                    const validated = objThis.ValidateForm([objThis.settings.input.fields[index]], {append_status: false, focus_first_wrong: false});
+                    const validated = instance._methods.ValidateForm(instance, [instance.settings.input.fields[index]], {append_status: false, focus_first_wrong: false});
                     //send form if validated
                     if (validated) {
                         console.log('validation successful');
@@ -578,13 +576,13 @@
             }
 
             //form agreement blur / input
-            for (let i = 0; i < objThis.settings.input.agreements.length; i++) {
-                const agreement = objThis.settings.input.agreements[i];
+            for (let i = 0; i < instance.settings.input.agreements.length; i++) {
+                const agreement = instance.settings.input.agreements[i];
                 agreement.obj.data('index', i);
                 agreement.obj.on('change', function (e, _no_check_all_status) {
                     const index = $(this).data('index');
                     //validate input
-                    const validated = objThis.ValidateForm([objThis.settings.input.agreements[index]], {append_status: false, focus_first_wrong: false});
+                    const validated = instance._methods.ValidateForm(instance, [instance.settings.input.agreements[index]], {append_status: false, focus_first_wrong: false});
                     //send form if validated
                     if (validated) {
                         console.log('validation successful');
@@ -592,7 +590,7 @@
 
                     if (!_no_check_all_status) {
                         //change the check prop of check all button according to the status of all agreements
-                        objThis.input_checkbox_check_all_status();
+                        instance._methods.input_checkbox_check_all_status(instance);
                     }
 
                     return false;
@@ -600,35 +598,35 @@
             }
 
             //checkbox check all click
-            if (objThis.settings.appearance.show_check_all_agreements) {
-                objThis.settings.input.check_all_agreements.obj.on('change', function (e, _no_check_all_status) {
+            if (instance.settings.appearance.show_check_all_agreements) {
+                instance.settings.input.check_all_agreements.obj.on('change', function (e, _no_check_all_status) {
                     if (!_no_check_all_status) {
                         const is_checked = $(this).prop('checked');
 
                         //change checked status on all agreements to the prop of check all button
-                        for (let i = 0; i < objThis.settings.input.agreements.length; i++) {
-                            objThis.settings.input.agreements[i].obj.prop('checked', is_checked).trigger('change', [true]);
+                        for (let i = 0; i < instance.settings.input.agreements.length; i++) {
+                            instance.settings.input.agreements[i].obj.prop('checked', is_checked).trigger('change', [true]);
                         }
                     }
                 });
             }
 
             //change the check prop of check all button according to the status of all agreements
-            objThis.input_checkbox_check_all_status();
+            instance._methods.input_checkbox_check_all_status(instance);
 
             //form submit
-            objThis.popup.obj.on('submit', function (e) {
-                const status = objThis.SendData({
+            instance.popup.obj.on('submit', function (e) {
+                const status = instance._methods.SendData(instance, {
                     callback: {
                         success: {
-                            function: objThis.SendDataReturn,
-                            this: objThis,
-                            parameters: [{reset_input: true, message: objThis.settings.text_vars.status_success, style: 'success'}]
+                            function: instance._methods.SendDataReturn,
+                            this: instance,
+                            parameters: [instance, {reset_input: true, message: instance.settings.text_vars.status_success, style: 'success'}]
                         },
                         error: {
-                            function: objThis.SendDataReturn,
-                            this: objThis,
-                            parameters: [{reset_input: false, message: objThis.settings.text_vars.status_error, style: 'error'}]
+                            function: instance._methods.SendDataReturn,
+                            this: instance,
+                            parameters: [instance, {reset_input: false, message: instance.settings.text_vars.status_error, style: 'error'}]
                         }
                     }
                 });
@@ -643,29 +641,29 @@
         /*
          * Readmore click event
          */
-        showReadmore: function (obj) {
+        showReadmore: function (instance, obj) {
             const $this = $(obj);
-            $this.closest('.' + form_obj_prefix + 'division').find('.' + form_obj_prefix + 'readmore_body').slideToggle();
+            $this.closest('.' + instance._objPrefix + 'division').find('.' + instance._objPrefix + 'readmore_body').slideToggle();
         },
         /*
          * Readmore hide all readmore sections
          */
-        hideReadmore_all: function () {
-            this.popup.form.find('.agreements input[type="checkbox"]').prop('checked', false);
+        hideReadmore_all: function (instance) {
+            instance.popup.form.find('.agreements input[type="checkbox"]').prop('checked', false);
         },
 
         /*
          * Apply miscellaneous plugins (ie. input mask)
          */
-        popupApplyMisc: function () {
+        popupApplyMisc: function (instance) {
             /* --- js input mask --- */
-            const inputs = this.popup.form.find(input_all_mask);
+            const inputs = instance.popup.form.find(instance._inputAllMask);
 
             //check if exists
             console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
             if (typeof $.fn.inputmask !== 'undefined') {
                 const input_masked_items = inputs.filter('input[type="tel"], .jsm_phone');
-                const phones_mask = this.settings.input.regex_table.inputmask.phone;//["###-###-###", "## ###-##-##", "(###)###-####"];
+                const phones_mask = instance.settings.input.regex_table.inputmask.phone;//["###-###-###", "## ###-##-##", "(###)###-####"];
 
                 console.log('js input mask || masked items: ');
                 console.log(input_masked_items);
@@ -683,17 +681,17 @@
         /*
          * Change the check prop of check all button according to the status of all agreements
          */
-        input_checkbox_check_all_status: function () {
-            if (this.settings.appearance.show_check_all_agreements) {
+        input_checkbox_check_all_status: function (instance) {
+            if (instance.settings.appearance.show_check_all_agreements) {
                 let all_checked = true;
 
-                for (let i = 0; i < this.settings.input.agreements.length; i++) {
-                    if (!this.settings.input.agreements[i].obj.prop('checked')) {
+                for (let i = 0; i < instance.settings.input.agreements.length; i++) {
+                    if (!instance.settings.input.agreements[i].obj.prop('checked')) {
                         all_checked = false;
                     }
                 }
 
-                this.settings.input.check_all_agreements.obj.prop('checked', all_checked).trigger('change', [true]);
+                instance.settings.input.check_all_agreements.obj.prop('checked', all_checked).trigger('change', [true]);
             }
         },
 
@@ -704,31 +702,31 @@
         /**
          * @return {boolean}
          */
-        SendData: function (options) {
+        SendData: function (instance, options) {
             let status = {success: false, message: 'SendData: Error (Default)'};
 
             const defaults = {
-                url: this.settings.api.url,
-                api_custom: this.settings.api.custom,
-                data: this.popup.form.serialize(),
-                data_dictionary: this.settings.input.data_dictionary,
-                type: this.settings.data.form_method,
-                success_param: this.settings.api.param.success, //bool - true for success, false for failure
-                return_param: this.settings.api.param.message, //the key of returned data (preferably an array) from the API which contains the response
-                status_sending_text: this.settings.text_vars.status_sending,
-                send_headers: this.settings.data.send_headers
+                url: instance.settings.api.url,
+                api_custom: instance.settings.api.custom,
+                data: instance.popup.form.serialize(),
+                data_dictionary: instance.settings.input.data_dictionary,
+                type: instance.settings.data.form_method,
+                success_param: instance.settings.api.param.success, //bool - true for success, false for failure
+                return_param: instance.settings.api.param.message, //the key of returned data (preferably an array) from the API which contains the response
+                status_sending_text: instance.settings.text_vars.status_sending,
+                send_headers: instance.settings.data.send_headers
             };
             const settings = $.extend(true, {}, defaults, options);
 
             //remove all status messages
-            this.StatusClear();
+            instance._methods.StatusClear(instance);
 
             //find all input in form
-            //const input = this.popup.form.find(input_all_mask);
+            //const input = instance.popup.form.find(instance._inputAllMask);
 
             //validate input
-            const validated_fields = this.ValidateForm(this.settings.input.fields);
-            const validated_agreements = this.ValidateForm(this.settings.input.agreements);
+            const validated_fields = instance._methods.ValidateForm(instance, instance.settings.input.fields);
+            const validated_agreements = instance._methods.ValidateForm(instance, instance.settings.input.agreements);
             const validated = validated_fields && validated_agreements;
 
             //send form if validated
@@ -737,28 +735,27 @@
                 console.log('Attempting to send data...');
 
                 //set message showing that data is being sent
-                this.StatusClear();
-                this.StatusAdd(settings.status_sending_text, {});
+                instance._methods.StatusClear(instance);
+                instance._methods.StatusAdd(instance, settings.status_sending_text, {});
 
                 //Add utm params to api custom data
-                if (this.settings.data.add_utm_params) {
-                    const unique_utm_params = this.ArrayGetDistinct(settings.api_custom, this.URLGetUTMs(this.settings.data.utm_params_dictionary), ['name']);
+                if (instance.settings.data.add_utm_params) {
+                    const unique_utm_params = instance._methods.ArrayGetDistinct(settings.api_custom, instance._methods.URLGetUTMs(instance.settings.data.utm_params_dictionary), ['name']);
 
                     settings.api_custom = $.merge(settings.api_custom, unique_utm_params);
                 }
 
-                status = this.SendDataAjax(settings);
+                status = instance._methods.SendDataAjax(instance, settings);
             } else {
                 status = {success: false, message: 'SendData: Error (Validation)'};
             }
 
             return status;
         },
-        SendDataAjax: function (options) {
+        SendDataAjax: function (instance, options) {
             let status = {success: false, message: 'SendDataAjax: Error (Default)'};
 
             //set settings
-            const objThis = this;
             const defaults = {
                 url: '/',
                 type: 'POST',
@@ -819,10 +816,10 @@
             //AJAX CALL
 
             //if no ajax call is currently processing
-            if (objThis.settings.status.ajax_processing) {
+            if (instance.settings.status.ajax_processing) {
                 status = {success: false, message: 'SendDataAjax: Error (Processing...)'};
             } else {
-                objThis.settings.status.ajax_processing = true;
+                instance.settings.status.ajax_processing = true;
                 status = {success: true, message: 'SendDataAjax: Success (Got into ajax)'};
 
                 //Configure
@@ -893,8 +890,8 @@
                                 settings.callback.success.function.apply(settings.callback.success.this, settings.callback.success.parameters);
                             }
                             //callback from obj settings
-                            if (objThis.settings.callbacks.onSend.success.function && $.isFunction(objThis.settings.callbacks.onSend.success.function)) {
-                                objThis.settings.callbacks.onSend.success.function.apply(objThis.settings.callbacks.onSend.success.this, [$.extend(true, {}, data, objThis.settings.callbacks.onSend.success.parameters)]);
+                            if (instance.settings.callbacks.onSend.success.function && $.isFunction(instance.settings.callbacks.onSend.success.function)) {
+                                instance.settings.callbacks.onSend.success.function.apply(instance.settings.callbacks.onSend.success.this, [$.extend(true, {}, data, instance.settings.callbacks.onSend.success.parameters)]);
                             }
                         } else {
                             //CALLBACK
@@ -905,17 +902,17 @@
                                 settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
                             }
                             //callback from obj settings
-                            if (objThis.settings.callbacks.onSend.error.function && $.isFunction(objThis.settings.callbacks.onSend.error.function)) {
-                                objThis.settings.callbacks.onSend.error.function.apply(objThis.settings.callbacks.onSend.error.this, [$.extend(true, {}, data, objThis.settings.callbacks.onSend.error.parameters)]);
+                            if (instance.settings.callbacks.onSend.error.function && $.isFunction(instance.settings.callbacks.onSend.error.function)) {
+                                instance.settings.callbacks.onSend.error.function.apply(instance.settings.callbacks.onSend.error.this, [$.extend(true, {}, data, instance.settings.callbacks.onSend.error.parameters)]);
                             }
 
                             //if show response from api settings is set to true, view the message
-                            if (objThis.settings.status.response_from_api_visible && return_message) {
-                                objThis.StatusAdd(return_message, {style: 'error'});
+                            if (instance.settings.status.response_from_api_visible && return_message) {
+                                instance._methods.StatusAdd(instance, return_message, {style: 'error'});
                             }
                         }
 
-                        objThis.settings.status.ajax_processing = false;
+                        instance.settings.status.ajax_processing = false;
                     },
                     error: function (data) {
                         // Error...
@@ -925,7 +922,7 @@
 
                         status = {success: false, message: 'Error (API x:0)'};
 
-                        objThis.settings.status.ajax_processing = false;
+                        instance.settings.status.ajax_processing = false;
 
                         //CALLBACK
 
@@ -935,8 +932,8 @@
                             //call the callback function after the function is done
                             settings.callback.error.function.apply(settings.callback.error.this, settings.callback.error.parameters);
                         }
-                        if (objThis.settings.callbacks.onSend.error.function && $.isFunction(objThis.settings.callbacks.onSend.error.function)) {
-                            objThis.settings.callbacks.onSend.error.function.apply(objThis.settings.callbacks.onSend.error.this, objThis.settings.callbacks.onSend.error.parameters);
+                        if (instance.settings.callbacks.onSend.error.function && $.isFunction(instance.settings.callbacks.onSend.error.function)) {
+                            instance.settings.callbacks.onSend.error.function.apply(instance.settings.callbacks.onSend.error.this, instance.settings.callbacks.onSend.error.parameters);
                         }
                     }
                 });
@@ -947,7 +944,7 @@
 
         /* Status messages */
 
-        StatusAdd: function (_message, options) {
+        StatusAdd: function (instance, _message, options) {
             //set settings
             const defaults = {
                 fade_duration: 300,
@@ -959,49 +956,45 @@
 
             let message = $('<p></p>');
             message.text(_message);
-            message.appendTo(this.popup.footer);
+            message.appendTo(instance.popup.footer);
             message.hide();
 
             if (settings.style === 'success') {
-                this.StatusClearStyle();
-                this.popup.footer.addClass('success');
+                instance._methods.StatusClearStyle(instance);
+                instance.popup.footer.addClass('success');
             } else if (settings.style === 'error') {
-                this.StatusClearStyle();
-                this.popup.footer.addClass('error');
+                instance._methods.StatusClearStyle(instance);
+                instance.popup.footer.addClass('error');
             }
 
             message.fadeIn(settings.fade_duration);
         },
-        StatusClearStyle: function () {
+        StatusClearStyle: function (instance) {
             //reset css classes
-            this.popup.footer.removeClass('success error');
+            instance.popup.footer.removeClass('success error');
         },
-        StatusClear: function () {
-            this.StatusClearStyle();
+        StatusClear: function (instance) {
+            instance._methods.StatusClearStyle(instance);
             //remove contents
-            this.popup.footer.empty();
+            instance.popup.footer.empty();
         },
 
         /* ------ Popup ------ */
 
-        TogglePopup: function (options) {
-            const objThis = this;
-
-            if (objThis.settings.status.button_disabled) {
+        TogglePopup: function (instance, options) {
+            if (instance.settings.status.button_disabled) {
                 return;
             }
 
-            if (objThis.settings.status.popup_hidden) {
-                objThis.ShowPopup(options);
+            if (instance.settings.status.popup_hidden) {
+                instance._methods.ShowPopup(instance, options);
             } else {
-                objThis.HidePopup(options);
+                instance._methods.HidePopup(instance, options);
             }
         },
 
-        ShowPopup: function (options) {
-            const objThis = this;
-
-            if (objThis.settings.status.button_disabled) {
+        ShowPopup: function (instance, options) {
+            if (instance.settings.status.button_disabled) {
                 return;
             }
 
@@ -1012,32 +1005,30 @@
             const settings = $.extend({}, defaults, options);
 
             //add overflown class to the overlay to disable content scrolling
-            if (objThis.settings.appearance.overflown_overlay) {
-                objThis.html.addClass('overflown');
+            if (instance.settings.appearance.overflown_overlay) {
+                instance.html.addClass('overflown');
             }
 
             //fade in the popup window
-            objThis.popup.obj.fadeIn(settings.fade_duration);
+            instance.popup.obj.fadeIn(settings.fade_duration);
 
             //focus first input in popup form
-            objThis.popup.form.find(input_all_mask).first().focus();
+            instance.popup.form.find(instance._inputAllMask).first().focus();
 
             //hide button
-            objThis.button.obj.addClass('hide');
+            instance.button.obj.addClass('hide');
 
             //change hidden variable to false
-            objThis.settings.status.popup_hidden = false;
+            instance.settings.status.popup_hidden = false;
 
             //callback from obj settings
-            if (objThis.settings.callbacks.onShow.function && $.isFunction(objThis.settings.callbacks.onShow.function)) {
-                objThis.settings.callbacks.onShow.function.apply(objThis.settings.callbacks.onShow.this, [$.extend(true, {}, objThis, objThis.settings.callbacks.onShow.parameters)]);
+            if (instance.settings.callbacks.onShow.function && $.isFunction(instance.settings.callbacks.onShow.function)) {
+                instance.settings.callbacks.onShow.function.apply(instance.settings.callbacks.onShow.this, [$.extend(true, {}, instance, instance.settings.callbacks.onShow.parameters)]);
             }
         },
 
-        HidePopup: function (options) {
-            const objThis = this;
-
-            if (objThis.settings.status.button_disabled) {
+        HidePopup: function (instance, options) {
+            if (instance.settings.status.button_disabled) {
                 return;
             }
 
@@ -1048,34 +1039,33 @@
             const settings = $.extend({}, defaults, options);
 
             //remove overflown class from the overlay to enable content scrolling
-            if (objThis.settings.appearance.overflown_overlay) {
-                objThis.html.removeClass('overflown');
+            if (instance.settings.appearance.overflown_overlay) {
+                instance.html.removeClass('overflown');
             }
 
             //fade out the popup window and reset the input
-            objThis.popup.obj.fadeOut(settings.fade_duration, function () {
+            instance.popup.obj.fadeOut(settings.fade_duration, function () {
                 //reset input from fields and only clear right/wrong status on inputs in validation function
-                objThis.ResetInput({clear_status_only: true});
+                instance._methods.ResetInput(instance, {clear_status_only: true});
 
                 //reset status messages
-                objThis.StatusClear();
+                instance._methods.StatusClear(instance);
             });
 
             //hide button
-            objThis.button.obj.removeClass('hide');
+            instance.button.obj.removeClass('hide');
 
             //change hidden variable to true
-            objThis.settings.status.popup_hidden = true;
+            instance.settings.status.popup_hidden = true;
 
             //callback from obj settings
-            if (objThis.settings.callbacks.onHide.function && $.isFunction(objThis.settings.callbacks.onHide.function)) {
-                objThis.settings.callbacks.onHide.function.apply(objThis.settings.callbacks.onHide.this, [$.extend(true, {}, objThis, objThis.settings.callbacks.onHide.parameters)]);
+            if (instance.settings.callbacks.onHide.function && $.isFunction(instance.settings.callbacks.onHide.function)) {
+                instance.settings.callbacks.onHide.function.apply(instance.settings.callbacks.onHide.this, [$.extend(true, {}, instance, instance.settings.callbacks.onHide.parameters)]);
             }
         },
 
-        CollapsePopupBodyToggle: function (options) {
+        CollapsePopupBodyToggle: function (instance, options) {
             //set settings
-            const objThis = this;
             const defaults = {
                 slide_duration: 300,
                 action: 'toggle',
@@ -1084,41 +1074,41 @@
 
             switch (settings.action) {
                 case 'toggle':
-                    if (objThis.settings.status.popup_body_collapsed) {
+                    if (instance.settings.status.popup_body_collapsed) {
                         //fade in the popup window
-                        objThis.popup.body.slideDown(settings.slide_duration);
+                        instance.popup.body.slideDown(settings.slide_duration);
 
                         //change hidden variable to false
-                        objThis.settings.status.popup_body_collapsed = false;
+                        instance.settings.status.popup_body_collapsed = false;
                     } else {
                         //fade in the popup window
-                        objThis.popup.body.slideUp(settings.slide_duration);
+                        instance.popup.body.slideUp(settings.slide_duration);
 
                         //change hidden variable to false
-                        objThis.settings.status.popup_body_collapsed = true;
+                        instance.settings.status.popup_body_collapsed = true;
                     }
                     break;
                 case 'show':
                     //fade in the popup window
-                    objThis.popup.body.slideDown(settings.slide_duration);
+                    instance.popup.body.slideDown(settings.slide_duration);
 
                     //change hidden variable to false
-                    objThis.settings.status.popup_body_collapsed = false;
+                    instance.settings.status.popup_body_collapsed = false;
                     break;
                 case 'hide':
                     //fade in the popup window
-                    objThis.popup.body.slideUp(settings.slide_duration);
+                    instance.popup.body.slideUp(settings.slide_duration);
 
                     //change hidden variable to false
-                    objThis.settings.status.popup_body_collapsed = true;
+                    instance.settings.status.popup_body_collapsed = true;
                     break;
                 default:
                     break;
             }
         },
 
-        DisableButton: function (input) {
-            this.settings.status.button_disabled = !!input;
+        DisableButton: function (instance, input) {
+            instance.settings.status.button_disabled = !!input;
         },
 
         /* ------ Input ------ */
@@ -1126,7 +1116,7 @@
         /**
          * @return {{is_valid: boolean, field: *}}
          */
-        ValidateField: function (_field, options) {
+        ValidateField: function (instance, _field, options) {
             const defaults = {};
             const settings = $.extend({}, defaults, options);
 
@@ -1157,7 +1147,7 @@
             else {
                 if (field.required === true || $this.val() !== '') {
                     //define regex for field types
-                    const regex_table = this.settings.input.regex_table;
+                    const regex_table = instance.settings.input.regex_table;
 
                     if (field.data_field_type && field.data_field_type in regex_table) {
                         const regex = regex_table[field.data_field_type];
@@ -1176,7 +1166,7 @@
         /**
          * @return {boolean}
          */
-        ValidateForm: function (_fields, options) {
+        ValidateForm: function (instance, _fields, options) {
             const defaults = {
                 append_status: true,
                 focus_first_wrong: true,
@@ -1197,13 +1187,13 @@
 
             for (let i = 0; i < fields.length; i++) {
                 const field = fields[i];
-                const field_valid = this.ValidateField(field);
+                const field_valid = instance._methods.ValidateField(instance, field);
 
                 const $this = field.obj;
                 const $this_container = $this.closest('.input');
 
                 //find and remove old status
-                const old_obj = $this_container.find('.' + form_obj_prefix + 'status');
+                const old_obj = $this_container.find('.' + instance._objPrefix + 'status');
 
                 //if appending new status, delete the old status immediately. Otherwise, fade it out slowly
                 if (settings.append_status) {
@@ -1235,8 +1225,8 @@
 
                         //add element signifying wrong input
                         if (settings.append_status) {
-                            const $wrong_input_obj = $('<span class="' + form_obj_prefix + 'status"></span>');
-                            $wrong_input_obj.text(this.settings.text_vars.wrong_input_text);
+                            const $wrong_input_obj = $('<span class="' + instance._objPrefix + 'status"></span>');
+                            $wrong_input_obj.text(instance.settings.text_vars.wrong_input_text);
                             $wrong_input_obj.hide();
 
                             $wrong_input_obj.appendTo($this_container);
@@ -1251,7 +1241,7 @@
 
             if (settings.focus_first_wrong && wrong_inputs.length > 0) {
                 //sort by position in DOM
-                wrong_inputs = this.objSortByPositionInDOM(wrong_inputs, 'field', 'obj');
+                wrong_inputs = instance._methods.objSortByPositionInDOM(wrong_inputs, 'field', 'obj');
 
                 //focus first object in DOM
                 wrong_inputs[0].field.obj.focus();
@@ -1264,7 +1254,7 @@
             return is_valid;
         },
 
-        SendDataReturn: function (options) {
+        SendDataReturn: function (instance, options) {
             const defaults = {
                 reset_input: true,
                 message: '',
@@ -1273,33 +1263,33 @@
             const settings = $.extend({}, defaults, options);
 
             if (settings.reset_input) {
-                this.ResetInput({clear_status_only: true});
+                instance._methods.ResetInput(instance, {clear_status_only: true});
             }
-            this.StatusClear();
-            this.StatusAdd(settings.message, {style: settings.style});
+            instance._methods.StatusClear(instance);
+            instance._methods.StatusAdd(instance, settings.message, {style: settings.style});
         },
 
-        ResetInput: function (options) {
+        ResetInput: function (instance, options) {
             const defaults = {
                 clear_status_only: false,
             };
             const settings = $.extend({}, defaults, options);
 
-            const form = this.popup.form;//this.popup.obj.find('form');
+            const form = instance.popup.form; // this.popup.obj.find('form');
             form[0].reset();
 
             //validate after resetting the form
-            this.ValidateForm(this.settings.input.fields, {append_status: false, focus_first_wrong: false, clear_status_only: settings.clear_status_only});
-            this.ValidateForm(this.settings.input.agreements, {append_status: false, focus_first_wrong: false, clear_status_only: settings.clear_status_only});
+            instance._methods.ValidateForm(instance, instance.settings.input.fields, {append_status: false, focus_first_wrong: false, clear_status_only: settings.clear_status_only});
+            instance._methods.ValidateForm(instance, instance.settings.input.agreements, {append_status: false, focus_first_wrong: false, clear_status_only: settings.clear_status_only});
 
             /*
-            const input = form.find(input_all_mask);
+            const input = form.find(instance._inputAllMask);
             input.filter('[type="text"], [type="tel"], textarea').val('');
             input.filter('[type="checkbox"]').prop('checked', true);
             input.filter('select').prop('selectedIndex',0);
             */
 
-            //this.hideReadmore_all();
+            //this.hideReadmore_all(instance);
         },
 
         /* ------------------------------ HELPERS ------------------------------- */
@@ -1496,10 +1486,12 @@
 
             return output;
         },
-    });
+    };
 
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
+
+    // default outside method call: pluginInstance._methods.nameOfAnInnerFunction(pluginInstance, arg1, arg2...);
     $.fn[pluginName] = function (options) {
         let instances = [];
 
