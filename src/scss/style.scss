@@ -618,7 +618,7 @@ $ripple_color: #aeaeae;
 
                     a {
                         color: $border_hover;
-                        text-decoration: underline;
+                        text-decoration: none;
 
                         &:hover, &:active, &:focus {
                             color: lighten($border_hover, 15%);
