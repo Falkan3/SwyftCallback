@@ -107,21 +107,21 @@ body {
 
 .sc_popup form .input.wrong-input .sc_status { color: #dd1531; }
 
-.sc_popup form input[type="text"], .sc_popup form input[type="tel"], .sc_popup form textarea { display: block; width: 100%; max-width: 100%; margin: 0; padding: 0 0 0.5rem 0; background: transparent; border: none; border-bottom: solid 2px #D6E3F8; line-height: 1.5rem; outline: none; -webkit-transition: ease-in-out 0.3s; -moz-transition: ease-in-out 0.3s; -ms-transition: ease-in-out 0.3s; -o-transition: ease-in-out 0.3s; transition: ease-in-out 0.3s; }
+.sc_popup form input[type="text"], .sc_popup form input[type="tel"], .sc_popup form input[type="email"], .sc_popup form input[type="url"], .sc_popup form textarea { display: block; width: 100%; max-width: 100%; margin: 0; padding: 0 0 0.5rem 0; background: transparent; border: none; border-bottom: solid 2px #D6E3F8; line-height: 1.5rem; outline: none; -webkit-transition: ease-in-out 0.3s; -moz-transition: ease-in-out 0.3s; -ms-transition: ease-in-out 0.3s; -o-transition: ease-in-out 0.3s; transition: ease-in-out 0.3s; }
 
-.sc_popup form input[type="text"]:hover, .sc_popup form input[type="text"]:active, .sc_popup form input[type="text"]:focus, .sc_popup form input[type="tel"]:hover, .sc_popup form input[type="tel"]:active, .sc_popup form input[type="tel"]:focus, .sc_popup form textarea:hover, .sc_popup form textarea:active, .sc_popup form textarea:focus { border-color: #9D5C63; }
+.sc_popup form input[type="text"]:hover, .sc_popup form input[type="text"]:active, .sc_popup form input[type="text"]:focus, .sc_popup form input[type="tel"]:hover, .sc_popup form input[type="tel"]:active, .sc_popup form input[type="tel"]:focus, .sc_popup form input[type="email"]:hover, .sc_popup form input[type="email"]:active, .sc_popup form input[type="email"]:focus, .sc_popup form input[type="url"]:hover, .sc_popup form input[type="url"]:active, .sc_popup form input[type="url"]:focus, .sc_popup form textarea:hover, .sc_popup form textarea:active, .sc_popup form textarea:focus { border-color: #9D5C63; }
 
-.sc_popup form input[type="text"]::-webkit-input-placeholder, .sc_popup form input[type="tel"]::-webkit-input-placeholder, .sc_popup form textarea::-webkit-input-placeholder { color: #a1a1a1; }
+.sc_popup form input[type="text"]::-webkit-input-placeholder, .sc_popup form input[type="tel"]::-webkit-input-placeholder, .sc_popup form input[type="email"]::-webkit-input-placeholder, .sc_popup form input[type="url"]::-webkit-input-placeholder, .sc_popup form textarea::-webkit-input-placeholder { color: #a1a1a1; }
 
-.sc_popup form input[type="text"]:-moz-placeholder, .sc_popup form input[type="tel"]:-moz-placeholder, .sc_popup form textarea:-moz-placeholder { /* FF 4-18 */ color: #a1a1a1; }
+.sc_popup form input[type="text"]:-moz-placeholder, .sc_popup form input[type="tel"]:-moz-placeholder, .sc_popup form input[type="email"]:-moz-placeholder, .sc_popup form input[type="url"]:-moz-placeholder, .sc_popup form textarea:-moz-placeholder { /* FF 4-18 */ color: #a1a1a1; }
 
-.sc_popup form input[type="text"]::-moz-placeholder, .sc_popup form input[type="tel"]::-moz-placeholder, .sc_popup form textarea::-moz-placeholder { /* FF 19+ */ color: #a1a1a1; }
+.sc_popup form input[type="text"]::-moz-placeholder, .sc_popup form input[type="tel"]::-moz-placeholder, .sc_popup form input[type="email"]::-moz-placeholder, .sc_popup form input[type="url"]::-moz-placeholder, .sc_popup form textarea::-moz-placeholder { /* FF 19+ */ color: #a1a1a1; }
 
-.sc_popup form input[type="text"]:-ms-input-placeholder, .sc_popup form input[type="tel"]:-ms-input-placeholder, .sc_popup form textarea:-ms-input-placeholder { /* IE 10+ */ color: #a1a1a1; }
+.sc_popup form input[type="text"]:-ms-input-placeholder, .sc_popup form input[type="tel"]:-ms-input-placeholder, .sc_popup form input[type="email"]:-ms-input-placeholder, .sc_popup form input[type="url"]:-ms-input-placeholder, .sc_popup form textarea:-ms-input-placeholder { /* IE 10+ */ color: #a1a1a1; }
 
-.sc_popup form input[type="text"].correct-input, .sc_popup form input[type="tel"].correct-input, .sc_popup form textarea.correct-input { border-color: #73dd43; }
+.sc_popup form input[type="text"].correct-input, .sc_popup form input[type="tel"].correct-input, .sc_popup form input[type="email"].correct-input, .sc_popup form input[type="url"].correct-input, .sc_popup form textarea.correct-input { border-color: #73dd43; }
 
-.sc_popup form input[type="text"].wrong-input, .sc_popup form input[type="tel"].wrong-input, .sc_popup form textarea.wrong-input { border-color: #dd1531; }
+.sc_popup form input[type="text"].wrong-input, .sc_popup form input[type="tel"].wrong-input, .sc_popup form input[type="email"].wrong-input, .sc_popup form input[type="url"].wrong-input, .sc_popup form textarea.wrong-input { border-color: #dd1531; }
 
 .sc_popup form input[type="tel"], .sc_popup form input.jsm_phone { letter-spacing: 1px; }
 
