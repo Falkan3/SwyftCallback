@@ -79,28 +79,6 @@
                 prefix: formObjPrefix,
                 fields: [],
                 agreements: [],
-                fields_default: {
-                    obj: null,
-                    name: 'phone',
-                    field_name: formObjPrefix + 'telephone',
-                    label: 'Phone number',
-                    type: 'tel',
-                    data_field_type: 'phone', //possible types: phone, name, email. Used for regex_table
-                    placeholder: '000-000-000',
-                    max_length: 20,
-                    required: true
-                },
-                agreements_default: {
-                    obj: null,
-                    field_name: formObjPrefix + 'agreement',
-                    type: 'checkbox',
-                    short: 'Lorem',
-                    long: 'Ipsum',
-                    readmore: 'More',
-                    readless: 'Less',
-                    required: true,
-                    checked: true,
-                },
                 check_all_agreements: {
                     obj: null,
                     short: 'Check all agreements',
@@ -117,9 +95,33 @@
                 //dictionary is used to exchange input names into values from the dictionary on API request
                 data_dictionary: {} //'sc_fld_telephone': 'phone'
             },
-            body_content: {
-                content: [],
-                default: {
+            body_content: [],
+            templates: {
+                input: {
+                    field: {
+                        obj: null,
+                        name: 'phone',
+                        field_name: formObjPrefix + 'telephone',
+                        label: 'Phone number',
+                        type: 'tel',
+                        data_field_type: 'phone', //possible types: phone, name, email. Used for regex_table
+                        placeholder: '000-000-000',
+                        max_length: 20,
+                        required: true
+                    },
+                    agreement: {
+                        obj: null,
+                        field_name: formObjPrefix + 'agreement',
+                        type: 'checkbox',
+                        short: 'Lorem',
+                        long: 'Ipsum',
+                        readmore: 'More',
+                        readless: 'Less',
+                        required: true,
+                        checked: true,
+                    },
+                },
+                body_content: {
                     short: 'Short',
                     long: 'Long',
                     readmore: 'More',
@@ -197,7 +199,7 @@
         setDefaultVars: function (instance) {
             //set default vars for form fields
             if (instance.settings.input.fields) {
-                const template = instance.settings.input.fields_default;
+                const template = instance.settings.templates.input.field;
                 for (let i = 0; i < instance.settings.input.fields.length; i++) {
                     instance.settings.input.fields[i] = $.extend({}, template, instance.settings.input.fields[i]);
                 }
@@ -205,17 +207,17 @@
 
             //set default vars for agreements
             if (instance.settings.input.agreements) {
-                const template = instance.settings.input.agreements_default;
+                const template = instance.settings.templates.input.agreement;
                 for (let i = 0; i < instance.settings.input.agreements.length; i++) {
                     instance.settings.input.agreements[i] = $.extend({}, template, instance.settings.input.agreements[i]);
                 }
             }
 
             //set default vars for body_content
-            if (instance.settings.body_content.content) {
-                const template = instance.settings.body_content.default;
-                for (let i = 0; i < instance.settings.body_content.content.length; i++) {
-                    instance.settings.body_content.content[i] = $.extend({}, template, instance.settings.body_content.content[i]);
+            if (instance.settings.body_content) {
+                const template = instance.settings.templates.body_content;
+                for (let i = 0; i < instance.settings.body_content.length; i++) {
+                    instance.settings.body_content[i] = $.extend({}, template, instance.settings.body_content[i]);
                 }
             }
         },
@@ -416,9 +418,9 @@
             let output = '';
             let $obj = null;
 
-            if (instance.settings.body_content.content) {
-                for (let i = 0; i < instance.settings.body_content.content.length; i++) {
-                    const body_content_item = instance.settings.body_content.content[i];
+            if (instance.settings.body_content) {
+                for (let i = 0; i < instance.settings.body_content.length; i++) {
+                    const body_content_item = instance.settings.body_content[i];
 
                     if (typeof body_content_item.long === 'undefined' || body_content_item.long === '') {
                         output = '<div class="' + instance._objPrefix + 'division">\n' +
@@ -438,7 +440,7 @@
 
                     //save created DOM object in settings field reference
                     $obj = $(output).prependTo(body_content_section);
-                    instance.settings.body_content.content[i].obj = $obj;
+                    instance.settings.body_content[i].obj = $obj;
                 }
             }
 
