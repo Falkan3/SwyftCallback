@@ -77,31 +77,30 @@
             novalidate: true,
             input: {
                 prefix: formObjPrefix,
-                fields: [
-                    {
-                        obj: null,
-                        name: 'phone',
-                        field_name: formObjPrefix + 'telephone',
-                        label: 'Phone number',
-                        type: 'tel',
-                        data_field_type: 'phone', //possible types: phone, name, email. Used for regex_table
-                        placeholder: '000-000-000',
-                        max_length: 20,
-                        required: true
-                    },
-                ],
-                agreements: [
-                    {
-                        obj: null,
-                        field_name: formObjPrefix + 'agreement',
-                        type: 'checkbox',
-                        short: 'Lorem',
-                        long: 'Ipsum',
-                        readmore: 'More',
-                        required: true,
-                        checked: true,
-                    }
-                ],
+                fields: [],
+                agreements: [],
+                fields_default: {
+                    obj: null,
+                    name: 'phone',
+                    field_name: formObjPrefix + 'telephone',
+                    label: 'Phone number',
+                    type: 'tel',
+                    data_field_type: 'phone', //possible types: phone, name, email. Used for regex_table
+                    placeholder: '000-000-000',
+                    max_length: 20,
+                    required: true
+                },
+                agreements_default: {
+                    obj: null,
+                    field_name: formObjPrefix + 'agreement',
+                    type: 'checkbox',
+                    short: 'Lorem',
+                    long: 'Ipsum',
+                    readmore: 'More',
+                    readless: 'Less',
+                    required: true,
+                    checked: true,
+                },
                 check_all_agreements: {
                     obj: null,
                     short: 'Check all agreements',
@@ -118,15 +117,15 @@
                 //dictionary is used to exchange input names into values from the dictionary on API request
                 data_dictionary: {} //'sc_fld_telephone': 'phone'
             },
-            body_content: [
-                /*
-                {
+            body_content: {
+                content: [],
+                default: {
                     short: 'Short',
                     long: 'Long',
                     readmore: 'More',
+                    readless: 'Less',
                 }
-                */
-            ],
+            },
             callbacks: {
                 onShow: null,
                 onHide: null,
@@ -198,7 +197,7 @@
         setDefaultVars: function (instance) {
             //set default vars for form fields
             if (instance.settings.input.fields) {
-                const template = defaults.input.fields[0];
+                const template = instance.settings.input.fields_default;
                 for (let i = 0; i < instance.settings.input.fields.length; i++) {
                     instance.settings.input.fields[i] = $.extend({}, template, instance.settings.input.fields[i]);
                 }
@@ -206,9 +205,17 @@
 
             //set default vars for agreements
             if (instance.settings.input.agreements) {
-                const template = defaults.input.agreements[0];
+                const template = instance.settings.input.agreements_default;
                 for (let i = 0; i < instance.settings.input.agreements.length; i++) {
                     instance.settings.input.agreements[i] = $.extend({}, template, instance.settings.input.agreements[i]);
+                }
+            }
+
+            //set default vars for body_content
+            if (instance.settings.body_content.content) {
+                const template = instance.settings.body_content.default;
+                for (let i = 0; i < instance.settings.body_content.content.length; i++) {
+                    instance.settings.body_content.content[i] = $.extend({}, template, instance.settings.body_content.content[i]);
                 }
             }
         },
@@ -387,6 +394,7 @@
                             '               <label for="' + agreement.field_name + '">' + agreement.short + ' <button class="' + instance._objPrefix + 'readmore">' + agreement.readmore + '</button></label>\n' +
                             '               <div class="' + instance._objPrefix + 'readmore_body" style="display: none;">\n' +
                             '                   <span>' + agreement.long + '</span>\n' +
+                            '                   <button class="' + instance._objPrefix + 'readmore">' + agreement.readless + '</button>\n' +
                             '               </div>' +
                             '           </div>' +
                             '         </div>';
@@ -408,9 +416,9 @@
             let output = '';
             let $obj = null;
 
-            if (instance.settings.body_content) {
-                for (let i = 0; i < instance.settings.body_content.length; i++) {
-                    const body_content_item = instance.settings.body_content[i];
+            if (instance.settings.body_content.content) {
+                for (let i = 0; i < instance.settings.body_content.content.length; i++) {
+                    const body_content_item = instance.settings.body_content.content[i];
 
                     if (typeof body_content_item.long === 'undefined' || body_content_item.long === '') {
                         output = '<div class="' + instance._objPrefix + 'division">\n' +
@@ -421,6 +429,7 @@
                             '         <p>' + body_content_item.short + ' <button class="' + instance._objPrefix + 'readmore">' + body_content_item.readmore + '</button></p>\n' +
                             '         <div class="' + instance._objPrefix + 'readmore_body" style="display: none;">\n' +
                             '             <span>' + body_content_item.long + '</span>\n' +
+                            '             <button class="' + instance._objPrefix + 'readmore">' + body_content_item.readless + '</button>\n' +
                             '         </div>\n' +
                             '    </div>';
                     }
@@ -429,7 +438,7 @@
 
                     //save created DOM object in settings field reference
                     $obj = $(output).prependTo(body_content_section);
-                    instance.settings.body_content[i].obj = $obj;
+                    instance.settings.body_content.content[i].obj = $obj;
                 }
             }
 
@@ -511,6 +520,7 @@
             //find references to sections
             instance.popup.form = instance.popup.obj.find('form');
             instance.popup.body = instance.popup.obj.find('.' + instance._objPrefix + 'body_section');
+            instance.popup.agreements = instance.popup.obj.find('.' + instance._objPrefix + 'agreements_section');
             instance.popup.body_content = instance.popup.obj.find('.' + instance._objPrefix + 'body_content_section');
             instance.popup.footer = instance.popup.obj.find('.' + instance._objPrefix + 'footer_section');
 
@@ -649,7 +659,14 @@
          * Readmore hide all readmore sections
          */
         hideReadmore_all: function (instance) {
-            instance.popup.form.find('.agreements input[type="checkbox"]').prop('checked', false);
+            const agreements = instance.input.agreements;
+            for(const key in agreements) {
+                if(agreements.hasOwnProperty(key)) {
+                    // return the default (initial) value of checkbox
+                    agreements[key].obj.prop('checked', agreements[key].checked);
+                    agreements[key].obj.closest('.' + instance._objPrefix + 'division').find('.' + instance._objPrefix + 'readmore_body').slideToggle();
+                }
+            }
         },
 
         /*
@@ -663,7 +680,7 @@
             console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
             if (typeof $.fn.inputmask !== 'undefined') {
                 const input_masked_items = inputs.filter('input[type="tel"], .jsm_phone');
-                const phones_mask = instance.settings.input.regex_table.inputmask.phone;//["###-###-###", "## ###-##-##", "(###)###-####"];
+                const phones_mask = instance.settings.input.regex_table.inputmask.phone; //["###-###-###", "## ###-##-##", "(###)###-####"];
 
                 console.log('js input mask || masked items: ');
                 console.log(input_masked_items);
@@ -1412,21 +1429,25 @@
             let distinct = [];
 
             for (const param in param_names) {
-                for (const key in array_1) {
-                    if (array_1[key].hasOwnProperty(param_names[param])) {
-                        if (!unique_dictionary.hasOwnProperty(param_names[param])) {
-                            unique_dictionary[param_names[param]] = [];
+                if(param_names.hasOwnProperty(param)) {
+                    for (const key in array_1) {
+                        if (array_1.hasOwnProperty(key) && array_1[key].hasOwnProperty(param_names[param])) {
+                            if (!unique_dictionary.hasOwnProperty(param_names[param])) {
+                                unique_dictionary[param_names[param]] = [];
+                            }
+                            unique_dictionary[param_names[param]].push(array_1[key][param_names[param]]);
                         }
-                        unique_dictionary[param_names[param]].push(array_1[key][param_names[param]]);
                     }
                 }
             }
 
             for (const param in param_names) {
-                for (const key in array_2) {
-                    if (array_2[key].hasOwnProperty(param_names[param])) {
-                        if (unique_dictionary[param_names[param]].indexOf(array_2[key][param_names[param]]) === -1) {
-                            distinct.push(array_2[key]);
+                if(param_names.hasOwnProperty(param)) {
+                    for (const key in array_2) {
+                        if (array_2.hasOwnProperty(key) && array_2[key].hasOwnProperty(param_names[param])) {
+                            if (unique_dictionary[param_names[param]].indexOf(array_2[key][param_names[param]]) === -1) {
+                                distinct.push(array_2[key]);
+                            }
                         }
                     }
                 }

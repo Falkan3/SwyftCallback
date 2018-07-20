@@ -95,31 +95,37 @@
                         field_name: 'agreement_1',
                         short: 'Short',
                         long: 'Long',
-                        readmore: 'More'
+                        readmore: 'More',
+                        readless: 'Less',
                     },
                     {
                         field_name: 'agreement_2',
                         short: 'Short2',
                         long: 'Long2',
-                        readmore: 'More'
+                        readmore: 'More',
+                        readless: 'Less',
                     },
                     {
                         field_name: 'agreement_3',
                         short: 'Short3',
                         long: 'Long3',
                         readmore: 'More',
+                        readless: 'Less',
                         checked: false
                     }
                 ],
                 data_dictionary: {'api_key': 'key', 'sc_fld_telephone': 'phone'}
             },
-            body_content: [
-                {
-                    short: 'Short',
-                    long: 'Long',
-                    readmore: 'More',
-                }
-            ],
+            body_content: {
+                content: [
+                    {
+                        short: 'Short',
+                        long: 'Long',
+                        readmore: 'More',
+                        readless: 'Less',
+                    }
+                ]
+            },
             callbacks: {
                 onShow: {
                     function: function() {console.log('popup: open')},
