@@ -465,48 +465,50 @@
             ];
             dynamic_attributes = instance._methods.formatDynamicAttributes(dynamic_attributes);
 
-            const $popupBody = '<div class="' + instance._objPrefix + 'overlay" style="display: none;">\n' +
-                '    <div class="' + instance._objPrefix + 'popup_container">\n' +
-                '        <div class="' + instance._objPrefix + 'popup' + classes + '">\n' +
-                '            <button class="' + instance._objPrefix + 'btn_close" type="button"></button>\n' +
-                '            <div class="' + instance._objPrefix + 'title_section">\n' +
-                '                <p>' + instance.settings.text_vars.popup_title + '</p>\n' +
-                '            </div>\n' +
+            const overlay = '<div class="' + instance._objPrefix + 'overlay" style="display: none;">';
+            const popupBody =
+                '<div class="' + instance._objPrefix + 'popup_container">\n' +
+                '    <div class="' + instance._objPrefix + 'popup' + classes + '">\n' +
+                '        <button class="' + instance._objPrefix + 'btn_close" type="button"></button>\n' +
+                '        <div class="' + instance._objPrefix + 'title_section">\n' +
+                '            <p>' + instance.settings.text_vars.popup_title + '</p>\n' +
+                '        </div>\n' +
                 '\n' +
-                '            <div class="' + instance._objPrefix + 'body_section">\n' +
-                '                <p>' + instance.settings.text_vars.popup_body + '</p>\n' +
-                '                <form ' + dynamic_attributes[0].formatted + '>\n' +
-                '                    <div class="container-fluid no-padding">\n' +
-                '                        <div class="row">\n' +
-                '                            <div class="col-xs-12 ' + instance._objPrefix + 'fields_section">\n' +
+                '        <div class="' + instance._objPrefix + 'body_section">\n' +
+                '            <p>' + instance.settings.text_vars.popup_body + '</p>\n' +
+                '            <form ' + dynamic_attributes[0].formatted + '>\n' +
+                '                <div class="container-fluid no-padding">\n' +
+                '                    <div class="row">\n' +
+                '                        <div class="col-xs-12 ' + instance._objPrefix + 'fields_section">\n' +
                 //fields +
-                '                            </div>\n' +
-                '\n' +
-                '                            <div class="col-xs-12">\n' +
-                '                                <div class="' + instance._objPrefix + 'division">\n' +
-                '                                    <button type="submit" class="' + instance._objPrefix + 'btn btn_submit">' + instance.settings.text_vars.send_button_text + '</button>\n' +
-                '                                </div>\n' +
-                '                            </div>\n' +
                 '                        </div>\n' +
                 '\n' +
-                '                        <div class="row ' + instance._objPrefix + 'agreements">\n' +
-                '                            <div class="col-xs-12 ' + instance._objPrefix + 'agreements_section">\n' +
-                //agreements +
+                '                        <div class="col-xs-12">\n' +
+                '                            <div class="' + instance._objPrefix + 'division">\n' +
+                '                                <button type="submit" class="' + instance._objPrefix + 'btn btn_submit">' + instance.settings.text_vars.send_button_text + '</button>\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
                 '                    </div>\n' +
-                '                </form>\n' +
-                '                <div class="' + instance._objPrefix + 'body_content_section"></div>\n' +
-                '            </div>\n' +
                 '\n' +
-                '            <div class="' + instance._objPrefix + 'footer_section">\n' +
-                '\n' +
-                '            </div>\n' +
+                '                    <div class="row ' + instance._objPrefix + 'agreements">\n' +
+                '                        <div class="col-xs-12 ' + instance._objPrefix + 'agreements_section">\n' +
+                //agreements +
+                '                        </div>\n' +
+                '                    </div>\n' +
+                '                </div>\n' +
+                '            </form>\n' +
+                '            <div class="' + instance._objPrefix + 'body_content_section"></div>\n' +
                 '        </div>\n' +
-                '    </div>' +
+                '\n' +
+                '        <div class="' + instance._objPrefix + 'footer_section">\n' +
+                '\n' +
+                '        </div>\n' +
+                '    </div>\n' +
                 '</div>';
 
-            return $popupBody;
+            const $html = $(overlay).append($(popupBody));
+
+            return $html;
         },
 
         /*
@@ -517,9 +519,10 @@
             const $popupBody = $(instance._methods.initPopup_generate_popup_body(instance));
 
             //append the object to DOM
-            instance.popup.obj = $popupBody.appendTo(instance.$element);
+            instance.popup.overlay = $popupBody.appendTo(instance.$element);
 
             //find references to sections
+            instance.popup.obj = instance.popup.overlay.find('.' + instance._objPrefix + 'popup');
             instance.popup.form = instance.popup.obj.find('form');
             instance.popup.body = instance.popup.obj.find('.' + instance._objPrefix + 'body_section');
             instance.popup.agreements = instance.popup.obj.find('.' + instance._objPrefix + 'agreements_section');
@@ -550,6 +553,16 @@
          * Append event listeners for clickable elements in popup window
          */
         popupAppendEventListeners: function (instance) {
+            //hide popup on outside click
+            instance.popup.overlay.on('click', function() {
+                instance._methods.HidePopup(instance);
+            });
+
+            //stop propagation on popup click
+            instance.popup.obj.on('click', function(e) {
+                e.stopPropagation();
+            });
+
             //checkbox click
             instance.popup.form.find('.checkmark').on('click', function (e) {
                 e.preventDefault();
@@ -627,7 +640,7 @@
             instance._methods.input_checkbox_check_all_status(instance);
 
             //form submit
-            instance.popup.obj.on('submit', function (e) {
+            instance.popup.form.on('submit', function (e) {
                 const status = instance._methods.SendData(instance, {
                     callback: {
                         success: {
@@ -1029,7 +1042,7 @@
             }
 
             //fade in the popup window
-            instance.popup.obj.fadeIn(settings.fade_duration);
+            instance.popup.overlay.fadeIn(settings.fade_duration);
 
             //focus first input in popup form
             instance.popup.form.find(instance._inputAllMask).first().focus();
@@ -1063,7 +1076,7 @@
             }
 
             //fade out the popup window and reset the input
-            instance.popup.obj.fadeOut(settings.fade_duration, function () {
+            instance.popup.overlay.fadeOut(settings.fade_duration, function () {
                 //reset input from fields and only clear right/wrong status on inputs in validation function
                 instance._methods.ResetInput(instance, {clear_status_only: true});
 
