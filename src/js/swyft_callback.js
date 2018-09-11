@@ -274,7 +274,7 @@
                 <div class="${instance._objPrefix+ 'tg_btn_container' + buttonContainerClasses}">
                     <p class="${instance._objPrefix}tg_btn_text">${instance.settings.text_vars.toggle_button_text}</p>
                     
-                    <div class="${instance._objPrefix + 'tg_btn' + classes}" ${data}>
+                    <div class="${instance._objPrefix + 'tg_btn' + buttonClasses}" ${data}>
                         <div class="${instance._objPrefix}round_container">
                             <div class="${instance._objPrefix}icon">
                                 <a href="#" role="button"></a>
