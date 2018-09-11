@@ -63,11 +63,11 @@ body {
 
 @media (max-width: 767px) { .sc_ripple2 { top: -13px; left: -13px; } }
 
-.sc_tg_btn_container { position: fixed; bottom: 4rem; right: 4rem; height: 68px; padding: 0 68px; background: #86b2da; -webkit-border-radius: 34px; -moz-border-radius: 34px; border-radius: 34px; z-index: 10000; }
+.sc_tg_btn_container { position: fixed; bottom: 1rem; right: 1rem; max-width: 100%; height: 68px; margin-left: 1rem; padding: 0 68px; background: #86b2da; -webkit-border-radius: 34px; -moz-border-radius: 34px; border-radius: 34px; z-index: 10000; }
 
-@media (max-width: 991px) { .sc_tg_btn_container { width: 59px; height: 59px; -webkit-border-radius: 29px; -moz-border-radius: 29px; border-radius: 29px; } }
+@media (max-width: 991px) { .sc_tg_btn_container { height: 59px; -webkit-border-radius: 29px; -moz-border-radius: 29px; border-radius: 29px; } }
 
-@media (max-width: 767px) { .sc_tg_btn_container { width: 50px; height: 50px; -webkit-border-radius: 25px; -moz-border-radius: 25px; border-radius: 25px; } }
+@media (max-width: 767px) { .sc_tg_btn_container { height: 50px; -webkit-border-radius: 25px; -moz-border-radius: 25px; border-radius: 25px; } }
 
 .sc_tg_btn_container .sc_tg_btn_text { position: relative; top: 50%; left: calc(50% - 17px); margin: 0; color: #fff; text-align: center; -webkit-transform: translate(-50%, -50%); -moz-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); -o-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
 

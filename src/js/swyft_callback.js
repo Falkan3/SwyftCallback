@@ -50,6 +50,7 @@
             //appearance
             appearance: {
                 custom_button_class: "",
+                custom_button_container_class: "",
                 custom_popup_class: "",
                 show_check_all_agreements: true,
                 overflown_overlay: true,
@@ -255,7 +256,7 @@
         },
 
         initButtonBody: function (instance) {
-            const classes = instance._methods.formatClasses(instance.settings.appearance.custom_button_class);
+            const buttonClasses = instance._methods.formatClasses(instance.settings.appearance.custom_button_class);
             const data = instance._methods.formatData(instance.settings.data.custom_button_data);
 
             let rippleClass = 'ripple';
@@ -268,8 +269,9 @@
             let html = '';
 
             if(instance.settings.appearance.show_toggle_button_text) {
+                const buttonContainerClasses = instance._methods.formatClasses(instance.settings.appearance.custom_button_container_class);
                 html = `
-                <div class="${instance._objPrefix+ 'tg_btn_container' + classes}">
+                <div class="${instance._objPrefix+ 'tg_btn_container' + buttonContainerClasses}">
                     <p class="${instance._objPrefix}tg_btn_text">${instance.settings.text_vars.toggle_button_text}</p>
                     
                     <div class="${instance._objPrefix + 'tg_btn' + classes}" ${data}>
@@ -284,7 +286,7 @@
                 `;
             } else {
                 html = `
-                <div class="${instance._objPrefix + 'tg_btn' + classes}" ${data}>
+                <div class="${instance._objPrefix + 'tg_btn' + buttonClasses}" ${data}>
                     <div class="${instance._objPrefix}round_container">
                         <div class="${instance._objPrefix}icon">
                             <a href="#" role="button"></a>
