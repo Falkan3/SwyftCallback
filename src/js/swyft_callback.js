@@ -269,7 +269,7 @@
 
             if(instance.settings.appearance.show_toggle_button_text) {
                 html = `
-                <div class="${instance._objPrefix}tg_btn_container">
+                <div class="${instance._objPrefix+ 'tg_btn_container' + classes}">
                     <p class="${instance._objPrefix}tg_btn_text">${instance.settings.text_vars.toggle_button_text}</p>
                     
                     <div class="${instance._objPrefix + 'tg_btn' + classes}" ${data}>
