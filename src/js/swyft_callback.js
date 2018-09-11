@@ -1,5 +1,5 @@
 /*
- *  Swyft Callback - v0.2.1
+ *  Swyft Callback - v0.2.2
  *  A dynamic callback contact form
  *
  *  Made by Adam Kocić (Falkan3)
@@ -54,6 +54,7 @@
                 show_check_all_agreements: true,
                 overflown_overlay: true,
                 ripple_effect: 1, //available: [1, 2]
+                show_toggle_button_text: false, // show the text near the toggle button
             },
             //status
             status: {
@@ -72,6 +73,8 @@
                 status_success: "Form sent successfuly",
                 status_sending: "Sending form...",
                 status_error: "Server encountered an error",
+
+                toggle_button_text: false, // text near the toggle button
             },
             //form info
             novalidate: true,
@@ -245,6 +248,13 @@
         },
 
         initButton: function (instance) {
+            instance._methods.initButtonBody(instance);
+
+            //apply event listeners to elements contained in popup
+            instance._methods.buttonAppendEventListeners(instance);
+        },
+
+        initButtonBody: function (instance) {
             const classes = instance._methods.formatClasses(instance.settings.appearance.custom_button_class);
             const data = instance._methods.formatData(instance.settings.data.custom_button_data);
 
@@ -255,17 +265,42 @@
                     break;
             }
 
-            const $buttonBody = $(
-                '<div class="' + instance._objPrefix + 'tg_btn' + classes + '" ' + data + '>\n' +
-                '    <div class="' + instance._objPrefix + 'round_container">\n' +
-                '        <div class="' + instance._objPrefix + 'icon">' +
-                '           <a href="#"></a>\n' +
-                '        </div>\n' +
-                '    </div>\n' +
-                '    <div class="' + instance._objPrefix + rippleClass + '"></div>\n' +
-                '</div>');
-            instance.button.obj = $buttonBody.appendTo(instance.$element);
+            let html = '';
 
+            if(instance.settings.appearance.show_toggle_button_text) {
+                html = `
+                <div class="${instance._objPrefix}tg_btn_container">
+                    <p class="${instance._objPrefix}tg_btn_text">${instance.settings.text_vars.toggle_button_text}</p>
+                    
+                    <div class="${instance._objPrefix + 'tg_btn' + classes}" ${data}>
+                        <div class="${instance._objPrefix}round_container">
+                            <div class="${instance._objPrefix}icon">
+                                <a href="#" role="button"></a>
+                            </div>
+                        </div>
+                        <div class="${instance._objPrefix + rippleClass}"></div>
+                    </div>
+                </div>
+                `;
+            } else {
+                html = `
+                <div class="${instance._objPrefix + 'tg_btn' + classes}" ${data}>
+                    <div class="${instance._objPrefix}round_container">
+                        <div class="${instance._objPrefix}icon">
+                            <a href="#" role="button"></a>
+                        </div>
+                    </div>
+                    <div class="${instance._objPrefix + rippleClass}"></div>
+                </div>
+                `;
+            }
+
+            const $buttonBody = $(html);
+            instance.button.obj = $buttonBody.appendTo(instance.$element);
+        },
+
+        buttonAppendEventListeners: function (instance) {
+            //prevent default on popup button trigger click
             instance.button.obj.find('a').on('click', function (e) {
                 e.preventDefault();
 

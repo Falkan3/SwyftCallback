@@ -1,3 +1,27 @@
+@import 'mixins';
+
+$pp: '.sc'; // Plugin prefix
+
+$bg_primary: #FEF5EF;
+$bg_secondary: #584B53;
+$bg_wrong: #ffb9c3;
+
+$btn_primary: #E4BB97;
+$border: #D6E3F8;
+$border_hover: #9D5C63;
+$border_correct: #73dd43;
+$border_wrong: #dd1531;
+
+//status background
+$status_success: #cef6bc;
+$status_error: #ffb0b3;
+
+$font_color_primary: #212121;
+$font_color_secondary: #fff;
+
+//misc
+$ripple_color: #aeaeae;
+
 html {
     //font-size: 14px;
 	//
@@ -43,44 +67,6 @@ body {
     box-sizing: border-box;
 }
 */
-
-$pp: '.sc'; // Plugin prefix
-
-$bg_primary: #FEF5EF;
-$bg_secondary: #584B53;
-$bg_wrong: #ffb9c3;
-
-$btn_primary: #E4BB97;
-$border: #D6E3F8;
-$border_hover: #9D5C63;
-$border_correct: #73dd43;
-$border_wrong: #dd1531;
-
-//status background
-$status_success: #cef6bc;
-$status_error: #ffb0b3;
-
-$font_color_primary: #212121;
-$font_color_secondary: #fff;
-
-//misc
-$ripple_color: #aeaeae;
-
-@mixin transition($property, $duration) {
-    -webkit-transition: $property $duration;
-    -moz-transition: $property $duration;
-    -ms-transition: $property $duration;
-    -o-transition: $property $duration;
-    transition: $property $duration;
-}
-
-@mixin transform($transforms) {
-    -webkit-transform: $transforms;
-    -moz-transform: $transforms;
-    -ms-transform: $transforms;
-    -o-transform: $transforms;
-    transform: $transforms;
-}
 
 %read_more_button {
     color: $border_hover;
@@ -257,6 +243,35 @@ $ripple_color: #aeaeae;
 				top: -13px;
 				left: -13px;
 			}
+		}
+	}
+
+	&_tg_btn_container {
+		position: fixed;
+		bottom: 4rem;
+		right: 4rem;
+		height: 68px;
+		padding: 0 68px;
+		background: #86b2da;
+		@include border-radius(34px);
+		z-index: 10000;
+
+		#{$pp}_tg_btn_text {
+			position: relative;
+			top: 50%;
+			left: calc(50% - 17px);
+			margin: 0;
+			color: #fff;
+			text-align: center;
+			@include transform(translate(-50%, -50%));
+		}
+
+		#{$pp}_tg_btn {
+			position: absolute;
+			top: 0;
+			bottom: auto;
+			left: auto;
+			right: 0;
 		}
 	}
 
