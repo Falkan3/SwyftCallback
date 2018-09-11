@@ -67,9 +67,11 @@ body {
 
 @media (max-width: 991px) { .sc_tg_btn_container { height: 59px; -webkit-border-radius: 29px; -moz-border-radius: 29px; border-radius: 29px; } }
 
-@media (max-width: 767px) { .sc_tg_btn_container { height: 50px; -webkit-border-radius: 25px; -moz-border-radius: 25px; border-radius: 25px; } }
+@media (max-width: 767px) { .sc_tg_btn_container { width: 50px; height: 50px; padding: 0; -webkit-border-radius: 25px; -moz-border-radius: 25px; border-radius: 25px; } }
 
 .sc_tg_btn_container .sc_tg_btn_text { position: relative; top: 50%; left: calc(50% - 17px); margin: 0; color: #fff; text-align: center; -webkit-transform: translate(-50%, -50%); -moz-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); -o-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
+
+@media (max-width: 767px) { .sc_tg_btn_container .sc_tg_btn_text { display: none; } }
 
 .sc_tg_btn_container .sc_tg_btn { position: absolute; top: 0; bottom: auto; left: auto; right: 0; }
 
