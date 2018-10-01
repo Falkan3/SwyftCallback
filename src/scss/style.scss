@@ -256,7 +256,13 @@ body {
 		padding: 0 68px;
 		background: #86b2da;
 		@include border-radius(34px);
+		@include transition(ease-in-out, 0.3s);
 		z-index: 10000;
+
+		&.hide {
+			bottom: -4rem;
+			opacity: 0;
+		}
 
 		@media (max-width: 991px) {
 			height: 59px; //56px;
