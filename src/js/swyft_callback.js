@@ -259,10 +259,13 @@
             const buttonClasses = instance._methods.formatClasses(instance.settings.appearance.custom_button_class);
             const data = instance._methods.formatData(instance.settings.data.custom_button_data);
 
-            let rippleClass = 'ripple';
+            let rippleClass = '';
             switch(instance.settings.appearance.ripple_effect) {
                 case 2:
                     rippleClass = 'ripple2';
+                    break;
+                default:
+                    rippleClass = 'ripple';
                     break;
             }
 
