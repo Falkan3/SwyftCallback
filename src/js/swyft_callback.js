@@ -261,11 +261,11 @@
 
             let rippleClass = '';
             switch(instance.settings.appearance.ripple_effect) {
+                case 1:
+                    rippleClass = 'ripple';
+                    break;
                 case 2:
                     rippleClass = 'ripple2';
-                    break;
-                default:
-                    rippleClass = 'ripple';
                     break;
             }
 
