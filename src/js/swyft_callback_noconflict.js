@@ -54,15 +54,15 @@
                 custom_popup_class: "",
                 show_check_all_agreements: true,
                 overflown_overlay: true,
-                ripple_effect: 1, //available: [1, 2]
+                ripple_effect: 1, // available: [1, 2]
                 show_toggle_button_text: false, // show the text near the toggle button
             },
             //status
             status: {
                 popup_hidden: true,
                 popup_body_collapsed: false,
-                button_disabled: false, //disable show/close functionality
-                ajax_processing: false,
+                button_disabled: false, // disable show/close functionality
+                ajax_processing: false, // whether ajax request is currently being processed. Used to disable button click spamming - a new request can only be sent if the previous has been finalized
                 response_from_api_visible: true,
             },
             //content - text
@@ -369,9 +369,9 @@
             let output = '';
             let $obj = null;
 
-            if (instance.settings.input.agreements) {
+            if (instance.settings.input.agreements.length) {
                 //append check all agreements button
-                if (instance.settings.appearance.show_check_all_agreements && instance.settings.input.agreements.length > 0) {
+                if (instance.settings.appearance.show_check_all_agreements) {
                     output = '<div class="' + instance._objPrefix + 'division">\n' +
                         '               <div class="input">\n' +
                         '                   <div class="' + instance._objPrefix + 'checkbox_container">\n' +
@@ -663,7 +663,7 @@
             }
 
             //checkbox check all click
-            if (instance.settings.appearance.show_check_all_agreements) {
+            if (instance.settings.input.check_all_agreements.obj !== null) {
                 instance.settings.input.check_all_agreements.obj.on('change', function (e, _no_check_all_status) {
                     if (!_no_check_all_status) {
                         const is_checked = jQuery(this).prop('checked');
