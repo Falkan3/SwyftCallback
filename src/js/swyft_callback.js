@@ -754,7 +754,7 @@
          * Change the check prop of check all button according to the status of all agreements
          */
         input_checkbox_check_all_status: function (instance) {
-            if (instance.settings.appearance.show_check_all_agreements) {
+            if (instance.settings.input.check_all_agreements.obj !== null) {
                 let all_checked = true;
 
                 for (let i = 0; i < instance.settings.input.agreements.length; i++) {
