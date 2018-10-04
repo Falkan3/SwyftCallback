@@ -89,7 +89,8 @@
                 },
                 regex_table: {
                     inputmask: {
-                        phone: ["###-###-###", "## ###-##-##", "(###)###-####"]
+                        phone: ["###-###-###", "## ###-##-##", "(###)###-####"],
+                        email: "*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@*{1,20}[.*{2,6}][.*{1,2}]",
                     },
                     'phone': /(\(?(\+|00)?48\)?([ -]?))?(\d{3}[ -]?\d{3}[ -]?\d{3})|([ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2})/,
                     'email': /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -110,6 +111,7 @@
                         type: 'tel',
                         data_field_type: 'phone', //possible types: phone, name, email. Used for regex_table
                         placeholder: '000-000-000',
+                        value: '',
                         max_length: 20,
                         required: true
                     },
@@ -734,10 +736,13 @@
             //check if exists
             console.log('js input mask: ' + (typeof $.fn.inputmask !== 'undefined'));
             if (typeof $.fn.inputmask !== 'undefined') {
-                const input_masked_items = inputs.filter('input[type="tel"], .jsm_phone');
+                let input_masked_items;
+
+                // phone
+                input_masked_items = inputs.filter('input[type="tel"], input[data-field-type="phone"], .jsm_phone');
                 const phones_mask = instance.settings.input.regex_table.inputmask.phone; //["###-###-###", "## ###-##-##", "(###)###-####"];
 
-                console.log('js input mask || masked items: ');
+                console.log('js input mask || masked items [phone]: ');
                 console.log(input_masked_items);
 
                 input_masked_items.inputmask({
@@ -745,6 +750,16 @@
                     greedy: false,
                     definitions: {'#': {validator: "[0-9]", cardinality: 1}},
                     'autoUnmask': true
+                });
+
+                // email
+                input_masked_items = inputs.filter('input[type="email"], input[data-field-type="email"], .jsm_email');
+
+                console.log('js input mask || masked items [email]: ');
+                console.log(input_masked_items);
+
+                input_masked_items.inputmask({
+                    alias: 'email',
                 });
             }
             /* --- /js input mask --- */

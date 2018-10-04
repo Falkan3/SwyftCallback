@@ -159,7 +159,7 @@ body {
 
 .sc_popup form .sc_agreements .sc_checkbox_container:hover input ~ .checkmark { background-color: #ccc; }
 
-.sc_popup form .sc_agreements label { display: inline-block; min-height: 1.5rem; margin-bottom: 0; padding-left: 2rem; font-weight: 300; cursor: pointer; }
+.sc_popup form .sc_agreements label { display: inline-block; min-height: 1.5rem; margin-bottom: 0; margin-left: 2rem; font-weight: 300; cursor: pointer; }
 
 .sc_popup form .sc_agreements label a { color: #9D5C63; text-decoration: none; }
 

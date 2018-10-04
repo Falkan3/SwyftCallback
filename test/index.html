@@ -53,9 +53,9 @@
     $( function() {
         x = $( "body" ).swyftCallback( {
             api: {
-                url: 'https://op.automatkredytowy.pl/api/leadApi/lead',
+                url: 'https://api.com/contact',
                 custom: [
-                    {name: 'api_key', value: 'fN9vaME75zXqQTaf'},
+                    {name: 'api_key', value: '123456789'},
                 ],
                 param: {
                     success: {name: 'result', value: 'success'},
@@ -90,6 +90,16 @@
                         field_name: 'phone',
                         data_field_type: 'phone',
                         placeholder: '000-000-000',
+                        required: true
+                    },
+                    {
+                        name: 'email',
+                        label: 'Email',
+                        field_name: 'email',
+                        data_field_type: 'email',
+                        type: 'text',
+                        placeholder: 'email@domain.com',
+                        max_length: 50,
                         required: true
                     },
                 ],
